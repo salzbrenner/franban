@@ -1,0 +1,139 @@
+openapi: 3.0.0
+info:
+  title: Basic Auth Example
+  version: '1.0'
+servers:
+  - url: http://127.0.0.1:5000/api
+paths:
+
+  /register:
+    post:
+      operationId: src.auth.operations.register
+      summary: Registers a user
+      requestBody:
+        description: Registers user with email and password
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                email:     # <!--- form field name
+                  type: string
+                password:    # <!--- form field name
+                  type: string
+              required:
+                - email
+                - password
+      responses:
+        '201':
+          description: User successfully created
+
+  /login:
+    post:
+      operationId: src.auth.operations.login
+      summary: Authorizes login
+      requestBody:
+        description: Logs a user in with email and password
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                email:     # <!--- form field name
+                  type: string
+                password:    # <!--- form field name
+                  type: string
+              required:
+                - email
+                - password
+      responses:
+        200:
+          description: "User logged in"
+
+  /todos:
+    post:
+      operationId: src.todos.operations.create
+      description: Create a Todo
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:     # <!--- form field name
+                  type: string
+                created_by:    # <!--- form field name
+                  type: integer
+              required:
+                - name
+                - created_by
+      responses:
+        201:
+          description: Successful Todo creation
+      security:
+        - jwt: []
+
+    get:
+      operationId: src.todos.operations.get_all
+      description: Read the list of Todos
+      parameters:
+        - in: query
+          name: created_by
+          schema:
+            type: integer
+          description: Th
+      responses:
+        200:
+          description: Successful Todos read
+      security:
+        - jwt: []
+
+  /todos/{id}:
+    get:
+      operationId: src.todos.operations.get
+      description: Read a Todo by id
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          description: The puppy id
+      responses:
+        200:
+          description: Successful Todo read
+      security:
+        - jwt: []
+
+    delete:
+      operationId: src.todos.operations.delete
+      description: Delete a Todo by id
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: The puppy id
+      responses:
+        200:
+          description: Todo deleted
+      security:
+      - jwt: []
+
+
+components:
+  securitySchemes:
+#    oauth2:
+#      type: oauth2
+#      x-tokenInfoFunc: src.auth.operations.authenticate
+#      flows:
+#        implicit:
+#          scopes: {}
+
+    jwt:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      x-bearerInfoFunc: src.users.model.User.decode_token

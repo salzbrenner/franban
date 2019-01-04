@@ -1,0 +1,23 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+flask = "*"
+connexion = {version = "*",extras = ["swagger-ui"]}
+flask-sqlalchemy = "*"
+flask-migrate = "*"
+flask-script = "*"
+"psycopg2" = "*"
+pytest = "*"
+flask-socketio = "*"
+eventlet = "*"
+flask-bcrypt = "*"
+pyjwt = "*"
+flask-cors = "*"
+
+[dev-packages]
+
+[requires]
+python_version = "3.7"
