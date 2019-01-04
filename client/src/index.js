@@ -8,7 +8,7 @@ import {Route, BrowserRouter as Router, Switch} from 'react-router-dom';
 import { ConnectedRouter } from 'connected-react-router';
 import Login from './routes/login/Login';
 import Register from './routes/register/Register';
-import store, { history } from './store';
+import store, { history } from './redux/store';
 import Home from './routes/home/Home';
 import Logout from './routes/logout/Logout';
 

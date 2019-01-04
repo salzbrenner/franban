@@ -2,7 +2,7 @@ from flask import Blueprint, jsonify, current_app
 from src.users.model import User
 from connexion import request
 import jwt
-auth = Blueprint('auth', __name__)
+user = Blueprint('user', __name__)
 
 
 def register(body):
@@ -52,6 +52,7 @@ def login(body):
 
         # Try to authenticate the found user using their password
         if user and user.password_is_valid(password):
+            user.save_user_session_id(user.id)
             # Generate the access token. This will be used as the authorization header
             access_token = user.generate_token(user.id)
             if access_token:

@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import Header from './Header';
-import {userIsAuthenticated} from '../../reducers/auth.reducer';
+import {userIsAuthenticated} from 'redux/modules/auth';
 
 const mapStateToProps = state => {
   return {

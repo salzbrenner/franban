@@ -22,8 +22,12 @@ def client():
 
 
 user_registration = {
-    'name': 'Howard1',
     'email': 'howard@zen.com',
+    'password': 'password',
+}
+
+second_user = {
+    'email': 'user2@moron.com',
     'password': 'password',
 }
 headers = {
@@ -33,6 +37,10 @@ headers = {
 
 def register_user(client):
     return client.post('/api/register', data=user_registration,
+                      headers=headers)
+
+def register_second_user(client):
+    return client.post('/api/register', data=second_user,
                       headers=headers)
 
 

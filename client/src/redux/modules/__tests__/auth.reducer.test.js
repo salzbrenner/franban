@@ -1,8 +1,7 @@
-import authReducer, {INITIAL_STATE} from '../auth.reducer';
-import {
-  AUTHENTICATED,
+import reducer, {
+  initialState, AUTHENTICATED,
   AUTHENTICATION_ERROR,
-} from 'actions/auth.actions';
+} from '../auth';
 
 describe('Auth Reducer', () => {
   it('handles actions of type AUTHENTICATED', () => {
@@ -11,9 +10,9 @@ describe('Auth Reducer', () => {
       payload: 'unique_token_id',
     };
 
-    const newState = authReducer(INITIAL_STATE, action);
+    const newState = reducer(initialState, action);
     expect(newState)
-        .toEqual({...INITIAL_STATE, authenticated: 'unique_token_id'});
+        .toEqual({...initialState, authenticated: 'unique_token_id'});
   });
 
   it('handles actions of type AUTHENTICATION_ERROR', () => {
@@ -22,8 +21,8 @@ describe('Auth Reducer', () => {
       payload: 'Invalid authentication',
     };
 
-    const newState = authReducer(INITIAL_STATE, action);
+    const newState = reducer(initialState, action);
     expect(newState)
-        .toEqual({...INITIAL_STATE, errorMessage: 'Invalid authentication'});
+        .toEqual({...initialState, errorMessage: 'Invalid authentication'});
   });
 });

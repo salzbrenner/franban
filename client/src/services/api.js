@@ -10,7 +10,7 @@
 // export { subscribeToTimer };
 import axios from 'axios';
 
-const BASE_URL = 'http://localhost:5000/api';
+export const baseUrl = 'http://localhost:5000/api';
 
 /**
  *
@@ -36,7 +36,7 @@ const setLoginOrRegistrationFormData = (email, password) => {
 const makeApiCall = (type, path, data, headers) => {
   return axios({
     method: type,
-    url: `${BASE_URL}${path}`,
+    url: `${baseUrl}${path}`,
     data: data,
     config: {
       headers: headers,
@@ -51,7 +51,6 @@ const makeApiCall = (type, path, data, headers) => {
  * @return {AxiosPromise}
  */
 export const login = (email, password) => {
-  console.log(setLoginOrRegistrationFormData(email, password));
   const headers = {
     'Content-Type': 'application/x-www-form-urlencoded',
   };
@@ -70,13 +69,12 @@ export const login = (email, password) => {
  * @return {AxiosPromise}
  */
 export const register = (email, password) => {
-  console.log(setLoginOrRegistrationFormData(email, password));
   const headers = {
     'Content-Type': 'application/x-www-form-urlencoded',
   };
   return makeApiCall(
       'post',
-      '/login',
+      '/register',
       setLoginOrRegistrationFormData(email, password),
       headers,
   );

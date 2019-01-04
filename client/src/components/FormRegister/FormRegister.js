@@ -1,8 +1,7 @@
 import React from 'react';
 import {Field, reduxForm} from 'redux-form';
-import {register} from '../../actions/auth.actions';
+import {register, getErrorMessage } from 'redux/modules/auth';
 import {connect} from 'react-redux';
-import {getErrorMessage} from '../../reducers/auth.reducer';
 
 const FormRegister = props => {
   const {handleSubmit, pristine, submitting, history} = props;

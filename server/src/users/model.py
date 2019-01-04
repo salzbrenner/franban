@@ -1,5 +1,5 @@
 from src import db
-from flask import current_app
+from flask import current_app, session
 from flask_bcrypt import Bcrypt
 import jwt
 from datetime import datetime, timedelta
@@ -15,6 +15,8 @@ class User(db.Model):
     password = db.Column(db.String(256), nullable=False)
     todos = db.relationship(
         'Todo', order_by='Todo.id', cascade="all, delete-orphan")
+    boards = db.relationship(
+        'Board', order_by='Board.id')
 
     def __init__(self, email, password):
         """Initialize the user with an email and password"""
@@ -35,6 +37,18 @@ class User(db.Model):
     def delete(self):
         db.session.delete(self)
         db.session.commit()
+
+    @staticmethod
+    def save_user_session_id(uid):
+        session['current_user'] = uid
+
+    @staticmethod
+    def get_user_session_id():
+        return session['current_user']
+
+    @staticmethod
+    def clear_user_session_id():
+        session['current_user'] = None
 
     @staticmethod
     def generate_token(user_id):

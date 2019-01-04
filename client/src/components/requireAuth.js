@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {userIsAuthenticated} from '../reducers/auth.reducer';
+import {userIsAuthenticated} from 'redux/modules/auth';
 
 export default ChildComponent => {
   class AuthComponent extends Component {

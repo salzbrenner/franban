@@ -1,7 +1,7 @@
 import json
 
 
-class TestAuth:
+class TestUsers:
 
     def get_headers(self):
         """ returns the request headers"""
@@ -34,7 +34,7 @@ class TestAuth:
         self.test_registration(client)
         # perform duplicate registration
         second_res = client.post('/api/register', data=self.get_registered_data(), headers=self.get_headers())
-        assert second_res.status_code == 202
+        assert second_res.status_code == 422
         assert 'There is an existing user' in second_res.json['message']
 
     def test_user_login(self, client):

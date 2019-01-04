@@ -3,7 +3,7 @@ from src.users.model import User
 
 
 class Todo(db.Model):
-    """This class represents the bucketlist table."""
+    """This class represents the todos table."""
 
     __tablename__ = 'todos'
 
@@ -34,3 +34,4 @@ class Todo(db.Model):
 
     def __repr__(self):
         return "<Todo: {}>".format(self.name)
+

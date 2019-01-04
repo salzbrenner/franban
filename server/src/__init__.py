@@ -18,10 +18,12 @@ def create_app(config_name):
     db.init_app(app)
     socketio.init_app(app)
 
-    from .todos.operations import todos
-    # from .auth import auth
+    from .todos.controller import todos
+    from .users.controller import user
+    from .boards.controller import boards
 
     app.register_blueprint(todos)
-    # app.register_blueprint(auth)
+    app.register_blueprint(boards)
+    app.register_blueprint(user)
 
     return connexion_app

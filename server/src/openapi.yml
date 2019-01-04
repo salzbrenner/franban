@@ -1,6 +1,6 @@
 openapi: 3.0.0
 info:
-  title: Basic Auth Example
+  title: Prello API
   version: '1.0'
 servers:
   - url: http://127.0.0.1:5000/api
@@ -8,7 +8,7 @@ paths:
 
   /register:
     post:
-      operationId: src.auth.operations.register
+      operationId: src.users.controller.register
       summary: Registers a user
       requestBody:
         description: Registers user with email and password
@@ -31,7 +31,7 @@ paths:
 
   /login:
     post:
-      operationId: src.auth.operations.login
+      operationId: src.users.controller.login
       summary: Authorizes login
       requestBody:
         description: Logs a user in with email and password
@@ -52,9 +52,48 @@ paths:
         200:
           description: "User logged in"
 
+  /boards:
+    post:
+      operationId: src.boards.controller.create
+      description: Create a board
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                user:
+                  type: integer
+              required:
+                - name
+                - user
+      responses:
+        201:
+          description: Successful Board Creation
+      security:
+        - jwt: []
+
+    get:
+      operationId: src.boards.controller.get_all_related_to_user
+      description: Read the list of all boards the user is a member of
+      parameters:
+      - in: query
+        name: user
+        schema:
+          type: integer
+      responses:
+        200:
+          description: Successful Boards read
+      security:
+      - jwt: []
+
+
   /todos:
     post:
-      operationId: src.todos.operations.create
+      operationId: src.todos.controller.create
       description: Create a Todo
       requestBody:
         required: true
@@ -77,7 +116,7 @@ paths:
         - jwt: []
 
     get:
-      operationId: src.todos.operations.get_all
+      operationId: src.todos.controller.get_all
       description: Read the list of Todos
       parameters:
         - in: query
@@ -93,7 +132,7 @@ paths:
 
   /todos/{id}:
     get:
-      operationId: src.todos.operations.get
+      operationId: src.todos.controller.get
       description: Read a Todo by id
       parameters:
         - in: path
@@ -108,7 +147,7 @@ paths:
         - jwt: []
 
     delete:
-      operationId: src.todos.operations.delete
+      operationId: src.todos.controller.delete
       description: Delete a Todo by id
       parameters:
       - in: path
