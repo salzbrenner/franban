@@ -8,12 +8,12 @@ class Board(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(255))
-    user = db.Column(db.Integer, db.ForeignKey(User.id))
+    uid = db.Column(db.Integer, db.ForeignKey(User.id))
 
-    def __init__(self, name, user):
+    def __init__(self, name, uid):
         """Initialize with name"""
         self.name = name
-        self.user = user
+        self.uid = uid
 
     def save(self):
         db.session.add(self)

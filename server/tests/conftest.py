@@ -30,6 +30,7 @@ second_user = {
     'email': 'user2@moron.com',
     'password': 'password',
 }
+
 headers = {
     'content-type': 'application/x-www-form-urlencoded'
 }
@@ -38,6 +39,7 @@ headers = {
 def register_user(client):
     return client.post('/api/register', data=user_registration,
                       headers=headers)
+
 
 def register_second_user(client):
     return client.post('/api/register', data=second_user,
@@ -51,3 +53,15 @@ def login_user(client):
 
 def get_access_token(client):
     return json.loads(login_user(client).data.decode())['access_token']
+
+
+def user_setup(client):
+    register_user(client)
+    return get_access_token(client)
+
+
+def get_auth_headers(client):
+    return {
+        'Authorization': 'Bearer ' + user_setup(client),
+        'content-type': 'application/json'
+    }

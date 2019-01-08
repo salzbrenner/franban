@@ -1,11 +1,18 @@
 from flask import Blueprint, jsonify, current_app
 from src.users.model import User
+from src.boards.model import Board
 from connexion import request
 import jwt
+
 user = Blueprint('user', __name__)
 
 
 def register(body):
+    """
+        Responds to a request for /api/register
+        :param body:   dict containing keys email, password
+        :return:            JWT token, message
+    """
     email = body['email']
     password = body['password']
 
@@ -42,7 +49,12 @@ def register(body):
 
 
 def login(body):
-    """user login and access token generation."""
+    """
+        Responds to a request for /api/login
+        :param body: dict containing keys email, password
+        :return: JWT token, message
+    """
+
     email = body['email']
     password = body['password']
 
@@ -52,8 +64,10 @@ def login(body):
 
         # Try to authenticate the found user using their password
         if user and user.password_is_valid(password):
-            user.save_user_session_id(user.id)
-            # Generate the access token. This will be used as the authorization header
+            # save user id in session for authorization purposes
+            User.save_user_session_id(user.id)
+            # Generate the access token.
+            # This will be used as the authorization header
             access_token = user.generate_token(user.id)
             if access_token:
                 response = {
@@ -77,17 +91,41 @@ def login(body):
         return response, 500
 
 
-def authenticate(access_token):
-    uid = User.decode_token(access_token)
-    if isinstance(uid, str):
-        return None
-    return {'uid': uid, 'scope': ['uid']}
-
-    # try:
-    #     return jwt.decode(access_token,
-    #                       current_app.config.get('SECRET'),
-    #                       algorithm='HS256')
-    # except:
-    #     return None
+def get_profile():
+    return 'got it', 200
 
 
+def get_boards(uid):
+    """
+        Responds to a GET request for /api/{uid}/boards
+        :param uid: integer
+        :return: {'id': number, 'name': string}
+    """
+    results = []
+
+    if uid != User.get_user_session_id():
+        return results, 403
+
+    boards = Board.query.filter_by(uid=str(uid))
+
+    for board in boards:
+        obj = {
+            'id': board.id,
+            'name': board.name,
+        }
+        results.append(obj)
+    return results, 200
+
+
+# def authenticate(access_token):
+#     uid = User.decode_token(access_token)
+#     if isinstance(uid, str):
+#         return None
+#     return {'uid': uid, 'scope': ['uid']}
+
+# try:
+#     return jwt.decode(access_token,
+#                       current_app.config.get('SECRET'),
+#                       algorithm='HS256')
+# except:
+#     return None

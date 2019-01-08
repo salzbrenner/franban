@@ -26,7 +26,7 @@ paths:
                 - email
                 - password
       responses:
-        '201':
+        201:
           description: User successfully created
 
   /login:
@@ -50,7 +50,43 @@ paths:
                 - password
       responses:
         200:
-          description: "User logged in"
+          description: User logged in
+
+  /{uid}:
+    get:
+      operationId: src.users.controller.get_profile
+      description: Read a User's profile
+      parameters:
+        - in: path
+          name: uid
+          required: true
+          schema:
+            type: integer
+          description: The User's ID
+      responses:
+        200:
+          description: Successful Profile read
+      security:
+        - jwt: []
+
+  /{uid}/boards:
+    get:
+      operationId: src.users.controller.get_boards
+      description: Read Boards belonging to user
+      parameters:
+      - in: path
+        name: uid
+        required: true
+        schema:
+          type: integer
+        description: The User's ID
+      responses:
+        200:
+          description: Successful User boards read
+      security:
+      - jwt: []
+
+
 
   /boards:
     post:
@@ -65,30 +101,31 @@ paths:
               properties:
                 name:
                   type: string
-                user:
+                uid:
                   type: integer
               required:
                 - name
-                - user
+                - uid
       responses:
         201:
           description: Successful Board Creation
       security:
         - jwt: []
 
-    get:
-      operationId: src.boards.controller.get_all_related_to_user
-      description: Read the list of all boards the user is a member of
-      parameters:
-      - in: query
-        name: user
-        schema:
-          type: integer
-      responses:
-        200:
-          description: Successful Boards read
-      security:
-      - jwt: []
+#    get:
+#      operationId: src.boards.controller.get_all_boards_for_user
+#      description: Read the list of all boards the user is a member of
+#      parameters:
+#      - in: query
+#        name: uid
+#        required: true
+#        schema:
+#          type: integer
+#      responses:
+#        200:
+#          description: Successful Boards read
+#      security:
+#      - jwt: []
 
 
   /todos:
@@ -139,7 +176,7 @@ paths:
           name: id
           schema:
             type: integer
-          description: The puppy id
+          description: The Todo id
       responses:
         200:
           description: Successful Todo read
