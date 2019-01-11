@@ -23,7 +23,7 @@ user_registration = {
     'password': 'password',
 }
 
-second_user = {
+second_user = { 
     'email': 'stupididiot@moron.com',
     'password': 'password',
 }
