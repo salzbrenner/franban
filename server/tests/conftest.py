@@ -10,10 +10,7 @@ app = create_app(config_name=os.environ['TEST_SETTINGS']).app
 
 @pytest.fixture()
 def client():
-        # c.puppy_creation = {'name': 'Frank', 'created_by': 1}
-        # c.headers = {'content-type': 'application/json'}
         c = app.test_client()
-
         with app.app_context():
             db.create_all()
             yield c
@@ -22,12 +19,12 @@ def client():
 
 
 user_registration = {
-    'email': 'howard@zen.com',
+    'email': 'dude@dude.com',
     'password': 'password',
 }
 
 second_user = {
-    'email': 'user2@moron.com',
+    'email': 'stupididiot@moron.com',
     'password': 'password',
 }
 
