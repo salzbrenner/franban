@@ -1,7 +1,7 @@
 from flask import Blueprint
 from src.users.model import User
 from .model import Board
-from connexion import request
+from connexion import request, NoContent
 
 boards = Blueprint('boards', __name__)
 
@@ -20,23 +20,31 @@ def create():
     return response, 201
 
 
-# def get_all_boards_for_user(uid):
-#     """
-#         Responds to a GET request for /api/boards?uid={id}
-#         :param uid: integer
-#         :return: {'id': number, 'name': string}
-#     """
-#     results = []
-#
-#     if uid != User.get_user_session_id():
-#         return results, 403
-#
-#     boards = Board.query.filter_by(uid=str(uid))
-#
-#     for board in boards:
-#         obj = {
-#             'id': board.id,
-#             'name': board.name,
-#         }
-#         results.append(obj)
-#     return results, 200
+def put(id, body):
+    """
+    Responds to PUT request for /api/boards/<board_id>
+    :param id:
+    :param body: the request body needs key: 'name'
+    :return:
+    """
+    board = Board.query.filter_by(id=id).first()
+    if board:
+        board.update(body['name'])
+        return 'Updated board to ' + board.name, 200
+    else:
+        return 'Board does not exist', 404
+
+
+def delete(id):
+    """
+    :param id:
+    Responds to DELETE request for /api/boards/<board_id>
+    :return:
+    """
+    board = Board.query.filter_by(id=id).first()
+
+    if board:
+        board.delete()
+        return NoContent, 204
+    else:
+        return 'Board does not exist', 404

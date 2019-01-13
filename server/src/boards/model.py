@@ -1,6 +1,7 @@
 from src import db
 from src.users.model import User
 
+
 class Board(db.Model):
     """This class represents the board table."""
 
@@ -19,8 +20,9 @@ class Board(db.Model):
         db.session.add(self)
         db.session.commit()
 
-    # @staticmethod
-    # def get_all():
+    def update(self, name):
+        self.name = name
+        db.session.commit()
 
     def delete(self):
         db.session.delete(self)

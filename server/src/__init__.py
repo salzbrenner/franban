@@ -2,6 +2,7 @@ import connexion
 from flask_sqlalchemy import SQLAlchemy
 from flask_socketio import SocketIO, join_room, emit
 from flask_cors import CORS
+from logging.config import dictConfig
 
 db = SQLAlchemy()
 socketio = SocketIO()
@@ -9,8 +10,8 @@ socketio = SocketIO()
 
 def create_app(config_name):
     connexion_app = connexion.App(__name__, specification_dir='./')
-    connexion_app.add_api('openapi.yml')
     app = connexion_app.app
+    connexion_app.add_api('openapi.yml')
     CORS(app)
     app.config.from_object(config_name)
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False

@@ -4,8 +4,10 @@ info:
   version: '1.0'
 servers:
   - url: http://127.0.0.1:5000/api
-paths:
+security:
+  - jwt: []
 
+paths:
   /register:
     post:
       operationId: src.users.controller.register
@@ -28,6 +30,7 @@ paths:
       responses:
         201:
           description: User successfully created
+      security: []
 
   /login:
     post:
@@ -51,6 +54,7 @@ paths:
       responses:
         200:
           description: User logged in
+      security: []
 
   /{uid}:
     get:
@@ -66,8 +70,6 @@ paths:
       responses:
         200:
           description: Successful Profile read
-      security:
-        - jwt: []
 
   /{uid}/boards:
     get:
@@ -83,10 +85,6 @@ paths:
       responses:
         200:
           description: Successful User boards read
-      security:
-      - jwt: []
-
-
 
   /boards:
     post:
@@ -109,24 +107,46 @@ paths:
       responses:
         201:
           description: Successful Board Creation
-      security:
-        - jwt: []
 
-#    get:
-#      operationId: src.boards.controller.get_all_boards_for_user
-#      description: Read the list of all boards the user is a member of
-#      parameters:
-#      - in: query
-#        name: uid
-#        required: true
-#        schema:
-#          type: integer
-#      responses:
-#        200:
-#          description: Successful Boards read
-#      security:
-#      - jwt: []
+  /boards/{id}:
+    put:
+      operationId: src.boards.controller.put
+      description: Update a board's name
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+          description: the board id
+      requestBody:
+        description: New name for the board
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+              required:
+                - name
+      responses:
+        200:
+          description: Successfully updated the board's name
 
+    delete:
+      operationId: src.boards.controller.delete
+      description: Delete a Todo by id
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: integer
+        description: the board id
+      responses:
+        204:
+          description: Todo deleted
 
   /todos:
     post:
@@ -149,8 +169,6 @@ paths:
       responses:
         201:
           description: Successful Todo creation
-      security:
-        - jwt: []
 
     get:
       operationId: src.todos.controller.get_all
@@ -164,8 +182,6 @@ paths:
       responses:
         200:
           description: Successful Todos read
-      security:
-        - jwt: []
 
   /todos/{id}:
     get:
@@ -180,8 +196,6 @@ paths:
       responses:
         200:
           description: Successful Todo read
-      security:
-        - jwt: []
 
     delete:
       operationId: src.todos.controller.delete
@@ -193,21 +207,11 @@ paths:
           type: integer
         description: The puppy id
       responses:
-        200:
+        204:
           description: Todo deleted
-      security:
-      - jwt: []
-
 
 components:
   securitySchemes:
-#    oauth2:
-#      type: oauth2
-#      x-tokenInfoFunc: src.auth.operations.authenticate
-#      flows:
-#        implicit:
-#          scopes: {}
-
     jwt:
       type: http
       scheme: bearer

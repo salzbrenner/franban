@@ -5,17 +5,18 @@ from src import db
 import os
 
 from src import create_app
+
 app = create_app(config_name=os.environ['TEST_SETTINGS']).app
 
 
 @pytest.fixture()
 def client():
-        c = app.test_client()
-        with app.app_context():
-            db.create_all()
-            yield c
-            db.session.close()
-            db.drop_all()
+    c = app.test_client()
+    with app.app_context():
+        db.create_all()
+        yield c
+        db.session.close()
+        db.drop_all()
 
 
 user_registration = {
@@ -23,7 +24,7 @@ user_registration = {
     'password': 'password',
 }
 
-second_user = { 
+second_user = {
     'email': 'stupididiot@moron.com',
     'password': 'password',
 }
@@ -35,17 +36,17 @@ headers = {
 
 def register_user(client):
     return client.post('/api/register', data=user_registration,
-                      headers=headers)
+                       headers=headers)
 
 
 def register_second_user(client):
     return client.post('/api/register', data=second_user,
-                      headers=headers)
+                       headers=headers)
 
 
 def login_user(client):
     return client.post('/api/login', data=user_registration,
-                      headers=headers)
+                       headers=headers)
 
 
 def get_access_token(client):
@@ -62,3 +63,7 @@ def get_auth_headers(client):
         'Authorization': 'Bearer ' + user_setup(client),
         'content-type': 'application/json'
     }
+
+
+def create_board(client, data):
+    return client.post('/api/boards', json=data, headers=get_auth_headers(client))

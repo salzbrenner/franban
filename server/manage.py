@@ -16,11 +16,13 @@ manager = Manager(app)
 # migration command will always be preceeded by "db"
 manager.add_command('db', MigrateCommand)
 
+
 # define testing command
 # usage: python manage.py test
 @manager.command
 def test():
-    pytest.main(['-s', 'tests'])
+    pytest.main(['-sx', 'tests'])
+
 
 if __name__ == '__main__':
     manager.run()

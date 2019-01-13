@@ -1,8 +1,8 @@
 from .conftest import (register_user,
                        login_user,
+                       create_board,
                        register_second_user,
                        get_auth_headers)
-from .test_boards import TestBoards
 
 
 class TestUsers:
@@ -45,11 +45,10 @@ class TestUsers:
 
     def test_can_get_all_boards_for_user(self, client):
         headers = get_auth_headers(client)
-        test_board = TestBoards()
 
-        test_board.create_board(client, {'name': 'Test One', 'uid': 1})
-        test_board.create_board(client, {'name': 'Test Two', 'uid': 1})
-        test_board.create_board(client, {'name': 'Test Three', 'uid': 1})
+        create_board(client, {'name': 'Test One', 'uid': 1})
+        create_board(client, {'name': 'Test Two', 'uid': 1})
+        create_board(client, {'name': 'Test Three', 'uid': 1})
 
         res = client.get('/api/1/boards', headers=headers)
         assert len(res.json) == 3
@@ -59,10 +58,9 @@ class TestUsers:
         headers = get_auth_headers(client)
         register_second_user(client)
 
-        test_board = TestBoards()
-        test_board.create_board(client, {'name': 'Test One', 'uid': 1})
-        test_board.create_board(client, {'name': 'Test Two', 'uid': 2})
-        test_board.create_board(client, {'name': 'Test Three', 'uid': 2})
+        create_board(client, {'name': 'Test One', 'uid': 1})
+        create_board(client, {'name': 'Test Two', 'uid': 2})
+        create_board(client, {'name': 'Test Three', 'uid': 2})
 
         # session id set to 1 when first user is created and logged in
         res = client.get('/api/2/boards', headers=headers)
