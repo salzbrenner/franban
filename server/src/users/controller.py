@@ -1,7 +1,7 @@
 from flask import Blueprint, jsonify, current_app
 from src.users.model import User
 from src.boards.model import Board
-from connexion import request
+from connexion import request, NoContent
 import jwt
 
 user = Blueprint('user', __name__)
@@ -23,6 +23,8 @@ def register(body):
             user = User(email=email, password=password)
             user.save()
 
+            # save user id in session for authorization purposes
+            User.save_user_session_id(user.id)
             # Generate the access token. This will be used as the authorization header
             access_token = user.generate_token(user.id)
             response = jsonify({
@@ -91,6 +93,11 @@ def login(body):
         return response, 500
 
 
+def logout():
+    User.clear_user_session_id()
+    return NoContent, 204
+
+
 def get_profile():
     return 'got it', 200
 
@@ -102,7 +109,6 @@ def get_boards(uid):
         :return: {'id': number, 'name': string}
     """
     results = []
-
     if uid != User.get_user_session_id():
         return results, 403
 

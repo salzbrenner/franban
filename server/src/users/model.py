@@ -52,9 +52,9 @@ class User(db.Model):
         except Exception as e:
             return e
 
-    # @staticmethod
-    # def clear_user_session_id():
-    #     session['current_user'] = None
+    @staticmethod
+    def clear_user_session_id():
+        session.pop('current_user', None)
 
     @staticmethod
     def generate_token(user_id):
@@ -68,7 +68,7 @@ class User(db.Model):
             }
 
             return jwt.encode(payload,
-                              current_app.config.get('SECRET_KEY'),
+                              current_app.config.get('SECRET_API_KEY'),
                               algorithm='HS256')
         except Exception as e:
             return str(e)
@@ -77,7 +77,7 @@ class User(db.Model):
     def decode_token(token):
         """Decodes access token from authorization header"""
         try:
-            return jwt.decode(token, current_app.config.get('SECRET_KEY'), algorithms=['HS256'])
+            return jwt.decode(token, current_app.config.get('SECRET_API_KEY'), algorithms=['HS256'])
         except jwt.ExpiredSignatureError:
             raise Exception('Expired token')
         except jwt.InvalidTokenError:

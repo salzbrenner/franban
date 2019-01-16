@@ -1,4 +1,5 @@
 import connexion
+import os
 from flask_sqlalchemy import SQLAlchemy
 from flask_socketio import SocketIO, join_room, emit
 from flask_cors import CORS

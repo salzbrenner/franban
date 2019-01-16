@@ -21,7 +21,7 @@ manager.add_command('db', MigrateCommand)
 # usage: python manage.py test
 @manager.command
 def test():
-    pytest.main(['-sx', 'tests'])
+    pytest.main(['-sx', '--durations=3', 'tests'])
 
 
 if __name__ == '__main__':

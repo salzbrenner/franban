@@ -52,8 +52,17 @@ paths:
                 - email
                 - password
       responses:
-        200:
+        204:
           description: User logged in
+      security: []
+
+  /logout:
+    get:
+      operationId: src.users.controller.logout
+      summary: Logs a user out
+      responses:
+        200:
+          description: User logged out
       security: []
 
   /{uid}:

@@ -8,7 +8,8 @@ class Config(object):
     CSRF_ENABLED = True
     # SECRET = os.getenv('SECRET')
     SQLALCHEMY_DATABASE_URI = os.getenv('DATABASE_URL')
-    SECRET_KEY = os.getenv('SECRET_KEY')
+    SECRET_API_KEY = os.getenv('SECRET_API_KEY')
+    SECRET_KEY = os.urandom(24)
 
 
 
