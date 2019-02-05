@@ -6,7 +6,9 @@ from datetime import datetime, timedelta
 
 
 class User(db.Model):
-    """This class defines the users table """
+    """
+    This class defines the users table
+    """
     __tablename__ = 'users'
 
     # Define the columns of the users table, starting with the primary key
@@ -19,34 +21,57 @@ class User(db.Model):
         'Board', order_by='Board.id')
 
     def __init__(self, email, password):
-        """Initialize the user with an email and password"""
+        """
+        Initialize the user with an email and password
+        :param email: string
+        :param password: string
+        """
         self.email = email
         self.password = Bcrypt().generate_password_hash(password).decode()
 
     def password_is_valid(self, password):
-        """Checks password against its hash to validate password"""
+        """
+        Checks password against its hash to validate password.
+        :param password: string
+        :return:
+        """
         return Bcrypt().check_password_hash(self.password, password)
 
     def save(self):
-        """Save user to database
-        Includes creating new user and editing existing
+        """
+        Save user to DB (creation and updating).
+        :return:
         """
         db.session.add(self)
         db.session.commit()
 
     def delete(self):
+        """
+        Delete user from DB.
+        :return:
+        """
         db.session.delete(self)
         db.session.commit()
 
     @staticmethod
     def save_user_session_id(uid):
+        """
+        Sets the 'current_user' session id
+        :param uid: string
+        :return:
+        """
         try:
             session['current_user'] = uid
+            session.permanent = True
         except Exception as e:
             return e
 
     @staticmethod
     def get_user_session_id():
+        """
+        Gets session user id
+        :return: id, string
+        """
         try:
             return session['current_user']
         except Exception as e:
@@ -54,11 +79,19 @@ class User(db.Model):
 
     @staticmethod
     def clear_user_session_id():
+        """
+        Removes user id from session
+        :return:
+        """
         session.pop('current_user', None)
 
     @staticmethod
     def generate_token(user_id):
-        """generates access token"""
+        """
+        Creates access token
+        :param user_id: number
+        :return: string, encoded jwt
+        """
         try:
             # create payload with expiration
             payload = {
@@ -75,7 +108,11 @@ class User(db.Model):
 
     @staticmethod
     def decode_token(token):
-        """Decodes access token from authorization header"""
+        """
+        Decodes access token from authorization header
+        :param token: string
+        :return:
+        """
         try:
             return jwt.decode(token, current_app.config.get('SECRET_API_KEY'), algorithms=['HS256'])
         except jwt.ExpiredSignatureError:

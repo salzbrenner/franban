@@ -4,13 +4,8 @@ import {Provider} from 'react-redux';
 import './index.css';
 import App from './components/App';
 import * as serviceWorker from './serviceWorker';
-import {Route, BrowserRouter as Router, Switch} from 'react-router-dom';
-import { ConnectedRouter } from 'connected-react-router';
-import Login from './routes/login/Login';
-import Register from './routes/register/Register';
-import store, { history } from './redux/store';
-import Home from './routes/home/Home';
-import Logout from './routes/logout/Logout';
+import {BrowserRouter as Router} from 'react-router-dom';
+import store from './redux/store';
 
 
 ReactDOM.render(

@@ -9,7 +9,7 @@ class Config(object):
     # SECRET = os.getenv('SECRET')
     SQLALCHEMY_DATABASE_URI = os.getenv('DATABASE_URL')
     SECRET_API_KEY = os.getenv('SECRET_API_KEY')
-    SECRET_KEY = os.urandom(24)
+    SECRET_KEY = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
 
 
 

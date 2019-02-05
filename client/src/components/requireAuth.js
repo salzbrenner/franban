@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {userIsAuthenticated} from 'redux/modules/auth';
+import {getUid, getJwt} from '../redux/modules/auth';
 
 export default ChildComponent => {
   class AuthComponent extends Component {
@@ -16,12 +16,12 @@ export default ChildComponent => {
       const path = this.props.location.pathname;
 
       if (path === '/login' || path === '/register') {
-        if (this.props.auth) {
-          this.props.history.push('/');
+        if (this.props.authenticated) {
+          this.props.history.push(`/${this.props.uid}`);
         }
       }
       else {
-        if (!this.props.auth) {
+        if (!this.props.authenticated) {
           this.props.history.push('/login');
         }
       }
@@ -33,7 +33,10 @@ export default ChildComponent => {
   }
 
   function mapStateToProps(state) {
-    return {auth: userIsAuthenticated(state)};
+    return {
+      authenticated: getJwt(state),
+      uid: getUid(state),
+    };
   }
 
   return connect(mapStateToProps)(AuthComponent);

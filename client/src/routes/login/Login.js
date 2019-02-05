@@ -1,8 +1,10 @@
 import React from 'react';
 import FormLogin from 'components/FormLogin/FormLogin';
 import requireAuth from 'components/requireAuth';
+import {Redirect} from 'react-router';
+import {Switch} from 'react-router-dom';
 
-const LoginPage = ({history}) => {
+const Login = ({history}) => {
   return (
       <div>
         <FormLogin history={history}/>
@@ -10,4 +12,4 @@ const LoginPage = ({history}) => {
   )
 };
 
-export default requireAuth(LoginPage);
+export default requireAuth(Login);

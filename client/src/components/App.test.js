@@ -6,7 +6,6 @@ import HeaderContainer from './Header/HeaderContainer';
 import Login from '../routes/login/Login';
 import Register from '../routes/register/Register';
 import Logout from '../routes/logout/Logout';
-import Home from '../routes/home/Home';
 
 let wrapped;
 
@@ -28,6 +27,5 @@ it('renders correct routes', () => {
   expect(pathMap['/login']).toBe(Login);
   expect(pathMap['/register']).toBe(Register);
   expect(pathMap['/logout']).toBe(Logout);
-  expect(pathMap['/']).toBe(Home);
 
 });

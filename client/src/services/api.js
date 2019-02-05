@@ -9,8 +9,9 @@
 // }
 // export { subscribeToTimer };
 import axios from 'axios';
+import {getJwt} from '../redux/modules/auth';
 
-export const baseUrl = 'http://localhost:5000/api';
+export const baseUrl = 'http://127.0.0.1:5000/api';
 
 /**
  *
@@ -34,6 +35,8 @@ const setLoginOrRegistrationFormData = (email, password) => {
  * @return {AxiosPromise}
  */
 const makeApiCall = (type, path, data, headers) => {
+  axios.defaults.withCredentials = true;
+
   return axios({
     method: type,
     url: `${baseUrl}${path}`,
@@ -62,6 +65,9 @@ export const login = (email, password) => {
   );
 };
 
+
+
+
 /**
  * Posts form data to /register endpoint
  * @param email
@@ -78,4 +84,27 @@ export const register = (email, password) => {
       setLoginOrRegistrationFormData(email, password),
       headers,
   );
+};
+
+
+/**
+* Gets a list of user boards
+*  @param uid
+*  @return {AxiosPromise}
+*/
+export const getUserBoards = (uid, jwt) => {
+  const headers = {
+    'Content-Type': 'application/json',
+    Authorization: `Bearer ${jwt}`
+  };
+
+  return axios.get(
+      `${baseUrl}/${uid}/boards`,
+      {
+        headers,
+        withCredentials: true,
+      });
+
+  // return
+
 };

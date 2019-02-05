@@ -4,7 +4,8 @@ export const AUTHENTICATED = 'auth/AUTHENTICATED';
 export const AUTHENTICATION_ERROR = 'auth/AUTHENTICATION_ERROR';
 
 export const initialState = {
-  authenticated: '',
+  jwt: localStorage.getItem('prello-token'),
+  uid: localStorage.getItem('prello-uid'),
   errorMessage: '',
 };
 
@@ -13,7 +14,8 @@ export default function reducer(state = initialState, action) {
     case AUTHENTICATED:
       return {
         ...state,
-        authenticated: action.payload,
+        jwt: action.payload.jwt,
+        uid: action.payload.uid
       };
 
     case AUTHENTICATION_ERROR: {
@@ -28,16 +30,24 @@ export default function reducer(state = initialState, action) {
   }
 }
 
-export const getErrorMessage = (state) => state.auth.errorMessage;
-export const userIsAuthenticated = state => state.auth.authenticated;
+export const getErrorMessage = state => state.auth.errorMessage;
+export const getJwt = state => state.auth.jwt;
+export const getUid = state => state.auth.uid;
 
 export const register = ({email, password}, callback) => async dispatch => {
 
   try {
-
     const res = await api.register(email, password);
-    dispatch({type: AUTHENTICATED, payload: res.data.access_token});
-    localStorage.setItem('token', res.data.access_token);
+    dispatch(
+        {
+          type: AUTHENTICATED,
+          payload: {
+            jwt: res.data.access_token,
+            uid: res.data.uid,
+          },
+        });
+    localStorage.setItem('prello-token', res.data.access_token);
+    localStorage.setItem('prello-uid', res.data.uid);
     callback();
   } catch (e) {
     dispatch({
@@ -51,8 +61,16 @@ export const register = ({email, password}, callback) => async dispatch => {
 export const login = ({email, password}, callback) => async dispatch => {
   try {
     const res = await api.login(email, password);
-    dispatch({type: AUTHENTICATED, payload: res.data.access_token});
-    localStorage.setItem('token', res.data.access_token);
+    dispatch(
+        {
+          type: AUTHENTICATED,
+          payload: {
+            jwt: res.data.access_token,
+            uid: res.data.uid,
+          },
+        });
+    localStorage.setItem('prello-token', res.data.access_token);
+    localStorage.setItem('prello-uid', res.data.uid);
     callback();
   } catch (e) {
     dispatch({
@@ -63,7 +81,8 @@ export const login = ({email, password}, callback) => async dispatch => {
 };
 
 export const logout = () => {
-  localStorage.removeItem('token');
+  localStorage.removeItem('prello-token');
+  localStorage.removeItem('prello-uid');
   return {
     type: AUTHENTICATED,
     payload: '',

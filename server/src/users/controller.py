@@ -1,4 +1,4 @@
-from flask import Blueprint, jsonify, current_app
+from flask import Blueprint, jsonify, current_app, session, Response
 from src.users.model import User
 from src.boards.model import Board
 from connexion import request, NoContent
@@ -29,7 +29,8 @@ def register(body):
             access_token = user.generate_token(user.id)
             response = jsonify({
                 'message': 'You registered successfully. Please log in',
-                'access_token': access_token.decode()
+                'access_token': access_token.decode(),
+                'uid': User.get_user_session_id(),
             })
             response.status_code = 201
             return response
@@ -74,11 +75,13 @@ def login(body):
             if access_token:
                 response = {
                     'message': 'You logged in successfully.',
-                    'access_token': access_token.decode()
+                    'access_token': access_token.decode(),
+                    'uid': User.get_user_session_id(),
                 }
+
                 return response, 200
         else:
-            # User does not exist. Therefore, we return an error message
+            # User does not exist, return error message
             response = {
                 'message': 'Invalid email or password, Please try again'
             }
@@ -94,21 +97,31 @@ def login(body):
 
 
 def logout():
+    """
+    Clears user session
+    TODO: invalidate JWT?
+    :return:
+    """
     User.clear_user_session_id()
     return NoContent, 204
 
 
 def get_profile():
+    """
+    TODO: user profile
+    :return:
+    """
     return 'got it', 200
 
 
 def get_boards(uid):
     """
-        Responds to a GET request for /api/{uid}/boards
-        :param uid: integer
-        :return: {'id': number, 'name': string}
+    Responds to a GET request for /api/{uid}/boards
+    :param uid: integer
+    :return: {'id': number, 'name': string}
     """
     results = []
+    print(User.get_user_session_id())
     if uid != User.get_user_session_id():
         return results, 403
 
@@ -120,8 +133,8 @@ def get_boards(uid):
             'name': board.name,
         }
         results.append(obj)
-    return results, 200
 
+    return results, 200
 
 # def authenticate(access_token):
 #     uid = User.decode_token(access_token)

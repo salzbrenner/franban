@@ -7,9 +7,7 @@ const FormRegister = props => {
   const {handleSubmit, pristine, submitting, history} = props;
 
   const submit = values => {
-    props.register(values, () => {
-      history.push('/');
-    });
+    props.register(values);
   };
 
   const errorMessage = () => {
@@ -40,7 +38,7 @@ const FormRegister = props => {
             />
           </div>
           <div>
-            <button type="submit" disabled={pristine || submitting}>Login
+            <button type="submit" disabled={pristine || submitting}>Register
             </button>
           </div>
         </form>

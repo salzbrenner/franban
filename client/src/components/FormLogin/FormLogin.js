@@ -1,6 +1,5 @@
 import React from 'react';
 import {Field, reduxForm} from 'redux-form';
-// import {login} from 'actions/auth.actions';
 import {login, getErrorMessage } from 'redux/modules/auth';
 import {connect} from 'react-redux';
 
@@ -8,9 +7,7 @@ const FormLogin = props => {
   const {handleSubmit, pristine, submitting, history} = props;
 
   const submit = values => {
-    props.login(values, () => {
-      history.push('/');
-    });
+    props.login(values);
   };
 
   const errorMessage = () => {
