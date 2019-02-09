@@ -1,25 +1,30 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   userBoards,
   getBoardsXXX,
 } from 'redux/modules/user';
+import BoardsList from 'components/BoardsList/BoardsList';
 import { connect } from 'react-redux';
 
-const UserBoards = ({ match, boards, getBoardsXXX }) => {
+const UserBoards = ({
+  match,
+  boards,
+  getBoardsXXX,
+  children,
+}) => {
   const uid = match.params.uid;
+
+  useEffect(() => {
+    if (!isNaN(uid)) {
+      // make the call, which is available in store
+      getBoardsXXX(uid);
+    }
+  }, []);
 
   if (isNaN(uid)) {
     return <h1>NOT FOUND</h1>;
   } else {
-    return (
-      <div>
-        This is boards page for {uid} and you should render
-        Board List here
-        <button onClick={() => getBoardsXXX(uid)}>
-          CLICK ME
-        </button>
-      </div>
-    );
+    return <BoardsList boards={boards} />;
   }
 };
 
