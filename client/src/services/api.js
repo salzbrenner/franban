@@ -9,7 +9,6 @@
 // }
 // export { subscribeToTimer };
 import axios from 'axios';
-import {getJwt} from '../redux/modules/auth';
 
 export const baseUrl = 'http://127.0.0.1:5000/api';
 
@@ -19,7 +18,10 @@ export const baseUrl = 'http://127.0.0.1:5000/api';
  * @param password
  * @return {FormData}
  */
-const setLoginOrRegistrationFormData = (email, password) => {
+const setLoginOrRegistrationFormData = (
+  email,
+  password
+) => {
   const bodyFormData = new FormData();
   bodyFormData.set('email', email);
   bodyFormData.set('password', password);
@@ -58,15 +60,12 @@ export const login = (email, password) => {
     'Content-Type': 'application/x-www-form-urlencoded',
   };
   return makeApiCall(
-      'post',
-      '/login',
-      setLoginOrRegistrationFormData(email, password),
-      headers,
+    'post',
+    '/login',
+    setLoginOrRegistrationFormData(email, password),
+    headers
   );
 };
-
-
-
 
 /**
  * Posts form data to /register endpoint
@@ -79,32 +78,28 @@ export const register = (email, password) => {
     'Content-Type': 'application/x-www-form-urlencoded',
   };
   return makeApiCall(
-      'post',
-      '/register',
-      setLoginOrRegistrationFormData(email, password),
-      headers,
+    'post',
+    '/register',
+    setLoginOrRegistrationFormData(email, password),
+    headers
   );
 };
 
-
 /**
-* Gets a list of user boards
-*  @param uid
-*  @return {AxiosPromise}
-*/
+ * Gets a list of user boards
+ *  @param uid
+ *  @return {AxiosPromise}
+ */
 export const getUserBoards = (uid, jwt) => {
   const headers = {
     'Content-Type': 'application/json',
-    Authorization: `Bearer ${jwt}`
+    Authorization: `Bearer ${jwt}`,
   };
 
-  return axios.get(
-      `${baseUrl}/${uid}/boards`,
-      {
-        headers,
-        withCredentials: true,
-      });
+  return axios.get(`${baseUrl}/${uid}/boards`, {
+    headers,
+    withCredentials: true,
+  });
 
   // return
-
 };

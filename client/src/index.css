@@ -1,14 +1,59 @@
+:root {
+  --bg-color: #f5f7f9;
+  --white: white;
+  --primary-color: #6161e8;
+  --secondary-color: #224186;
+  --text-color: #324063;
+  --border-color: #e2e6ec;
+  --border-radius: 4px;
+  --box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.15);
+  --text-danger: #ee414b;
+}
+
 body {
   margin: 0;
   padding: 0;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
-    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
-    sans-serif;
+  font-family: 'Roboto', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background: var(--bg-color);
+  font-size: 18px;
+  color: var(--text-color);
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
-    monospace;
+  font-family: source-code-pro, Menlo, Monaco, Consolas,
+    'Courier New', monospace;
+}
+
+a {
+  color: var(--primary-color);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin-top: 0;
+}
+
+input[type='text'],
+input[type='email'],
+input[type='password'] {
+  font-size: 18px;
+  box-shadow: none;
+  height: 50px;
+  border: solid 1px var(--border-color);
+  border-radius: var(--border-radius);
+  padding-left: 10px;
+}
+
+button {
+  box-shadow: none;
+  border: none;
+  background: none;
+  font-size: 16px;
+  text-transform: uppercase;
 }

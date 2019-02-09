@@ -1,6 +1,6 @@
-import React, {Component} from 'react';
-import {connect} from 'react-redux';
-import {getUid, getJwt} from '../redux/modules/auth';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { getUid, getJwt } from '../redux/modules/auth';
 
 export default ChildComponent => {
   class AuthComponent extends Component {
@@ -19,8 +19,7 @@ export default ChildComponent => {
         if (this.props.authenticated) {
           this.props.history.push(`/${this.props.uid}`);
         }
-      }
-      else {
+      } else {
         if (!this.props.authenticated) {
           this.props.history.push('/login');
         }
@@ -28,7 +27,7 @@ export default ChildComponent => {
     }
 
     render() {
-      return <ChildComponent {...this.props}/>;
+      return <ChildComponent {...this.props} />;
     }
   }
 
@@ -40,4 +39,4 @@ export default ChildComponent => {
   }
 
   return connect(mapStateToProps)(AuthComponent);
-}
+};

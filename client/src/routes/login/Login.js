@@ -1,15 +1,14 @@
 import React from 'react';
 import FormLogin from 'components/FormLogin/FormLogin';
 import requireAuth from 'components/requireAuth';
-import {Redirect} from 'react-router';
-import {Switch} from 'react-router-dom';
+import './Login.css';
 
-const Login = ({history}) => {
+const Login = ({ history }) => {
   return (
-      <div>
-        <FormLogin history={history}/>
-      </div>
-  )
+    <div className={'login'}>
+      <FormLogin history={history} />
+    </div>
+  );
 };
 
 export default requireAuth(Login);

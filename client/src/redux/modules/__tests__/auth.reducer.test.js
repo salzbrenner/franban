@@ -1,5 +1,6 @@
 import reducer, {
-  initialState, AUTHENTICATED,
+  initialState,
+  AUTHENTICATED,
   AUTHENTICATION_ERROR,
 } from '../auth';
 
@@ -11,8 +12,10 @@ describe('Auth Reducer', () => {
     };
 
     const newState = reducer(initialState, action);
-    expect(newState)
-        .toEqual({...initialState, authenticated: 'unique_token_id'});
+    expect(newState).toEqual({
+      ...initialState,
+      authenticated: 'unique_token_id',
+    });
   });
 
   it('handles actions of type AUTHENTICATION_ERROR', () => {
@@ -22,7 +25,9 @@ describe('Auth Reducer', () => {
     };
 
     const newState = reducer(initialState, action);
-    expect(newState)
-        .toEqual({...initialState, errorMessage: 'Invalid authentication'});
+    expect(newState).toEqual({
+      ...initialState,
+      errorMessage: 'Invalid authentication',
+    });
   });
 });

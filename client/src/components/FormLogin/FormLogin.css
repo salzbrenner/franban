@@ -1,0 +1,21 @@
+.form-login {
+  padding: 50px 80px 70px;
+  background: var(--white);
+  box-shadow: var(--box-shadow);
+  width: 100%;
+  max-width: 300px;
+}
+
+.form-login h1 {
+  text-align: center;
+}
+
+.form-login__fields input {
+  display: block;
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.form-login__error {
+  color: var(--text-danger);
+}

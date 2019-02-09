@@ -1,30 +1,28 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import './Header.css';
 
 class Header extends Component {
   renderLinks() {
     if (this.props.authenticated) {
       return (
-          <div>
-            <Link to={`/logout`}>Logout</Link>
-          </div>
-      )
+        <div>
+          <Link to={`/logout`}>Logout</Link>
+        </div>
+      );
     } else {
       return (
-          <div>
-            <Link to={`/login`}>Login</Link>
-            <Link to={`/register`}>Register</Link>
-          </div>
-      )
+        <div>
+          <Link to={`/login`}>Login</Link>
+          <Link to={`/register`}>Register</Link>
+        </div>
+      );
     }
   }
   render() {
     return (
-        <div className="header">
-          <h1>header</h1>
-          {this.renderLinks()}
-        </div>
-    )
+      <div className="header">{this.renderLinks()}</div>
+    );
   }
 }
 

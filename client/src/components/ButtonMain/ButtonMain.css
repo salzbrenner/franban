@@ -1,0 +1,23 @@
+.button-main {
+  display: block;
+  padding: 10px 30px;
+  background: var(--primary-color);
+  color: var(--white);
+  border-radius: 5px;
+  font-weight: bold;
+}
+
+.button-main:hover {
+  cursor: pointer;
+}
+
+.button-main:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.button-main--secondary {
+  background: var(--white);
+  color: var(--primary-color);
+  border: solid 2px var(--primary-color);
+}

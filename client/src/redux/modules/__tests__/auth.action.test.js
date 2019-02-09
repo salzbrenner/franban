@@ -8,30 +8,26 @@ import {
   AUTHENTICATION_ERROR,
 } from '../auth';
 import { baseUrl } from '../../../services/api';
-import {mockStore} from '../../../utils/mockStore';
+import { mockStore } from '../../../utils/mockStore';
 
 let mock;
 let store;
 beforeEach(function() {
   mock = new MockAdapter(axios);
   store = mockStore({});
-
 });
 
 afterEach(() => {
-  mock.reset()
+  mock.reset();
 });
 
 describe('auth actions', () => {
-
   const credentials = {
     email: 'test@test.com',
     password: 'password',
   };
 
-
   describe('register', () => {
-
     it('has the correct type and payload', async () => {
       mock.onPost(`${baseUrl}/register`).reply(201, {
         access_token: 'myToken',
@@ -49,7 +45,9 @@ describe('auth actions', () => {
       await store.dispatch(register(credentials, () => {}));
       const actions = store.getActions();
       expect(actions[0].type).toEqual(AUTHENTICATION_ERROR);
-      expect(actions[0].payload).toEqual('A user with this email already exists');
+      expect(actions[0].payload).toEqual(
+        'A user with this email already exists'
+      );
     });
   });
 
@@ -63,7 +61,6 @@ describe('auth actions', () => {
       const actions = store.getActions();
       expect(actions[0].type).toEqual(AUTHENTICATED);
       expect(actions[0].payload).toEqual('myToken');
-
     });
 
     it('errors if credentials are wrong', async () => {
@@ -72,9 +69,9 @@ describe('auth actions', () => {
       await store.dispatch(login(credentials, () => {}));
       const actions = store.getActions();
       expect(actions[0].type).toEqual(AUTHENTICATION_ERROR);
-      expect(actions[0].payload).toEqual('Invalid email or password');
+      expect(actions[0].payload).toEqual(
+        'Invalid email or password'
+      );
     });
-
-  })
-
+  });
 });
