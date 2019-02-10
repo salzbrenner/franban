@@ -2,9 +2,13 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import './Header.css';
 
-class Header extends Component {
+type Props = {
+  authorized?: string;
+};
+
+class Header extends Component<Props> {
   renderLinks() {
-    if (this.props.authenticated) {
+    if (this.props.authorized) {
       return (
         <div>
           <Link to={`/logout`}>Logout</Link>

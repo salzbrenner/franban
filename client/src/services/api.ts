@@ -19,8 +19,8 @@ export const baseUrl = 'http://127.0.0.1:5000/api';
  * @return {FormData}
  */
 const setLoginOrRegistrationFormData = (
-  email,
-  password
+  email: string,
+  password: string
 ) => {
   const bodyFormData = new FormData();
   bodyFormData.set('email', email);
@@ -36,16 +36,21 @@ const setLoginOrRegistrationFormData = (
  * @param headers
  * @return {AxiosPromise}
  */
-const makeApiCall = (type, path, data, headers) => {
+const makeApiCall = (
+  type: any,
+  path: any,
+  data: any,
+  headers: any
+) => {
   axios.defaults.withCredentials = true;
 
-  return axios({
+  return axios(`${baseUrl}${path}`, {
     method: type,
-    url: `${baseUrl}${path}`,
+    // url: `${baseUrl}${path}`,
     data: data,
-    config: {
-      headers: headers,
-    },
+    // config: {
+    headers: headers,
+    // },
   });
 };
 
@@ -55,7 +60,7 @@ const makeApiCall = (type, path, data, headers) => {
  * @param password
  * @return {AxiosPromise}
  */
-export const login = (email, password) => {
+export const login = (email: string, password: string) => {
   const headers = {
     'Content-Type': 'application/x-www-form-urlencoded',
   };
@@ -73,7 +78,10 @@ export const login = (email, password) => {
  * @param password
  * @return {AxiosPromise}
  */
-export const register = (email, password) => {
+export const register = (
+  email: string,
+  password: string
+) => {
   const headers = {
     'Content-Type': 'application/x-www-form-urlencoded',
   };
@@ -90,7 +98,7 @@ export const register = (email, password) => {
  *  @param uid
  *  @return {AxiosPromise}
  */
-export const getUserBoards = (uid, jwt) => {
+export const getUserBoards = (uid: string, jwt: string) => {
   const headers = {
     'Content-Type': 'application/json',
     Authorization: `Bearer ${jwt}`,

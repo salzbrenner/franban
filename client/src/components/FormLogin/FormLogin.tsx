@@ -1,15 +1,20 @@
 import React from 'react';
 import { Field, reduxForm } from 'redux-form';
-import { login, getErrorMessage } from 'redux/modules/auth';
+import {
+  login,
+  getErrorMessage,
+  FormAuthValues,
+  AuthState,
+} from 'redux/modules/auth';
 import { connect } from 'react-redux';
-import ButtonMain from '../ButtonMain/ButtonMain';
+import ButtonMain from 'components/ButtonMain/ButtonMain';
 import './FormLogin.css';
 import { Link } from 'react-router-dom';
 
-const FormLogin = props => {
+const FormLogin = (props: any) => {
   const { handleSubmit, pristine, submitting } = props;
 
-  const submit = values => {
+  const submit = (values: FormAuthValues) => {
     props.login(values);
   };
 
@@ -61,7 +66,7 @@ const FormLogin = props => {
   );
 };
 
-function mapStateToProps(state) {
+function mapStateToProps(state: AuthState) {
   return {
     errorMessage: getErrorMessage(state),
   };

@@ -2,16 +2,26 @@ import React, { useState, useEffect } from 'react';
 import {
   userBoards,
   getBoardsXXX,
+  UserState,
 } from 'redux/modules/user';
-import BoardsList from 'components/BoardsList/BoardsList';
+import BoardsList, {
+  BoardsInterface,
+} from 'components/BoardsList/BoardsList';
 import { connect } from 'react-redux';
+import { AppState } from 'redux/modules/rootReducer';
+import App from 'components/App';
+
+interface UserBoardsInterface {
+  match: any;
+  boards: BoardsInterface[];
+  getBoardsXXX: Function;
+}
 
 const UserBoards = ({
   match,
   boards,
   getBoardsXXX,
-  children,
-}) => {
+}: UserBoardsInterface) => {
   const uid = match.params.uid;
 
   useEffect(() => {
@@ -28,9 +38,9 @@ const UserBoards = ({
   }
 };
 
-function mapStateToProps(state) {
+function mapStateToProps({ user }: AppState): any {
   return {
-    boards: userBoards(state),
+    boards: user.boards,
   };
 }
 

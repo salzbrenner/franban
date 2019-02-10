@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "svg/*": ["src/svg/*"],
+      "components/*": ["src/components/*"],
+      "redux/*": ["src/redux/*"],
+      "routes/*": ["src/routes/*"],
+      "services/*": ["src/services/*"]
+    }
+  }
+}

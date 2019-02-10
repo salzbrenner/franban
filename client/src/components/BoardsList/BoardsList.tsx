@@ -2,7 +2,16 @@ import React from 'react';
 import BoardCard from '../BoardCard/BoardCard';
 import './BoardsList.css';
 
-const BoardsList = ({ boards }) => (
+export interface BoardsInterface {
+  id: string;
+  name: string;
+}
+
+const BoardsList: React.FC<any> = ({
+  boards,
+}: {
+  boards: BoardsInterface[];
+}) => (
   <div className={'boards-list container'}>
     <div className={'row'}>
       {boards.map(board => (

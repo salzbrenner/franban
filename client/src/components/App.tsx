@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import HeaderContainer from 'components/Header/HeaderContainer.js';
+import HeaderContainer from './Header/HeaderContainer';
 import { Route, Switch } from 'react-router-dom';
 import Login from '../routes/login/Login';
 import Register from '../routes/register/Register';

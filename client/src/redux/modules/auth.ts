@@ -1,10 +1,23 @@
 import * as api from '../../services/api';
+import { ActionInterface } from 'redux/modules/action.type';
+import { AppState } from 'redux/modules/rootReducer';
 
 export const AUTHENTICATED = 'auth/AUTHENTICATED';
 export const AUTHENTICATION_ERROR =
   'auth/AUTHENTICATION_ERROR';
 
-export const initialState = {
+export interface FormAuthValues {
+  email: string;
+  password: string;
+}
+
+export interface AuthState {
+  errorMessage: string;
+  jwt: string | null;
+  uid: string | null;
+}
+
+export const initialState: AuthState = {
   jwt: localStorage.getItem('prello-token'),
   uid: localStorage.getItem('prello-uid'),
   errorMessage: '',
@@ -12,7 +25,7 @@ export const initialState = {
 
 export default function reducer(
   state = initialState,
-  action
+  action: any
 ) {
   switch (action.type) {
     case AUTHENTICATED:
@@ -34,15 +47,15 @@ export default function reducer(
   }
 }
 
-export const getErrorMessage = state =>
-  state.auth.errorMessage;
-export const getJwt = state => state.auth.jwt;
-export const getUid = state => state.auth.uid;
+export const getErrorMessage = (state: AuthState) =>
+  state.errorMessage;
+export const getJwt = (state: AuthState) => state.jwt;
+export const getUid = (state: AuthState) => state.uid;
 
 export const register = (
-  { email, password },
+  { email, password }: FormAuthValues,
   callback = () => null
-) => async dispatch => {
+) => async (dispatch: Function) => {
   try {
     const res = await api.register(email, password);
     dispatch({
@@ -67,9 +80,9 @@ export const register = (
 };
 
 export const login = (
-  { email, password },
+  { email, password }: FormAuthValues,
   callback = () => null
-) => async dispatch => {
+) => async (dispatch: Function) => {
   try {
     const res = await api.login(email, password);
     dispatch({

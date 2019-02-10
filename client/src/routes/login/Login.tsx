@@ -3,10 +3,10 @@ import FormLogin from 'components/FormLogin/FormLogin';
 import requireAuth from 'components/requireAuth';
 import './Login.css';
 
-const Login = ({ history }) => {
+const Login = ({ history }: { history: any }) => {
   return (
     <div className={'login'}>
-      <FormLogin history={history} />
+      <FormLogin />
     </div>
   );
 };

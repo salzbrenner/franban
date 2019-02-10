@@ -1,16 +1,21 @@
 import * as api from '../../services/api';
+import { ActionInterface } from 'redux/modules/action.type';
 
 export const GET_BOARDS = 'boards/GET_BOARDS';
 export const READ_ERROR = 'boards/READ_ERROR';
+export interface UserState {
+  boards: {}[];
+  readError: string;
+}
 
-export const initialState = {
+export const initialState: UserState = {
   boards: [],
   readError: '',
 };
 
 export default function reducer(
   state = initialState,
-  action
+  action: any
 ) {
   switch (action.type) {
     case GET_BOARDS: {
@@ -32,12 +37,13 @@ export default function reducer(
   }
 }
 
-export const userBoards = state => state.user.boards;
+export const userBoards = (state: UserState) =>
+  state.boards;
 
-export const getBoardsXXX = (uid, callback) => async (
-  dispatch,
-  getState
-) => {
+export const getBoardsXXX = (
+  uid: string,
+  callback: Function
+) => async (dispatch: Function, getState: Function) => {
   try {
     const jwt = getState().auth.jwt;
     const res = await api.getUserBoards(uid, jwt);

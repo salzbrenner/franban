@@ -3,7 +3,7 @@ import requireAuth from '../components/requireAuth';
 import { Route, Switch, Redirect } from 'react-router-dom';
 import UserBoards from './user/boards/UserBoards';
 
-const AuthorizedRoutes = ({ uid }) => (
+const AuthorizedRoutes = ({ uid }: { uid: string }) => (
   <Switch>
     <Route
       exact

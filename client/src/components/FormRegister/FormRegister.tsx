@@ -3,13 +3,14 @@ import { Field, reduxForm } from 'redux-form';
 import {
   register,
   getErrorMessage,
+  AuthState,
 } from 'redux/modules/auth';
 import { connect } from 'react-redux';
 
-const FormRegister = props => {
+const FormRegister = (props: any) => {
   const { handleSubmit, pristine, submitting } = props;
 
-  const submit = values => {
+  const submit = (values: {}) => {
     props.register(values);
   };
 
@@ -52,7 +53,7 @@ const FormRegister = props => {
   );
 };
 
-function mapStateToProps(state) {
+function mapStateToProps(state: AuthState) {
   return {
     errorMessage: getErrorMessage(state),
   };

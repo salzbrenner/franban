@@ -1,9 +1,25 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { getUid, getJwt } from '../redux/modules/auth';
+import {
+  getUid,
+  getJwt,
+  AuthState,
+} from '../redux/modules/auth';
+import { AppState } from 'redux/modules/rootReducer';
 
-export default ChildComponent => {
-  class AuthComponent extends Component {
+type Props = {
+  location: {
+    pathname: string;
+  };
+  authorized: string | null;
+  history: {
+    push: Function;
+  };
+  uid: string | null;
+};
+
+export default (ChildComponent: Function) => {
+  class AuthComponent extends Component<Props> {
     componentDidMount() {
       this.checkAuthentication();
     }
@@ -16,11 +32,11 @@ export default ChildComponent => {
       const path = this.props.location.pathname;
 
       if (path === '/login' || path === '/register') {
-        if (this.props.authenticated) {
+        if (this.props.authorized) {
           this.props.history.push(`/${this.props.uid}`);
         }
       } else {
-        if (!this.props.authenticated) {
+        if (!this.props.authorized) {
           this.props.history.push('/login');
         }
       }
@@ -31,10 +47,10 @@ export default ChildComponent => {
     }
   }
 
-  function mapStateToProps(state) {
+  function mapStateToProps({ auth }: AppState): any {
     return {
-      authenticated: getJwt(state),
-      uid: getUid(state),
+      authorized: getJwt(auth),
+      uid: getUid(auth),
     };
   }
 

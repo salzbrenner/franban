@@ -12,14 +12,12 @@ export const history = createBrowserHistory();
 const logger = createLogger();
 
 const composeEnhancers =
+  // @ts-ignore: allow devtools on window
   window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const store = createStore(
-  // reducer(history), // root reducer w/ router state
   reducer, // root reducer
-  // initialState,
   composeEnhancers(
     applyMiddleware(
-      // routerMiddleware(history),
       reduxThunk,
       logger // logger must be last in chain
     )
