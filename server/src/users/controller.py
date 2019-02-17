@@ -121,7 +121,6 @@ def get_boards(uid):
     :return: {'id': number, 'name': string}
     """
     results = []
-    print(User.get_user_session_id())
     if uid != User.get_user_session_id():
         return results, 403
 

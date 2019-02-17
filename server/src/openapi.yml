@@ -95,6 +95,8 @@ paths:
         200:
           description: Successful User boards read
 
+  # Board routes
+  ###############
   /boards:
     post:
       operationId: src.boards.controller.create
@@ -118,6 +120,20 @@ paths:
           description: Successful Board Creation
 
   /boards/{id}:
+    get:
+      operationId: src.boards.controller.get
+      description: Read board by id
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: integer
+        description: The Board's ID
+      responses:
+        200:
+          description: Successful read of board by id
+
     put:
       operationId: src.boards.controller.put
       description: Update a board's name
@@ -156,6 +172,60 @@ paths:
       responses:
         204:
           description: Todo deleted
+
+  /lists:
+    post:
+      operationId: src.lists.controller.create
+      description: Create a list
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                board_id:
+                  type: integer
+              required:
+                - name
+                - board_id
+      responses:
+        201:
+          description: Successful List creation
+
+  /list/{board_id}/{id}:
+    put:
+      operationId: src.lists.controller.put
+      description: Update a list's name and/or order
+      parameters:
+        - name: board_id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: the parent's board id
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: the list id
+      requestBody:
+        description: New name and/or order for the list
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                order:
+                  type: number
+                name:
+                  type: string
+      responses:
+        200:
+          description: Successfully updated the card's name/order
 
   /todos:
     post:

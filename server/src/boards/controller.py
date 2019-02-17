@@ -1,5 +1,4 @@
 from flask import Blueprint
-from src.users.model import User
 from .model import Board
 from connexion import request, NoContent
 
@@ -18,6 +17,23 @@ def create():
         'name': board.name,
     }
     return response, 201
+
+
+def get(id):
+    """
+    Responds to GET request for /api/boards/<board_id>
+    :param id:
+    :return:
+    """
+    board = Board.query.filter_by(id=id).first()
+    if board:
+        result = {
+            'id': board.id,
+            'name': board.name,
+        }
+        return result, 200
+    else:
+        return 'Board does not exist', 404
 
 
 def put(id, body):

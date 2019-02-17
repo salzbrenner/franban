@@ -1,5 +1,5 @@
 from .conftest import (create_board,
-                    get_access_token,
+                       get_access_token,
                        get_auth_headers)
 
 
@@ -23,6 +23,18 @@ class TestBoards(object):
         assert 'Test Board' in str(res.data)
         assert res.status_code == 201
 
+    def test_board_get(self, authenticated_client):
+        """
+        Test a user can get a board by board id
+        :param authenticated_client:
+        :return:
+        """
+        headers = get_auth_headers(authenticated_client)
+        # Id of first board is 1
+        res = authenticated_client.get('/api/boards/1', headers=headers)
+        assert res.status_code == 200
+        assert 'Test Board' in str(res.data)
+
     def test_board_update(self, authenticated_client):
         """
         Test a user can update the board to a new name
@@ -33,8 +45,6 @@ class TestBoards(object):
             'Authorization': 'Bearer ' + get_access_token(authenticated_client),
             'content-type': 'application/x-www-form-urlencoded'
         }
-        board = self.get_board_data()
-        create_board(authenticated_client, board)
 
         res = authenticated_client.put('/api/boards/1', data={'name': 'Another Board'}, headers=headers)
         assert res.status_code == 200
@@ -46,8 +56,6 @@ class TestBoards(object):
         :param authenticated_client:
         :return:
         """
-        new_board = self.get_board_data()
-        create_board(authenticated_client, new_board)
 
         # first board has id of 1
         res = authenticated_client.delete('/api/boards/1', headers=get_auth_headers(authenticated_client))
