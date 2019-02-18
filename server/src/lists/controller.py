@@ -24,13 +24,16 @@ def create():
 def put(board_id, id, body):
     """
     Responds to PUT request for /api/lists/<board_id>/<id>
+    :param board_id:
     :param id:
     :param body: the request body needs key: 'name'
     :return:
     """
     list = List.query.filter_by(board_id=board_id, id=id).first()
+    name = body['name']
+    order = int(body['order'])
     if list:
-        list.update(body['name'])
-        return 'Updated board to ' + board.name, 200
+        list.update(name, order)
+        return 'Updated list name to: ' + list.name + ' and order to:' + str(list.order), 200
     else:
-        return 'Board does not exist', 404
+        return 'List does not exist', 404

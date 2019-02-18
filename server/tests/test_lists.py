@@ -31,22 +31,22 @@ class TestLists(object):
         assert 'Test List' in str(res.data)
         assert res.status_code == 201
 
-    # def test_list_update(self, authenticated_client):
-    #     """
-    #     Test a user can update the board name and order
-    #     :param authenticated_client:
-    #     :return:
-    #     """
-    #     headers = {
-    #         'Authorization': 'Bearer ' + authenticated_client.access_token,
-    #         'content-type': 'application/x-www-form-urlencoded'
-    #     }
-    #     data = {
-    #         'name': 'Another List',
-    #         'order': 1,
-    #     }
-    #     # 'api/lists/<board_id>/<id>
-    #     res = authenticated_client.put('/api/lists/1/1')
-    #     assert res.status_code == 200
-    #     print(res.data.get('order'))
-    #     assert 'Another List' in str(res.data)
+    def test_list_update(self, authenticated_client):
+        """
+        Test a user can update the board name and order
+        :param authenticated_client:
+        :return:
+        """
+        headers = {
+            'Authorization': 'Bearer ' + authenticated_client.access_token,
+            'content-type': 'application/x-www-form-urlencoded'
+        }
+        data = {
+            'name': 'Another List',
+            'order': 57,
+        }
+        # 'api/lists/<board_id>/<id>
+        res = authenticated_client.put('/api/lists/1/1', data=data, headers=headers)
+        assert res.status_code == 200
+        assert 'Another List' in str(res.data)
+        assert '57' in str(res.data)

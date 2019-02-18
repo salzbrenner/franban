@@ -195,7 +195,7 @@ paths:
         201:
           description: Successful List creation
 
-  /list/{board_id}/{id}:
+  /lists/{board_id}/{id}:
     put:
       operationId: src.lists.controller.put
       description: Update a list's name and/or order
@@ -225,7 +225,7 @@ paths:
                   type: string
       responses:
         200:
-          description: Successfully updated the card's name/order
+          description: Successfully updated the list's name/order
 
   /todos:
     post:

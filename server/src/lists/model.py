@@ -30,8 +30,18 @@ class List(db.Model):
         db.session.commit()
 
     def update(self, name, order):
-        self.name = name
         self.order = order
+        self.name = name
+        # rows = db.session.query(List).count()
+        ordered = db.session\
+            .query(List)\
+            .order_by(List.order)\
+            .all()
+
+        if ordered:
+            for idx, row in enumerate(ordered):
+                row.order = idx
+
         db.session.commit()
 
     def delete(self):
