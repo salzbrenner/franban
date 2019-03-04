@@ -42,11 +42,30 @@ class TestLists(object):
             'content-type': 'application/x-www-form-urlencoded'
         }
         data = {
-            'name': 'Another List',
-            'order': 57,
+            'name': 'Updated List',
+            'order': 100,
         }
-        # 'api/lists/<board_id>/<id>
+        # Create additional list, will have an order of 1
+        new_list_data = {
+            'name': 'Second List',
+            'board_id': 1,
+        }
+        authenticated_client.post('/api/lists', json=new_list_data, headers=headers)
+
+        # Since only two lists exist, the max order possible is 1 i.e. [0,1].
+        # The list is being updated to order of 100 - so it should get the max order value - 1
         res = authenticated_client.put('/api/lists/1/1', data=data, headers=headers)
         assert res.status_code == 200
-        assert 'Another List' in str(res.data)
-        assert '57' in str(res.data)
+        assert 'Updated List' in str(res.data)
+        assert '1' in str(res.data)
+
+    def test_board_deletion(self, authenticated_client):
+        """
+        Test a user can delete a board by board id
+        :param authenticated_client:
+        :return:
+        """
+
+        # first board has id of 1
+        res = authenticated_client.delete('/api/lists/1/1', headers=get_auth_headers(authenticated_client))
+        assert res.status_code == 204

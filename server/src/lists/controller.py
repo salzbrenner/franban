@@ -37,3 +37,17 @@ def put(board_id, id, body):
         return 'Updated list name to: ' + list.name + ' and order to:' + str(list.order), 200
     else:
         return 'List does not exist', 404
+
+def delete(board_id, id):
+    """
+    :param id:
+    Responds to DELETE request for /api/lists/<board_id>/<id>
+    :return:
+    """
+    list = List.query.filter_by(board_id=board_id, id=id).first()
+
+    if list:
+        list.delete()
+        return NoContent, 204
+    else:
+        return 'List does not exist', 404

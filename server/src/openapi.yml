@@ -3,9 +3,9 @@ info:
   title: Prello API
   version: '1.0'
 servers:
-  - url: http://127.0.0.1:5000/api
+- url: http://127.0.0.1:5000/api
 security:
-  - jwt: []
+- jwt: []
 
 paths:
   /register:
@@ -25,8 +25,8 @@ paths:
                 password:    # <!--- form field name
                   type: string
               required:
-                - email
-                - password
+              - email
+              - password
       responses:
         201:
           description: User successfully created
@@ -49,8 +49,8 @@ paths:
                 password:    # <!--- form field name
                   type: string
               required:
-                - email
-                - password
+              - email
+              - password
       responses:
         204:
           description: User logged in
@@ -70,12 +70,12 @@ paths:
       operationId: src.users.controller.get_profile
       description: Read a User's profile
       parameters:
-        - in: path
-          name: uid
-          required: true
-          schema:
-            type: integer
-          description: The User's ID
+      - in: path
+        name: uid
+        required: true
+        schema:
+          type: integer
+        description: The User's ID
       responses:
         200:
           description: Successful Profile read
@@ -113,8 +113,8 @@ paths:
                 uid:
                   type: integer
               required:
-                - name
-                - uid
+              - name
+              - uid
       responses:
         201:
           description: Successful Board Creation
@@ -138,12 +138,12 @@ paths:
       operationId: src.boards.controller.put
       description: Update a board's name
       parameters:
-        - in: path
-          name: id
-          required: true
-          schema:
-            type: integer
-          description: the board id
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: integer
+        description: the board id
       requestBody:
         description: New name for the board
         content:
@@ -154,7 +154,7 @@ paths:
                 name:
                   type: string
               required:
-                - name
+              - name
       responses:
         200:
           description: Successfully updated the board's name
@@ -189,8 +189,8 @@ paths:
                 board_id:
                   type: integer
               required:
-                - name
-                - board_id
+              - name
+              - board_id
       responses:
         201:
           description: Successful List creation
@@ -200,18 +200,18 @@ paths:
       operationId: src.lists.controller.put
       description: Update a list's name and/or order
       parameters:
-        - name: board_id
-          in: path
-          required: true
-          schema:
-            type: integer
-          description: the parent's board id
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: integer
-          description: the list id
+      - name: board_id
+        in: path
+        required: true
+        schema:
+          type: integer
+        description: the parent's board id
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+        description: the list id
       requestBody:
         description: New name and/or order for the list
         content:
@@ -226,6 +226,27 @@ paths:
       responses:
         200:
           description: Successfully updated the list's name/order
+
+    delete:
+      operationId: src.lists.controller.delete
+      description: Delete a List by id
+      parameters:
+      - name: board_id
+        in: path
+        required: true
+        schema:
+          type: integer
+        description: the parent's board id
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: integer
+        description: the list id
+      responses:
+        204:
+          description: List deleted
+
 
   /todos:
     post:
@@ -243,8 +264,8 @@ paths:
                 created_by:    # <!--- form field name
                   type: integer
               required:
-                - name
-                - created_by
+              - name
+              - created_by
       responses:
         201:
           description: Successful Todo creation
@@ -253,11 +274,11 @@ paths:
       operationId: src.todos.controller.get_all
       description: Read the list of Todos
       parameters:
-        - in: query
-          name: created_by
-          schema:
-            type: integer
-          description: Th
+      - in: query
+        name: created_by
+        schema:
+          type: integer
+        description: Th
       responses:
         200:
           description: Successful Todos read
@@ -267,11 +288,11 @@ paths:
       operationId: src.todos.controller.get
       description: Read a Todo by id
       parameters:
-        - in: path
-          name: id
-          schema:
-            type: integer
-          description: The Todo id
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: The Todo id
       responses:
         200:
           description: Successful Todo read
