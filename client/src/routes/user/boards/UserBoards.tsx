@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import {
   userBoards,
-  getBoardsXXX,
+  getUserBoards,
   UserState,
 } from 'redux/modules/user';
 import BoardsList, {
@@ -9,32 +9,37 @@ import BoardsList, {
 } from 'components/BoardsList/BoardsList';
 import { connect } from 'react-redux';
 import { AppState } from 'redux/modules/rootReducer';
-import App from 'components/App';
+import FormAddBoard from 'components/FormAddBoard/FormAddBoard';
 
 interface UserBoardsInterface {
   match: any;
   boards: BoardsInterface[];
-  getBoardsXXX: Function;
+  getUserBoards: Function;
 }
 
 const UserBoards = ({
   match,
   boards,
-  getBoardsXXX,
+  getUserBoards,
 }: UserBoardsInterface) => {
   const uid = match.params.uid;
 
   useEffect(() => {
     if (!isNaN(uid)) {
       // make the call, which is available in store
-      getBoardsXXX(uid);
+      getUserBoards(uid);
     }
   }, []);
 
   if (isNaN(uid)) {
     return <h1>NOT FOUND</h1>;
   } else {
-    return <BoardsList boards={boards} />;
+    return (
+      <>
+        <FormAddBoard />
+        <BoardsList boards={boards} />
+      </>
+    );
   }
 };
 
@@ -46,5 +51,5 @@ function mapStateToProps({ user }: AppState): any {
 
 export default connect(
   mapStateToProps,
-  { getBoardsXXX }
+  { getUserBoards }
 )(UserBoards);

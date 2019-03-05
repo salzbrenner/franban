@@ -8,6 +8,7 @@ import {
 } from 'react-router-dom';
 import UserBoards from './user/boards/UserBoards';
 import Styleguide from './styleguide/Styleguide';
+import BoardOverview from 'routes/board/BoardOverview/BoardOverview';
 
 const AuthorizedRoutes = ({ uid }: { uid: string }) => (
   <Switch>
@@ -20,7 +21,7 @@ const AuthorizedRoutes = ({ uid }: { uid: string }) => (
     <Route path={'/:uid(\\d+)'} component={UserBoards} />
     <Route
       path={'/board/:boardId'}
-      component={() => <h1>Board page</h1>}
+      component={BoardOverview}
     />
     <Route render={() => <h1>NO MATCH FOO</h1>} />
   </Switch>

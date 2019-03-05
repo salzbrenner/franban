@@ -94,8 +94,52 @@ export const register = (
 };
 
 /**
+ * Posts form data to /boards endpoint
+ * @return {AxiosPromise}
+ */
+export const addBoard = (
+  uid: string,
+  name: string,
+  jwt: string
+) => {
+  const headers = {
+    'Content-Type': 'application/x-www-form-urlencoded',
+    Authorization: `Bearer ${jwt}`,
+  };
+
+  const bodyFormData = new FormData();
+  bodyFormData.set('uid', uid);
+  bodyFormData.set('name', name);
+
+  return makeApiCall(
+    'post',
+    '/boards',
+    bodyFormData,
+    headers
+  );
+};
+
+/**
+ * Posts form data to /boards endpoint
+ * @return {AxiosPromise}
+ */
+export const addList = (
+  email: string,
+  password: string
+) => {
+  const headers = {
+    'Content-Type': 'application/x-www-form-urlencoded',
+  };
+  return makeApiCall(
+    'post',
+    '/register',
+    setLoginOrRegistrationFormData(email, password),
+    headers
+  );
+};
+
+/**
  * Gets a list of user boards
- *  @param uid
  *  @return {AxiosPromise}
  */
 export const getUserBoards = (uid: string, jwt: string) => {
@@ -108,6 +152,21 @@ export const getUserBoards = (uid: string, jwt: string) => {
     headers,
     withCredentials: true,
   });
+};
 
-  // return
+/**
+ * Gets a list of user boards
+ *  @param uid
+ *  @return {AxiosPromise}
+ */
+export const getLists = (uid: string, jwt: string) => {
+  const headers = {
+    'Content-Type': 'application/json',
+    Authorization: `Bearer ${jwt}`,
+  };
+
+  return axios.get(`${baseUrl}/${uid}/boards`, {
+    headers,
+    withCredentials: true,
+  });
 };

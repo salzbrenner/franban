@@ -5,11 +5,12 @@ from connexion import request, NoContent
 boards = Blueprint('boards', __name__)
 
 
-def create():
+def create(body):
     """
         Responds to a POST request for /api/boards
         :return:
     """
+    
     board = Board(**request.json)
     board.save()
     response = {

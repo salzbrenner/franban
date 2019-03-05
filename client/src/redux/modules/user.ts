@@ -1,16 +1,26 @@
 import * as api from '../../services/api';
 import { ActionInterface } from 'redux/modules/action.type';
+import { AuthState } from 'redux/modules/auth';
 
-export const GET_BOARDS = 'boards/GET_BOARDS';
-export const READ_ERROR = 'boards/READ_ERROR';
+export const GET_BOARDS = 'user/GET_BOARDS';
+export const READ_ERROR = 'user/READ_ERROR';
+export const ADD_BOARD = 'user/ADD_BOARD';
+export const ADD_ERROR = 'user/ADD_BOARD';
+
 export interface UserState {
   boards: {}[];
   readError: string;
+  addErrorMessage: string;
+}
+
+export interface FormAddBoardValues {
+  name: string;
 }
 
 export const initialState: UserState = {
   boards: [],
   readError: '',
+  addErrorMessage: '',
 };
 
 export default function reducer(
@@ -22,6 +32,18 @@ export default function reducer(
       return {
         ...state,
         boards: action.payload,
+      };
+    }
+
+    case ADD_BOARD: {
+      console.log('Successfully added board');
+      return state;
+    }
+
+    case ADD_ERROR: {
+      return {
+        ...state,
+        addErrorMessage: action.payload,
       };
     }
 
@@ -40,7 +62,10 @@ export default function reducer(
 export const userBoards = (state: UserState) =>
   state.boards;
 
-export const getBoardsXXX = (
+export const getAddErrorMessage = (state: UserState) =>
+  state.addErrorMessage;
+
+export const getUserBoards = (
   uid: string,
   callback: Function
 ) => async (dispatch: Function, getState: Function) => {
@@ -56,6 +81,27 @@ export const getBoardsXXX = (
     console.log(e);
     dispatch({
       type: READ_ERROR,
+    });
+  }
+};
+
+export const addBoard = ({
+  name,
+}: FormAddBoardValues) => async (
+  dispatch: Function,
+  getState: Function
+) => {
+  try {
+    const { jwt, uid } = getState().auth;
+    const res = await api.addBoard(uid, name, jwt);
+    dispatch({
+      type: ADD_BOARD,
+      payload: res.data,
+    });
+  } catch (e) {
+    console.log(e);
+    dispatch({
+      type: ADD_ERROR,
     });
   }
 };

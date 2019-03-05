@@ -59,7 +59,7 @@ class TestLists(object):
         assert 'Updated List' in str(res.data)
         assert '1' in str(res.data)
 
-    def test_board_deletion(self, authenticated_client):
+    def test_list_deletion(self, authenticated_client):
         """
         Test a user can delete a board by board id
         :param authenticated_client:
