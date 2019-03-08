@@ -10,6 +10,7 @@ import BoardsList, {
 import { connect } from 'react-redux';
 import { AppState } from 'redux/modules/rootReducer';
 import FormAddBoard from 'components/FormAddBoard/FormAddBoard';
+import './UserBoards.css';
 
 interface UserBoardsInterface {
   match: any;

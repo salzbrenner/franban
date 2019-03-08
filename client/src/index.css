@@ -8,6 +8,18 @@
   --border-radius: 4px;
   --box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.15);
   --text-danger: #ee414b;
+  --bp-sm: 768px;
+
+  --col-width: 100%;
+  --col-2-width: 100%;
+  --col-3-width: 100%;
+}
+
+@media screen and (min-width: 750px) {
+  :root {
+    --col-2-width: calc(50% - 5px);
+    --col-3-width: calc(33.3333% - 5px);
+  }
 }
 
 body {
@@ -72,9 +84,13 @@ button {
   width: 100%;
 }
 
+.col {
+  width: var(--col-width);
+}
+
 .col-2 {
-  width: calc(50% - 5px);
+  width: var(--col-2-width);
 }
 .col-3 {
-  width: calc(33.333% - 5px);
+  width: var(--col-3-width);
 }

@@ -6,14 +6,15 @@ from flask_socketio import SocketIO, join_room, emit
 # monkey.patch_all()
 
 
-@socketio.on('my event')
+@socketio.on('BOARD_ADDED')
 def on_create(data):
     """Create a game lobby"""
-    emit('my response', data)
+    print("SHIT")
 
 
 app = create_app(os.environ['APP_SETTINGS']).app
-socketio = SocketIO(app)
+socketio = SocketIO(app, logger=True)
 
 if __name__ == '__main__':
     socketio.run(app, debug=True)
+

@@ -1,13 +1,16 @@
-// import openSocket from 'socket.io-client';
-// const  socket = openSocket('http://127.0.0.1:5000');
-// function subscribeToTimer(cb) {
-//   socket.on('connect', function() {
-//     console.log('Websocket connected!');
-//   });
-//   socket.on('timer', timestamp => cb(null, timestamp));
-//   socket.emit('subscribeToTimer', 1000);
-// }
-// export { subscribeToTimer };
+import openSocket from 'socket.io-client';
+const socket = openSocket('http://127.0.0.1:5000');
+function subscribeToTimer(cb: Function) {
+  socket.on('connect', function() {
+    console.log('Websocket connected!');
+  });
+  socket.on('timer', (timestamp: any) =>
+    cb(null, timestamp)
+  );
+  socket.emit('subscribeToTimer', 1000);
+}
+export { subscribeToTimer };
+
 import axios from 'axios';
 
 export const baseUrl = 'http://127.0.0.1:5000/api';

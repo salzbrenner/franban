@@ -100,4 +100,4 @@ def create_board(instance, data):
         'Authorization': 'Bearer ' + instance.access_token,
         'content-type': 'application/x-www-form-urlencoded'
     }
-    return instance.post('/api/boards', json=data, headers=headers)
+    return instance.post('/api/boards', data=data, headers=headers)

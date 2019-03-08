@@ -29,7 +29,7 @@ const FormAddBoard = (props: any) => {
       <form onSubmit={handleSubmit(submit)}>
         <div className={'form-add-list__fields'}>
           <Field
-            name="title"
+            name="name"
             component="input"
             type="text"
             placeholder="Enter board title..."

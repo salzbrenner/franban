@@ -12,9 +12,9 @@ class CorsHeaderMiddleware(object):
     def __call__(self, environ, start_response):
         def custom_start_response(status, headers, exc_info=None):
             # headers.append(('Access-Control-Allow-Origin', 'http://localhost:3000'))
-            headers.append(('Access-Control-Allow-Headers', 'Content-Type'))
             headers.append(('Access-Control-Allow-Credentials', 'true'))
-            headers.append(('Access-Control-Allow-Methods', 'OPTIONS'))
+            # headers.append(('Access-Control-Allow-Headers', 'Content-Type'))
+            headers.append(('Access-Control-Allow-Methods', 'DELETE, GET, POST, PUT'))
             return start_response(status, headers, exc_info)
 
         return self.app(environ, custom_start_response)

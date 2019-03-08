@@ -13,11 +13,15 @@ const BoardsList: React.FC<any> = ({
 }: {
   boards: BoardsInterface[];
 }) => (
-  <div className={'boards-list container'}>
+  <div className={'container'}>
     <div className={'row'}>
       {boards.map(board => (
-        <Link to={`/board/${board.id}`} key={board.id}>
-          <div className={'col-2'}>
+        <Link
+          to={`/board/${board.id}`}
+          key={board.id}
+          className={`col col-3`}
+        >
+          <div>
             <BoardCard name={board.name} />
           </div>
         </Link>

@@ -34,7 +34,7 @@ class TestAuthUser:
         second_user_token = json.loads(second_user.data.decode()).get('access_token')
         authenticated_client.post(
             '/api/boards',
-            json={'name': 'Test Two', 'uid': 2},
+            data={'name': 'Test Two', 'uid': 2},
             headers={
                 'Authorization': 'Bearer ' + second_user_token,
                 'content-type': 'application/json'
