@@ -1,12 +1,10 @@
 from flask import Blueprint
 from .model import Board
 from connexion import request, NoContent
-from flask_socketio import SocketIO, join_room, emit
+from src import socketio
+from ..socket import BOARD_ADDED
 
 boards = Blueprint('boards', __name__)
-
-def dude():
-    emit('BOARD_ADDED')
 
 def create(body):
     """
@@ -21,7 +19,7 @@ def create(body):
         'id': board.id,
         'name': board.name,
     }
-    dude()
+    socketio.emit(BOARD_ADDED)
     return response, 201
 
 
