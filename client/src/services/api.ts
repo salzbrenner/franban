@@ -1,19 +1,17 @@
-import openSocket from 'socket.io-client';
-const socket = openSocket('http://127.0.0.1:5000');
-function subscribeToTimer(cb: Function) {
-  socket.on('connect', function() {
-    console.log('Websocket connected!');
-  });
-  socket.on('timer', (timestamp: any) =>
-    cb(null, timestamp)
-  );
-  socket.emit('subscribeToTimer', 1000);
-}
-export { subscribeToTimer };
-
 import axios from 'axios';
+export const baseUrl = `${
+  process.env.REACT_APP_BASE_URL
+}/api`;
 
-export const baseUrl = 'http://127.0.0.1:5000/api';
+export const instance = axios.create({
+  baseURL: baseUrl,
+  withCredentials: true,
+  headers: {
+    common: {
+      Authorization: '',
+    },
+  },
+});
 
 /**
  *
@@ -45,15 +43,10 @@ const makeApiCall = (
   data: any,
   headers: any
 ) => {
-  axios.defaults.withCredentials = true;
-
-  return axios(`${baseUrl}${path}`, {
+  return instance(path, {
     method: type,
-    // url: `${baseUrl}${path}`,
     data: data,
-    // config: {
     headers: headers,
-    // },
   });
 };
 
@@ -100,14 +93,9 @@ export const register = (
  * Posts form data to /boards endpoint
  * @return {AxiosPromise}
  */
-export const addBoard = (
-  uid: string,
-  name: string,
-  jwt: string
-) => {
+export const addBoard = (uid: string, name: string) => {
   const headers = {
     'Content-Type': 'application/x-www-form-urlencoded',
-    Authorization: `Bearer ${jwt}`,
   };
 
   const bodyFormData = new FormData();
@@ -145,15 +133,13 @@ export const addList = (
  * Gets a list of user boards
  *  @return {AxiosPromise}
  */
-export const getUserBoards = (uid: string, jwt: string) => {
+export const getUserBoards = (uid: string) => {
   const headers = {
     'Content-Type': 'application/json',
-    Authorization: `Bearer ${jwt}`,
   };
 
-  return axios.get(`${baseUrl}/${uid}/boards`, {
+  return instance.get(`${uid}/boards`, {
     headers,
-    withCredentials: true,
   });
 };
 
@@ -162,14 +148,12 @@ export const getUserBoards = (uid: string, jwt: string) => {
  *  @param uid
  *  @return {AxiosPromise}
  */
-export const getLists = (uid: string, jwt: string) => {
+export const getLists = (uid: string) => {
   const headers = {
     'Content-Type': 'application/json',
-    Authorization: `Bearer ${jwt}`,
   };
 
-  return axios.get(`${baseUrl}/${uid}/boards`, {
+  return instance.get(`${baseUrl}/${uid}/boards`, {
     headers,
-    withCredentials: true,
   });
 };

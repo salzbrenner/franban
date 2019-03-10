@@ -65,6 +65,8 @@ export const register = (
         uid: res.data.uid,
       },
     });
+
+    // update api service
     localStorage.setItem(
       'prello-token',
       res.data.access_token
@@ -92,6 +94,8 @@ export const login = (
         uid: res.data.uid,
       },
     });
+
+    // update api service
     localStorage.setItem(
       'prello-token',
       res.data.access_token
@@ -108,6 +112,7 @@ export const login = (
 };
 
 export const logout = () => {
+  // update api service
   localStorage.removeItem('prello-token');
   localStorage.removeItem('prello-uid');
   return {

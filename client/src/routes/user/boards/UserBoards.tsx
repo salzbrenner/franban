@@ -1,9 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import {
-  userBoards,
-  getUserBoards,
-  UserState,
-} from 'redux/modules/user';
+import { getUserBoards } from 'redux/modules/user';
 import BoardsList, {
   BoardsInterface,
 } from 'components/BoardsList/BoardsList';
@@ -11,6 +7,7 @@ import { connect } from 'react-redux';
 import { AppState } from 'redux/modules/rootReducer';
 import FormAddBoard from 'components/FormAddBoard/FormAddBoard';
 import './UserBoards.css';
+import { subscribeToBoards } from 'services/socket';
 
 interface UserBoardsInterface {
   match: any;
@@ -29,6 +26,7 @@ const UserBoards = ({
     if (!isNaN(uid)) {
       // make the call, which is available in store
       getUserBoards(uid);
+      subscribeToBoards(() => getUserBoards(uid));
     }
   }, []);
 

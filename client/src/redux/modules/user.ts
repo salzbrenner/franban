@@ -1,6 +1,4 @@
 import * as api from '../../services/api';
-import { ActionInterface } from 'redux/modules/action.type';
-import { AuthState } from 'redux/modules/auth';
 
 export const GET_BOARDS = 'user/GET_BOARDS';
 export const READ_ERROR = 'user/READ_ERROR';
@@ -70,8 +68,7 @@ export const getUserBoards = (
   callback: Function
 ) => async (dispatch: Function, getState: Function) => {
   try {
-    const jwt = getState().auth.jwt;
-    const res = await api.getUserBoards(uid, jwt);
+    const res = await api.getUserBoards(uid);
     dispatch({
       type: GET_BOARDS,
       payload: res.data,
@@ -92,8 +89,8 @@ export const addBoard = ({
   getState: Function
 ) => {
   try {
-    const { jwt, uid } = getState().auth;
-    const res = await api.addBoard(uid, name, jwt);
+    const { uid } = getState().auth;
+    const res = await api.addBoard(uid, name);
     dispatch({
       type: ADD_BOARD,
       payload: res.data,
