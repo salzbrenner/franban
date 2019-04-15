@@ -65,7 +65,7 @@ export const getAddErrorMessage = (state: UserState) =>
 
 export const getUserBoards = (
   uid: string,
-  callback: Function
+  callback?: Function
 ) => async (dispatch: Function, getState: Function) => {
   try {
     const res = await api.getUserBoards(uid);

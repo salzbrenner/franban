@@ -6,12 +6,14 @@ from src import db
 lists = Blueprint('lists', __name__)
 
 
-def create():
+def create(body):
     """
     Responds to a POST request for /api/lists
     :return:
     """
-    list = List(**request.json)
+    name = body['name']
+    board_id = body['board_id']
+    list = List(name, board_id)
     list.save()
     response = {
         'id': list.id,
@@ -19,6 +21,27 @@ def create():
         'order': list.order
     }
     return response, 201
+
+
+def get_all(board_id):
+    """
+    Responds to GET request for /api/lists/<board_id>
+    :param board_id:
+    :return:
+    """
+    results = []
+    lists = List.query.filter_by(board_id=board_id)
+
+    for list in lists:
+        res = {
+            'name': list.name,
+            'order': list.order,
+            'id': list.id,
+            'board_id': list.board_id
+        }
+        results.append(res)
+
+    return results, 200
 
 
 def put(board_id, id, body):

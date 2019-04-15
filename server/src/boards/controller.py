@@ -6,6 +6,7 @@ from ..socket import BOARD_ADDED
 
 boards = Blueprint('boards', __name__)
 
+
 def create(body):
     """
         Responds to a POST request for /api/boards

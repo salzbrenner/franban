@@ -180,7 +180,7 @@ paths:
       requestBody:
         required: true
         content:
-          application/json:
+          application/x-www-form-urlencoded:
             schema:
               type: object
               properties:
@@ -194,6 +194,21 @@ paths:
       responses:
         201:
           description: Successful List creation
+
+  /lists/{board_id}:
+    get:
+      operationId: src.lists.controller.get_all
+      description: Read lists belonging to board
+      parameters:
+      - in: path
+        name: board_id
+        required: true
+        schema:
+          type: integer
+        description: The board's id, which the list belongs to
+      responses:
+        200:
+          description: Successful read of board's lists
 
   /lists/{board_id}/{id}:
     put:

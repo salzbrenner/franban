@@ -26,7 +26,7 @@ class TestLists(object):
             'board_id': 1,
         }
 
-        res = authenticated_client.post('/api/lists', json=data, headers=headers)
+        res = authenticated_client.post('/api/lists', data=data, headers=headers)
         assert res.content_type == 'application/json'
         assert 'Test List' in str(res.data)
         assert res.status_code == 201
@@ -50,7 +50,7 @@ class TestLists(object):
             'name': 'Second List',
             'board_id': 1,
         }
-        authenticated_client.post('/api/lists', json=new_list_data, headers=headers)
+        authenticated_client.post('/api/lists', data=new_list_data, headers=headers)
 
         # Since only two lists exist, the max order possible is 1 i.e. [0,1].
         # The list is being updated to order of 100 - so it should get the max order value - 1
@@ -58,6 +58,17 @@ class TestLists(object):
         assert res.status_code == 200
         assert 'Updated List' in str(res.data)
         assert '1' in str(res.data)
+
+    def test_list_get_all(self, authenticated_client):
+        """
+        Tests that user can get all lists related to a board
+        :param authenticated_client:
+        :return:
+        """
+        headers = get_auth_headers(authenticated_client)
+        res = authenticated_client.get('/api/lists/1', headers=headers)
+        assert res.status_code == 200
+        assert len(res.json) == 2
 
     def test_list_deletion(self, authenticated_client):
         """

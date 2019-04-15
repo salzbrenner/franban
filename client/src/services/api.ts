@@ -145,15 +145,15 @@ export const getUserBoards = (uid: string) => {
 
 /**
  * Gets a list of user boards
- *  @param uid
+ *  @param boardId
  *  @return {AxiosPromise}
  */
-export const getLists = (uid: string) => {
+export const getLists = (boardId: number) => {
   const headers = {
     'Content-Type': 'application/json',
   };
 
-  return instance.get(`${baseUrl}/${uid}/boards`, {
+  return instance.get(`${baseUrl}/lists/${boardId}`, {
     headers,
   });
 };
