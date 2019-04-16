@@ -1,7 +1,7 @@
 .form-login {
   padding: 50px 80px 70px;
   background: var(--white);
-  box-shadow: var(--box-shadow);
+  box-shadow: var(--box-shadow-3);
   width: 100%;
   max-width: 300px;
 }

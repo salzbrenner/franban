@@ -2,8 +2,15 @@ import * as api from '../../services/api';
 
 export const GET_LISTS = 'lists/GET_LISTS';
 
+export interface ListObjectInterface {
+  id: number;
+  board_id: number;
+  name: string;
+  order: number;
+}
+
 export interface ListsState {
-  lists: {}[];
+  lists: ListObjectInterface[];
 }
 
 export const initialState: ListsState = {

@@ -1,27 +1,35 @@
 import React, { Component } from 'react';
 import Dragula from 'react-dragula';
 
-// export default (ChildComponent: Function) => {
-class MyComponent extends Component {
-  myRef: any;
-  constructor(props: any) {
+type Props = {
+  options: {};
+  children: any;
+  className?: string;
+};
+
+class DragulaContainer extends Component<Props> {
+  constructor(props: Props) {
     super(props);
-    this.myRef = React.createRef();
   }
   dragulaDecorator = (componentBackingInstance: any) => {
+    const { options } = this.props;
+
     if (componentBackingInstance) {
-      let options = {};
-      Dragula([componentBackingInstance], options);
+      const dragulaOptions = options ? options : {};
+      Dragula([componentBackingInstance], dragulaOptions);
     }
   };
   render() {
+    const { children, options, className } = this.props;
     return (
-      <div ref={this.dragulaDecorator}>
-        {this.props.children}
+      <div
+        className={className ? className : ''}
+        ref={this.dragulaDecorator}
+      >
+        {children}
       </div>
     );
   }
 }
-// };
 
-export default MyComponent;
+export default DragulaContainer;

@@ -8,7 +8,7 @@ import {
 } from 'redux/modules/auth';
 import { connect } from 'react-redux';
 import ButtonMain from 'components/ButtonMain/ButtonMain';
-import { Link } from 'react-router-dom';
+import './FormAddList.css';
 
 const FormAddList = (props: any) => {
   const { handleSubmit, pristine, submitting } = props;

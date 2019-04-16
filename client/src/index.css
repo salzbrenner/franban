@@ -7,6 +7,8 @@
   --border-color: #e2e6ec;
   --border-radius: 4px;
   --box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.15);
+  --box-shadow-2: 0 10px 10px 0 rgba(50, 64, 99, 0.2);
+  --box-shadow-3: 0 20px 30px 0 rgba(50, 64, 99, 0.2);
   --text-danger: #ee414b;
   --bp-sm: 768px;
 
@@ -93,4 +95,58 @@ button {
 }
 .col-3 {
   width: var(--col-3-width);
+}
+
+.d-flex {
+  display: flex;
+}
+
+.d-inline-flex {
+  display: inline-flex;
+}
+
+.justify-content-between {
+  justify-content: space-between;
+}
+
+/*.gu-mirror {*/
+/*position: fixed !important;*/
+/*margin: 0 !important;*/
+/*z-index: 9999 !important;*/
+/*opacity: 0.8;*/
+/*-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=80)";*/
+/*filter: alpha(opacity=80);*/
+/*}*/
+/*.gu-hide {*/
+/*display: none !important;*/
+/*}*/
+/*.gu-unselectable {*/
+/*-webkit-user-select: none !important;*/
+/*-moz-user-select: none !important;*/
+/*-ms-user-select: none !important;*/
+/*user-select: none !important;*/
+/*}*/
+/*.gu-transit {*/
+/*opacity: 0.2;*/
+/*-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=20)";*/
+/*filter: alpha(opacity=20);*/
+/*}*/
+
+:global .gu-mirror.gu-mirror {
+  position: fixed;
+  z-index: 9999;
+  opacity: 0.8;
+  cursor: pointer;
+}
+
+:global .gu-hide {
+  display: none;
+}
+
+:global .gu-unselectable {
+  user-select: none;
+}
+
+:global .gu-transit {
+  opacity: 0.2;
 }
