@@ -6,12 +6,8 @@ import {
 } from 'redux/modules/lists';
 import { AppState } from 'redux/modules/rootReducer';
 import { connect } from 'react-redux';
-import TaskList from 'components/TaskList/TaskList';
+import List from 'components/List/List';
 
-// export default (ChildComponent: Function) => {
-// class ListsContainer extends Component {
-//
-// }
 interface ListsContainerInterface {
   boardId: number;
   getLists?: getListsInterface;
@@ -31,8 +27,8 @@ const ListsContainer = ({
   return (
     <>
       {lists &&
-        lists.map(list => (
-          <TaskList key={list.id} {...list} />
+        lists.map((props, index) => (
+          <List key={props.id} {...props} index={index} />
         ))}
     </>
   );

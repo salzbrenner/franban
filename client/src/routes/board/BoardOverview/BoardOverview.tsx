@@ -1,7 +1,10 @@
 import React from 'react';
 import FormAddList from 'components/FormAddList/FormAddList';
-import DragulaContainer from 'components/DragulaContainer/DragulaContainer';
 import ListsContainer from 'components/ListsContainer/ListsContainer';
+import {
+  DragDropContext,
+  Droppable,
+} from 'react-beautiful-dnd';
 
 export interface BoardsInterface {
   id: string;
@@ -10,17 +13,26 @@ export interface BoardsInterface {
 
 const BoardOverview: React.FC<any> = (props: any) => {
   const boardId = +props.match.params.boardId;
+  const onDragEnd = (result: any) => {};
   return (
     <>
-      <DragulaContainer
-        options={{
-          direction: 'horizontal',
-        }}
-        className={'d-inline-flex'}
-      >
-        {/* get the lists */}
-        <ListsContainer boardId={boardId} />
-      </DragulaContainer>
+      {/*className={'d-inline-flex'}*/}
+      {/* get the lists */}
+      <DragDropContext onDragEnd={onDragEnd}>
+        <Droppable droppableId={boardId + ''}>
+          {provided => (
+            <div
+              className={'d-inline-flex'}
+              ref={provided.innerRef}
+              {...provided.droppableProps}
+            >
+              <ListsContainer boardId={boardId} />
+              {provided.placeholder}
+            </div>
+          )}
+        </Droppable>
+      </DragDropContext>
+
       <FormAddList />
     </>
   );
