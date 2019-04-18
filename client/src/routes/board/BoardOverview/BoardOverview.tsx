@@ -13,26 +13,19 @@ export interface BoardsInterface {
 
 const BoardOverview: React.FC<any> = (props: any) => {
   const boardId = +props.match.params.boardId;
-  const onDragEnd = (result: any) => {};
+  const onDragEnd = (result: any) => {
+    const {
+      destination,
+      source,
+      draggableId,
+      type,
+    } = result;
+  };
   return (
     <>
-      {/*className={'d-inline-flex'}*/}
-      {/* get the lists */}
-      <DragDropContext onDragEnd={onDragEnd}>
-        <Droppable droppableId={boardId + ''}>
-          {provided => (
-            <div
-              className={'d-inline-flex'}
-              ref={provided.innerRef}
-              {...provided.droppableProps}
-            >
-              <ListsContainer boardId={boardId} />
-              {provided.placeholder}
-            </div>
-          )}
-        </Droppable>
-      </DragDropContext>
-
+      <div className={`d-inline-flex`}>
+        <ListsContainer boardId={boardId} />
+      </div>
       <FormAddList />
     </>
   );

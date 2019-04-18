@@ -1,47 +1,48 @@
 import React, { Component, useEffect } from 'react';
 import {
-  getLists,
-  getListsInterface,
-  ListObjectInterface,
-} from 'redux/modules/lists';
+  getTasks,
+  getTasksInterface,
+  TaskInterface,
+} from 'redux/modules/tasks';
 import { AppState } from 'redux/modules/rootReducer';
 import { connect } from 'react-redux';
 import List from 'components/List/List';
 import { Droppable } from 'react-beautiful-dnd';
+import Task from 'components/Task/Task';
 
 interface ListsContainerInterface {
-  boardId: number;
-  getLists?: getListsInterface;
-  lists?: ListObjectInterface[];
+  listId: number;
+  getTasks?: getTasksInterface;
+  tasks?: TaskInterface[];
 }
 const ListsContainer = ({
-  getLists,
-  boardId,
-  lists,
+  getTasks,
+  listId,
+  tasks,
 }: ListsContainerInterface) => {
   useEffect(() => {
-    if (getLists) {
-      getLists(boardId);
+    if (getTasks) {
+      getTasks(listId);
     }
   }, []);
 
   return (
     <>
-      {lists &&
-        lists.map((props, index) => (
-          <List key={props.id} {...props} index={index} />
+      {tasks &&
+        tasks.map((props, index) => (
+          <Task key={props.id} {...props} index={index} />
         ))}
     </>
   );
 };
 // };
 
-function mapStateToProps({ lists }: AppState): any {
+function mapStateToProps({ tasks }: AppState): any {
   return {
-    lists: lists.lists,
+    tasks: tasks.tasks,
   };
 }
 export default connect(
   mapStateToProps,
-  { getLists }
+  { getTasks }
 )(ListsContainer);

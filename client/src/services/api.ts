@@ -157,3 +157,18 @@ export const getLists = (boardId: number) => {
     headers,
   });
 };
+
+/**
+ * Gets a list of user boards
+ *  @param listId
+ *  @return {AxiosPromise}
+ */
+export const getTasks = (listId: number) => {
+  const headers = {
+    'Content-Type': 'application/json',
+  };
+
+  return instance.get(`${baseUrl}/tasks/${listId}`, {
+    headers,
+  });
+};

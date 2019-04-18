@@ -262,6 +262,46 @@ paths:
         204:
           description: List deleted
 
+  ################################################
+  # Tasks
+  /tasks:
+    post:
+      operationId: src.tasks.controller.create
+      description: Create a task
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                board_id:
+                  type: integer
+              required:
+              - name
+              - list_id
+      responses:
+        201:
+          description: Successful task creation
+
+  /tasks/{list_id}:
+    get:
+      operationId: src.tasks.controller.get_all
+      description: Read tasks belonging to list
+      parameters:
+      - in: path
+        name: list_id
+        required: true
+        schema:
+          type: integer
+        description: The lists's id, which the task belongs to
+      responses:
+        200:
+          description: Successful read of list's tasks
+
+  ################################################
 
   /todos:
     post:

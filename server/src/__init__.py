@@ -26,12 +26,12 @@ def create_app(config_name):
     db.init_app(flask_app)
     socketio.init_app(flask_app)
 
-    from .todos.controller import todos
     from .users.controller import user
     from .boards.controller import boards
+    from .tasks.controller import tasks
 
-    flask_app.register_blueprint(todos)
     flask_app.register_blueprint(boards)
     flask_app.register_blueprint(user)
+    flask_app.register_blueprint(tasks)
 
     return connexion_app
