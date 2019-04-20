@@ -9,13 +9,9 @@ export interface TaskInterface {
   order: number;
 }
 
-export interface TasksState {
-  tasks: TaskInterface[];
-}
+export interface TasksState {}
 
-export const initialState: TasksState = {
-  tasks: [],
-};
+export const initialState: TasksState = {};
 
 export default function reducer(
   state = initialState,
@@ -25,7 +21,7 @@ export default function reducer(
     case GET_TASKS: {
       return {
         ...state,
-        tasks: [...state.tasks, ...action.payload],
+        ...action.payload,
       };
     }
     default:
@@ -33,8 +29,7 @@ export default function reducer(
   }
 }
 
-export const tasksSelector = (state: TasksState) =>
-  state.tasks;
+export const tasksSelector = (state: TasksState) => state;
 
 export interface getTasksInterface {
   (listId: number): void;
@@ -45,9 +40,30 @@ export const getTasks: getTasksInterface = listId => async (
 ) => {
   try {
     const res = await api.getTasks(listId);
+    const tasks = res.data.reduce(
+      (a: any, b: any) => {
+        const xxx = {
+          id: b.id,
+          name: b.name,
+          order: b.order,
+        };
+        console.log(xxx);
+
+        a = {
+          // id: b.id,
+          listId: b.list_id,
+          // name: b.name,
+          // order: b.order,
+          tasks: [...a.tasks, xxx],
+        };
+        return a;
+      },
+      { tasks: [] }
+    );
+    console.log(tasks, 'WHOO');
     dispatch({
       type: GET_TASKS,
-      payload: res.data,
+      payload: tasks,
     });
   } catch (e) {
     console.log(e);

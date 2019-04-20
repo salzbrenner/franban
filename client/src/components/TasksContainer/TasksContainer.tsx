@@ -21,6 +21,7 @@ const ListsContainer = ({
   tasks,
 }: ListsContainerInterface) => {
   useEffect(() => {
+    console.log(listId);
     if (getTasks) {
       getTasks(listId);
     }
@@ -28,10 +29,10 @@ const ListsContainer = ({
 
   return (
     <>
-      {tasks &&
-        tasks.map((props, index) => (
-          <Task key={props.id} {...props} index={index} />
-        ))}
+      {/*{tasks &&*/}
+      {/*tasks.map((props, index) => (*/}
+      {/*<Task key={props.id} {...props} index={index} />*/}
+      {/*))}*/}
     </>
   );
 };
@@ -39,7 +40,7 @@ const ListsContainer = ({
 
 function mapStateToProps({ tasks }: AppState): any {
   return {
-    tasks: tasks.tasks,
+    tasks: tasks,
   };
 }
 export default connect(

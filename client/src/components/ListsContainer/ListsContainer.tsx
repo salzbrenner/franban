@@ -28,9 +28,16 @@ const ListsContainer = ({
   return (
     <>
       {lists &&
-        lists.map((props, index) => (
-          <List key={props.id} {...props} index={index} />
-        ))}
+        Object.keys(lists).map((listId: any, index) => {
+          return (
+            <List
+              key={listId}
+              id={listId}
+              {...lists[listId]}
+              index={index}
+            />
+          );
+        })}
     </>
   );
 };
