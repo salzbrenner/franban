@@ -1,4 +1,5 @@
 import * as api from '../../services/api';
+import { UPDATE_LIST_TASK_IDS } from 'redux/modules/lists';
 
 export const GET_TASKS = 'tasks/GET_TASKS';
 
@@ -40,30 +41,29 @@ export const getTasks: getTasksInterface = listId => async (
 ) => {
   try {
     const res = await api.getTasks(listId);
-    const tasks = res.data.reduce(
-      (a: any, b: any) => {
-        const xxx = {
-          id: b.id,
-          name: b.name,
-          order: b.order,
-        };
-        console.log(xxx);
-
-        a = {
-          // id: b.id,
-          listId: b.list_id,
-          // name: b.name,
-          // order: b.order,
-          tasks: [...a.tasks, xxx],
-        };
+    const taskIds: string[] = [];
+    const tasks = res.data
+      .sort((a: any, b: any) => {
+        return a.order - b.order;
+      })
+      .reduce((a: any, b: any) => {
+        const { list_id: listId, ...rest } = b;
+        const taskId = `task-${b.id}`;
+        taskIds.push(taskId);
+        a[`task-${b.id}`] = { ...rest };
         return a;
-      },
-      { tasks: [] }
-    );
-    console.log(tasks, 'WHOO');
+      }, {});
     dispatch({
       type: GET_TASKS,
       payload: tasks,
+    });
+
+    dispatch({
+      type: UPDATE_LIST_TASK_IDS,
+      payload: {
+        taskIds: taskIds,
+        listId: `list-${listId}`,
+      },
     });
   } catch (e) {
     console.log(e);

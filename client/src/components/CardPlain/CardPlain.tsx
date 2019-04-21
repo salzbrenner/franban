@@ -1,16 +1,13 @@
 import React, { Component } from 'react';
 import './CardPlain.css';
 
-const CardPlain = (
-  Component: Function,
-  extraClassName?: string
-) => (props: any) => (
+const CardPlain = (props: any) => (
   <div
     className={`card-plain ${
-      extraClassName ? extraClassName : ''
+      props.extraClassName ? props.extraClassName : ''
     }`}
   >
-    <Component {...props} />
+    {props.children}
   </div>
 );
 

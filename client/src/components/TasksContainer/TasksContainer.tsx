@@ -10,33 +10,44 @@ import List from 'components/List/List';
 import { Droppable } from 'react-beautiful-dnd';
 import Task from 'components/Task/Task';
 
-interface ListsContainerInterface {
+interface TasksContainerInterface {
   listId: number;
   getTasks?: getTasksInterface;
-  tasks?: TaskInterface[];
+  tasks?: { [index: string]: TaskInterface };
+  taskIds?: string[];
+  innerRef?: any;
+  placeholder?: any;
 }
-const ListsContainer = ({
+const TasksContainer = ({
   getTasks,
   listId,
   tasks,
-}: ListsContainerInterface) => {
+  taskIds,
+  innerRef,
+  placeholder,
+  ...droppableProps
+}: TasksContainerInterface) => {
   useEffect(() => {
-    console.log(listId);
     if (getTasks) {
       getTasks(listId);
     }
   }, []);
-
   return (
-    <>
-      {/*{tasks &&*/}
-      {/*tasks.map((props, index) => (*/}
-      {/*<Task key={props.id} {...props} index={index} />*/}
-      {/*))}*/}
-    </>
+    <div ref={innerRef} {...droppableProps}>
+      {tasks &&
+        taskIds &&
+        taskIds.map((taskId: string, index: any) => (
+          <Task
+            key={taskId}
+            stateId={taskId}
+            {...tasks[taskId]}
+            index={index}
+          />
+        ))}
+      {placeholder}
+    </div>
   );
 };
-// };
 
 function mapStateToProps({ tasks }: AppState): any {
   return {
@@ -46,4 +57,4 @@ function mapStateToProps({ tasks }: AppState): any {
 export default connect(
   mapStateToProps,
   { getTasks }
-)(ListsContainer);
+)(TasksContainer);
