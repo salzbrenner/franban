@@ -1,11 +1,26 @@
-.task-list {
-  margin-right: 20px;
+.list {
+  background: var(--white);
   width: 240px;
-  height: 100px;
-  padding: 5px 10px;
+  padding: 5px 0 0;
+  box-shadow: var(--box-shadow-2);
+  margin-right: 10px;
 }
 
-.task-list__name {
+.list__name {
+  padding: 10px 5px 10px;
   color: var(--secondary-color);
   font-weight: bold;
+}
+
+.list__tasks-wrapper {
+  padding: 10px 10px 5px;
+  transition: background-color 0.2s ease;
+}
+
+.list__tasks-wrapper--dragging-over {
+  background: var(--primary-color);
+}
+
+.list__tasks-wrapper .task {
+  margin-bottom: 10px;
 }

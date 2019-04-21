@@ -15,7 +15,7 @@ export interface ListObjectInterface {
   board_id: number;
   name: string;
   order: number;
-  taskIds: number[];
+  taskIds: string[];
   index?: any;
 }
 

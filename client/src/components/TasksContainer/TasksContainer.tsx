@@ -15,17 +15,12 @@ interface TasksContainerInterface {
   getTasks?: getTasksInterface;
   tasks?: { [index: string]: TaskInterface };
   taskIds?: string[];
-  innerRef?: any;
-  placeholder?: any;
 }
 const TasksContainer = ({
   getTasks,
   listId,
   tasks,
   taskIds,
-  innerRef,
-  placeholder,
-  ...droppableProps
 }: TasksContainerInterface) => {
   useEffect(() => {
     if (getTasks) {
@@ -33,7 +28,7 @@ const TasksContainer = ({
     }
   }, []);
   return (
-    <div ref={innerRef} {...droppableProps}>
+    <>
       {tasks &&
         taskIds &&
         taskIds.map((taskId: string, index: any) => (
@@ -44,8 +39,7 @@ const TasksContainer = ({
             index={index}
           />
         ))}
-      {placeholder}
-    </div>
+    </>
   );
 };
 
