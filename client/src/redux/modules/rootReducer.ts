@@ -9,7 +9,7 @@ export interface AppState {
   // form: {},
   user: UserState;
   auth: AuthState;
-  lists: ListsState;
+  lists: any;
   tasks: TasksState;
   form: any;
 }

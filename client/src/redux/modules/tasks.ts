@@ -47,24 +47,27 @@ export const getTasks: getTasksInterface = listId => async (
         return a.order - b.order;
       })
       .reduce((a: any, b: any) => {
-        const { list_id: listId, ...rest } = b;
+        const { list_id, ...rest } = b;
         const taskId = `task-${b.id}`;
         taskIds.push(taskId);
         a[`task-${b.id}`] = { ...rest };
         return a;
       }, {});
+
     dispatch({
       type: GET_TASKS,
       payload: tasks,
     });
 
-    dispatch({
-      type: UPDATE_LIST_TASK_IDS,
-      payload: {
-        taskIds: taskIds,
-        listId: `list-${listId}`,
-      },
-    });
+    return { taskIds, listId: `list-${listId}` };
+
+    // dispatch({
+    //   type: UPDATE_LIST_TASK_IDS,
+    //   payload: {
+    //     taskIds: taskIds,
+    //     listId: `list-${listId}`,
+    //   },
+    // });
   } catch (e) {
     console.log(e);
   }

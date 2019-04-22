@@ -1,4 +1,4 @@
-import React, { Component, useEffect } from 'react';
+import React, { FunctionComponent, useEffect } from 'react';
 import {
   getTasks,
   getTasksInterface,
@@ -6,31 +6,20 @@ import {
 } from 'redux/modules/tasks';
 import { AppState } from 'redux/modules/rootReducer';
 import { connect } from 'react-redux';
-import List from 'components/List/List';
-import { Droppable } from 'react-beautiful-dnd';
 import Task from 'components/Task/Task';
 
-interface TasksContainerInterface {
+type TasksContainerProps = {
   listId: number;
   getTasks?: getTasksInterface;
   tasks?: { [index: string]: TaskInterface };
-  taskIds?: string[];
-}
-const TasksContainer = ({
-  getTasks,
-  listId,
-  tasks,
-  taskIds,
-}: TasksContainerInterface) => {
-  useEffect(() => {
-    if (getTasks) {
-      getTasks(listId);
-    }
-  }, []);
+  taskIds: string[];
+};
+const TasksContainer: FunctionComponent<
+  TasksContainerProps
+> = ({ getTasks, listId, tasks = {}, taskIds = [] }) => {
   return (
     <>
-      {tasks &&
-        taskIds &&
+      {taskIds.length > 0 &&
         taskIds.map((taskId: string, index: any) => (
           <Task
             key={taskId}

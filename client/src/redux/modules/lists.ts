@@ -1,26 +1,17 @@
 import * as api from '../../services/api';
-import {
-  GET_TASKS,
-  TaskInterface,
-} from 'redux/modules/tasks';
+import { getTasks } from 'redux/modules/tasks';
+import { ListProps } from 'components/List/List';
+import { ActionInterface } from 'redux/modules/action.type';
 
 export const GET_LISTS = 'lists/GET_LISTS';
+export const RESET_LISTS = 'lists/RESET_LISTS';
 export const UPDATE_LIST_TASK_IDS =
   'lists/UPDATE_LIST_TASK_IDS';
-export const UPDATE_LIST_TASKS = 'lists/UPDATE_LIST_TASKS';
-
-export interface ListObjectInterface {
-  id: number;
-  stateId: string;
-  board_id: number;
-  name: string;
-  order: number;
-  taskIds: string[];
-  index?: any;
-}
+export const UPDATE_LIST_READY_STATE =
+  'lists/UPDATE_LIST_READY_STATE';
 
 export interface ListsState {
-  lists: { [index: string]: ListObjectInterface };
+  lists: { [index: string]: ListProps };
   listOrder: string[];
 }
 
@@ -31,22 +22,19 @@ export const initialState: ListsState = {
 
 export default function reducer(
   state = initialState,
-  action: any
+  action: ActionInterface
 ) {
   switch (action.type) {
     case GET_LISTS: {
-      console.log(action.payload);
       const { lists, order } = action.payload;
-
       return {
         ...state,
         lists: lists,
         listOrder: order,
       };
     }
-    case UPDATE_LIST_TASK_IDS:
+    case UPDATE_LIST_TASK_IDS: {
       const { taskIds, listId } = action.payload;
-      console.log(taskIds, listId);
       return {
         ...state,
         lists: {
@@ -57,6 +45,25 @@ export default function reducer(
           },
         },
       };
+    }
+
+    case UPDATE_LIST_READY_STATE: {
+      const { loading, listId } = action.payload;
+      return {
+        ...state,
+        lists: {
+          ...state.lists,
+          [listId]: {
+            ...state.lists[listId],
+            loading,
+          },
+        },
+      };
+    }
+
+    case RESET_LISTS: {
+      return initialState;
+    }
 
     default:
       return state;
@@ -66,9 +73,31 @@ export default function reducer(
 export const listsSelector = (state: ListsState) =>
   state.lists;
 
+export const listOrderSelector = (state: ListsState) =>
+  state.listOrder;
+
 export interface getListsInterface {
   (boardId: number): void;
 }
+
+export const resetLists = () => {
+  return {
+    type: RESET_LISTS,
+  };
+};
+
+export const updateListTasks = (
+  listId: string,
+  taskIds: string[]
+) => {
+  return {
+    type: UPDATE_LIST_TASK_IDS,
+    payload: {
+      taskIds,
+      listId,
+    },
+  };
+};
 
 export const getLists: getListsInterface = (
   boardId: number
@@ -76,10 +105,10 @@ export const getLists: getListsInterface = (
   try {
     const res = await api.getLists(boardId);
     const order: string[] = [];
+
     const lists: {} = res.data
       .sort(
-        (a: ListObjectInterface, b: ListObjectInterface) =>
-          a.order - b.order
+        (a: ListProps, b: ListProps) => a.order - b.order
       )
       .reduce((a: any, b: any) => {
         const { board_id: boardId, ...rest } = b;
@@ -99,15 +128,39 @@ export const getLists: getListsInterface = (
   }
 };
 
-export const updateListTasks = (
+export const listLoading = (
   listId: string,
-  newTasksIds: any[]
+  loading: boolean
 ) => {
   return {
-    type: UPDATE_LIST_TASK_IDS,
+    type: UPDATE_LIST_READY_STATE,
     payload: {
-      taskIds: newTasksIds,
       listId,
+      loading,
     },
   };
+};
+
+export const getListsAndTasks: any = (
+  boardId: number
+) => async (dispatch: Function, getState: Function) => {
+  try {
+    await dispatch(getLists(boardId));
+    const lists = getState().lists.lists;
+    // get all tasks for each list
+    const loadTasks = Object.keys(lists).map(key => {
+      dispatch(listLoading(key, true));
+      return dispatch(getTasks(lists[key].id));
+    });
+
+    // map tasksids to lists
+    await Promise.all(loadTasks).then((allTaskIds: any) => {
+      return allTaskIds.map(({ listId, taskIds }: any) => {
+        dispatch(updateListTasks(listId, taskIds));
+        dispatch(listLoading(listId, false));
+      });
+    });
+  } catch (e) {
+    console.log(e);
+  }
 };

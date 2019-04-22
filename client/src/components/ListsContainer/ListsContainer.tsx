@@ -1,8 +1,11 @@
-import React, { Component, useEffect } from 'react';
+import React, { FunctionComponent, useEffect } from 'react';
 import {
   getLists,
+  getListsAndTasks,
   getListsInterface,
-  ListObjectInterface,
+  listOrderSelector,
+  listsSelector,
+  resetLists,
   updateListTasks,
 } from 'redux/modules/lists';
 import { AppState } from 'redux/modules/rootReducer';
@@ -11,28 +14,34 @@ import {
   DragDropContext,
   Droppable,
 } from 'react-beautiful-dnd';
-import List from 'components/List/List';
+import List, { ListProps } from 'components/List/List';
 
 // TODO: Fix this interface
-interface ListsContainerInterface {
+type ListsContainerProps = {
   boardId: number;
   updateListTasks?: any;
   getLists?: getListsInterface;
-  lists?: ListObjectInterface[];
+  lists?: { [index: string]: ListProps };
   order?: number[];
-}
+  getListsAndTasks?: any;
+};
 
-const ListsContainer = ({
+const ListsContainer: FunctionComponent<
+  ListsContainerProps
+> = ({
   getLists,
   updateListTasks,
   boardId,
-  lists,
+  lists = {},
   order,
-}: ListsContainerInterface) => {
+  getListsAndTasks,
+}) => {
   useEffect(() => {
-    if (getLists) {
-      getLists(boardId);
+    if (getListsAndTasks) {
+      getListsAndTasks(boardId);
     }
+
+    return function cleanup() {};
   }, []);
 
   function onDragEnd(result: any) {
@@ -53,8 +62,7 @@ const ListsContainer = ({
       return;
     }
 
-    const list: ListObjectInterface =
-      lists[source.droppableId];
+    const list: ListProps = lists[source.droppableId];
     const newTaskIds = Array.from(list.taskIds);
     newTaskIds.splice(source.index, 1);
     newTaskIds.splice(destination.index, 0, draggableId);
@@ -64,34 +72,42 @@ const ListsContainer = ({
 
   return (
     <>
-      {order && lists && (
+      {
         <DragDropContext onDragEnd={onDragEnd}>
-          {order.map((listId: any, index) => {
-            return (
-              <List
-                key={listId}
-                stateId={listId}
-                {...lists[listId]}
-                index={index}
-              />
-            );
-          })}
+          {order &&
+            order.map((listId: any, index) => {
+              console.log(lists[listId]);
+              return (
+                <List
+                  key={listId}
+                  loading={true}
+                  stateId={listId}
+                  {...lists[listId]}
+                  index={index}
+                />
+              );
+            })}
         </DragDropContext>
-      )}
+      }
     </>
   );
 };
 
-// };
-
 function mapStateToProps({ lists }: AppState): any {
   return {
-    lists: lists.lists,
-    order: lists.listOrder,
+    lists: listsSelector(lists),
+    order: listOrderSelector(lists),
   };
 }
 
+const mapDispatchToProps = {
+  getLists,
+  updateListTasks,
+  getListsAndTasks,
+  resetLists,
+};
+
 export default connect(
   mapStateToProps,
-  { getLists, updateListTasks }
+  mapDispatchToProps
 )(ListsContainer);

@@ -1,12 +1,28 @@
 import React from 'react';
-import { ListObjectInterface } from 'redux/modules/lists';
 import './List.css';
 import CardPlain from 'components/CardPlain/CardPlain';
 import { Draggable, Droppable } from 'react-beautiful-dnd';
 import TasksContainer from 'components/TasksContainer/TasksContainer';
 
-class List extends React.Component<ListObjectInterface> {
+export type ListProps = {
+  id: number;
+  stateId: string;
+  board_id: number;
+  name: string;
+  order: number;
+  taskIds: string[];
+  index?: any;
+  loading?: boolean;
+};
+
+class List extends React.Component<ListProps> {
+  constructor(props: ListProps) {
+    super(props);
+  }
   render() {
+    if (this.props.loading) {
+      return <h1 />;
+    }
     return (
       <div>
         <div className={`list`}>
