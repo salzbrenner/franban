@@ -24,6 +24,7 @@ type ListsContainerProps = {
   lists?: { [index: string]: ListProps };
   order?: number[];
   getListsAndTasks?: any;
+  resetLists?: any;
 };
 
 const ListsContainer: FunctionComponent<
@@ -35,13 +36,16 @@ const ListsContainer: FunctionComponent<
   lists = {},
   order,
   getListsAndTasks,
+  resetLists,
 }) => {
   useEffect(() => {
     if (getListsAndTasks) {
       getListsAndTasks(boardId);
     }
 
-    return function cleanup() {};
+    return function cleanup() {
+      resetLists();
+    };
   }, []);
 
   function onDragEnd(result: any) {
@@ -62,12 +66,46 @@ const ListsContainer: FunctionComponent<
       return;
     }
 
-    const list: ListProps = lists[source.droppableId];
-    const newTaskIds = Array.from(list.taskIds);
-    newTaskIds.splice(source.index, 1);
-    newTaskIds.splice(destination.index, 0, draggableId);
+    const start: ListProps = lists[source.droppableId];
+    const finish: ListProps =
+      lists[destination.droppableId];
 
-    updateListTasks(destination.droppableId, newTaskIds);
+    if (start === finish) {
+      const newTaskIds = Array.from(start.taskIds);
+      newTaskIds.splice(source.index, 1);
+      newTaskIds.splice(destination.index, 0, draggableId);
+      const newList = {
+        ...start,
+        taskIds: newTaskIds,
+      };
+
+      updateListTasks(`list-${newList.id}`, newList);
+      return;
+    }
+
+    // moving from one list to another
+    const startTaskIds = Array.from(start.taskIds);
+    startTaskIds.splice(source.index, 1);
+    const newStartList = {
+      ...start,
+      taskIds: startTaskIds,
+    };
+
+    const finishTaskIds = Array.from(finish.taskIds);
+    finishTaskIds.splice(destination.index, 0, draggableId);
+    const newFinishList = {
+      ...finish,
+      taskIds: finishTaskIds,
+    };
+    // update both lists
+    updateListTasks(
+      `list-${newStartList.id}`,
+      newStartList
+    );
+    updateListTasks(
+      `list-${newFinishList.id}`,
+      newFinishList
+    );
   }
 
   return (
@@ -76,7 +114,6 @@ const ListsContainer: FunctionComponent<
         <DragDropContext onDragEnd={onDragEnd}>
           {order &&
             order.map((listId: any, index) => {
-              console.log(lists[listId]);
               return (
                 <List
                   key={listId}

@@ -1,5 +1,9 @@
 import * as api from '../../services/api';
-import { UPDATE_LIST_TASK_IDS } from 'redux/modules/lists';
+import {
+  listLoading,
+  updateListTasks,
+} from 'redux/modules/lists';
+import { Dispatch } from 'redux';
 
 export const GET_TASKS = 'tasks/GET_TASKS';
 
@@ -47,28 +51,32 @@ export const getTasks: getTasksInterface = listId => async (
         return a.order - b.order;
       })
       .reduce((a: any, b: any) => {
-        const { list_id, ...rest } = b;
+        const { ...rest } = b;
         const taskId = `task-${b.id}`;
         taskIds.push(taskId);
         a[`task-${b.id}`] = { ...rest };
         return a;
       }, {});
 
-    dispatch({
+    // add tasks to state
+    await dispatch({
       type: GET_TASKS,
       payload: tasks,
     });
 
-    return { taskIds, listId: `list-${listId}` };
-
-    // dispatch({
-    //   type: UPDATE_LIST_TASK_IDS,
-    //   payload: {
-    //     taskIds: taskIds,
-    //     listId: `list-${listId}`,
-    //   },
-    // });
+    // finish adding taskIds to lists
+    dispatch(addTasksToList(`list-${listId}`, taskIds));
   } catch (e) {
     console.log(e);
   }
+};
+
+export const addTasksToList: any = (
+  listId: string,
+  taskIds: any[]
+) => async (dispatch: Function, getState: Function) => {
+  const list = getState().lists.lists[listId];
+  const newList = { ...list, taskIds };
+  dispatch(updateListTasks(listId, newList));
+  dispatch(listLoading(listId, false));
 };

@@ -5,8 +5,7 @@ import { ActionInterface } from 'redux/modules/action.type';
 
 export const GET_LISTS = 'lists/GET_LISTS';
 export const RESET_LISTS = 'lists/RESET_LISTS';
-export const UPDATE_LIST_TASK_IDS =
-  'lists/UPDATE_LIST_TASK_IDS';
+export const UPDATE_LIST_TASKS = 'lists/UPDATE_LIST_TASKS';
 export const UPDATE_LIST_READY_STATE =
   'lists/UPDATE_LIST_READY_STATE';
 
@@ -33,16 +32,13 @@ export default function reducer(
         listOrder: order,
       };
     }
-    case UPDATE_LIST_TASK_IDS: {
-      const { taskIds, listId } = action.payload;
+    case UPDATE_LIST_TASKS: {
+      const { newList, listId } = action.payload;
       return {
         ...state,
         lists: {
           ...state.lists,
-          [listId]: {
-            ...state.lists[listId],
-            taskIds: taskIds,
-          },
+          [listId]: newList,
         },
       };
     }
@@ -88,12 +84,12 @@ export const resetLists = () => {
 
 export const updateListTasks = (
   listId: string,
-  taskIds: string[]
+  newList: string[]
 ) => {
   return {
-    type: UPDATE_LIST_TASK_IDS,
+    type: UPDATE_LIST_TASKS,
     payload: {
-      taskIds,
+      newList,
       listId,
     },
   };
@@ -148,17 +144,9 @@ export const getListsAndTasks: any = (
     await dispatch(getLists(boardId));
     const lists = getState().lists.lists;
     // get all tasks for each list
-    const loadTasks = Object.keys(lists).map(key => {
+    Object.keys(lists).forEach(key => {
       dispatch(listLoading(key, true));
       return dispatch(getTasks(lists[key].id));
-    });
-
-    // map tasksids to lists
-    await Promise.all(loadTasks).then((allTaskIds: any) => {
-      return allTaskIds.map(({ listId, taskIds }: any) => {
-        dispatch(updateListTasks(listId, taskIds));
-        dispatch(listLoading(listId, false));
-      });
     });
   } catch (e) {
     console.log(e);
