@@ -6,6 +6,7 @@ import {
   listOrderSelector,
   listsSelector,
   resetLists,
+  updateListsOrder,
   updateListTasks,
 } from 'redux/modules/lists';
 import { AppState } from 'redux/modules/rootReducer';
@@ -25,6 +26,7 @@ type ListsContainerProps = {
   order?: number[];
   getListsAndTasks?: any;
   resetLists?: any;
+  updateListsOrder?: any;
 };
 
 const ListsContainer: FunctionComponent<
@@ -37,7 +39,8 @@ const ListsContainer: FunctionComponent<
   order,
   getListsAndTasks,
   resetLists,
-}) => {
+  updateListsOrder,
+}: any) => {
   useEffect(() => {
     if (getListsAndTasks) {
       getListsAndTasks(boardId);
@@ -49,7 +52,12 @@ const ListsContainer: FunctionComponent<
   }, []);
 
   function onDragEnd(result: any) {
-    const { destination, source, draggableId } = result;
+    const {
+      destination,
+      source,
+      draggableId,
+      type,
+    } = result;
 
     if (!destination) {
       return;
@@ -62,7 +70,21 @@ const ListsContainer: FunctionComponent<
       return;
     }
 
-    if (!lists) {
+    if (type === `LIST`) {
+      const newListOrder = Array.from(order);
+      const sourceList = lists[draggableId];
+      newListOrder.splice(source.index, 1);
+      newListOrder.splice(
+        destination.index,
+        0,
+        draggableId
+      );
+
+      updateListsOrder(
+        boardId,
+        sourceList.id,
+        newListOrder.indexOf(draggableId)
+      );
       return;
     }
 
@@ -112,18 +134,33 @@ const ListsContainer: FunctionComponent<
     <>
       {
         <DragDropContext onDragEnd={onDragEnd}>
-          {order &&
-            order.map((listId: any, index) => {
-              return (
-                <List
-                  key={listId}
-                  loading={true}
-                  stateId={listId}
-                  {...lists[listId]}
-                  index={index}
-                />
-              );
-            })}
+          <Droppable
+            droppableId={`board`}
+            direction={`horizontal`}
+            type={`LIST`}
+          >
+            {provided => (
+              <div
+                className={`d-inline-flex`}
+                {...provided.droppableProps}
+                ref={provided.innerRef}
+              >
+                {order &&
+                  order.map((listId: any, index: any) => {
+                    return (
+                      <List
+                        key={listId}
+                        loading={true}
+                        stateId={listId}
+                        {...lists[listId]}
+                        index={index}
+                      />
+                    );
+                  })}
+                {provided.placeholder}
+              </div>
+            )}
+          </Droppable>
         </DragDropContext>
       }
     </>
@@ -142,6 +179,7 @@ const mapDispatchToProps = {
   updateListTasks,
   getListsAndTasks,
   resetLists,
+  updateListsOrder,
 };
 
 export default connect(

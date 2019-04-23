@@ -158,6 +158,27 @@ export const getLists = (boardId: number) => {
   });
 };
 
+export const updateListsOrder = (
+  boardId: number,
+  listId: number,
+  order: string
+) => {
+  const headers = {
+    'Content-Type': 'application/x-www-form-urlencoded',
+  };
+
+  const bodyFormData = new FormData();
+  bodyFormData.set('name', 'DEROP');
+  bodyFormData.set('order', order);
+
+  return makeApiCall(
+    'put',
+    `${baseUrl}/lists/${boardId}/${listId}`,
+    bodyFormData,
+    headers
+  );
+};
+
 /**
  * Gets a list of user boards
  *  @param listId

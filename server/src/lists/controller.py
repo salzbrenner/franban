@@ -54,12 +54,14 @@ def put(board_id, id, body):
     """
     list = List.query.filter_by(board_id=board_id, id=id).first()
     name = body['name']
-    order = int(body['order'])
+    order = body['order']
+    print(order)
     if list:
         list.update(name, order)
         return 'Updated list name to: ' + list.name + ' and order to:' + str(list.order), 200
     else:
         return 'List does not exist', 404
+
 
 def delete(board_id, id):
     """

@@ -16,21 +16,23 @@ type TasksContainerProps = {
 };
 const TasksContainer: FunctionComponent<
   TasksContainerProps
-> = ({ getTasks, listId, tasks = {}, taskIds = [] }) => {
-  return (
-    <>
-      {taskIds.length > 0 &&
-        taskIds.map((taskId: string, index: any) => (
-          <Task
-            key={taskId}
-            stateId={taskId}
-            {...tasks[taskId]}
-            index={index}
-          />
-        ))}
-    </>
-  );
-};
+> = React.memo(
+  ({ getTasks, listId, tasks = {}, taskIds = [] }) => {
+    return (
+      <>
+        {taskIds.length > 0 &&
+          taskIds.map((taskId: string, index: any) => (
+            <Task
+              key={taskId}
+              stateId={taskId}
+              {...tasks[taskId]}
+              index={index}
+            />
+          ))}
+      </>
+    );
+  }
+);
 
 function mapStateToProps({ tasks }: AppState): any {
   return {

@@ -25,8 +25,8 @@ const BoardOverview: React.FC<any> = (props: any) => {
     <>
       <div className={`d-inline-flex`}>
         <ListsContainer boardId={boardId} />
+        <FormAddList />
       </div>
-      <FormAddList />
     </>
   );
 };

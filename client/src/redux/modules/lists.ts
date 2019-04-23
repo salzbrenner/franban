@@ -5,6 +5,8 @@ import { ActionInterface } from 'redux/modules/action.type';
 
 export const GET_LISTS = 'lists/GET_LISTS';
 export const RESET_LISTS = 'lists/RESET_LISTS';
+export const UPDATE_LISTS_ORDER =
+  'lists/UPDATE_LISTS_ORDER';
 export const UPDATE_LIST_TASKS = 'lists/UPDATE_LIST_TASKS';
 export const UPDATE_LIST_READY_STATE =
   'lists/UPDATE_LIST_READY_STATE';
@@ -54,6 +56,13 @@ export default function reducer(
             loading,
           },
         },
+      };
+    }
+
+    case UPDATE_LISTS_ORDER: {
+      return {
+        ...state,
+        listOrder: action.payload,
       };
     }
 
@@ -148,6 +157,28 @@ export const getListsAndTasks: any = (
       dispatch(listLoading(key, true));
       return dispatch(getTasks(lists[key].id));
     });
+  } catch (e) {
+    console.log(e);
+  }
+};
+
+export const updateListsOrder: any = (
+  boardId: any,
+  listId: any,
+  order: any
+) => async (dispatch: Function, getState: Function) => {
+  try {
+    console.log(order);
+    const res = await api.updateListsOrder(
+      boardId,
+      listId,
+      order
+    );
+
+    // return {
+    //   type: UPDATE_LISTS_ORDER,
+    //   payload: order,
+    // };
   } catch (e) {
     console.log(e);
   }
