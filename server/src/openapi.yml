@@ -234,6 +234,8 @@ paths:
             schema:
               type: object
               properties:
+#                lists_order:
+#                  type: string
                 order:
                   type: number
                 name:

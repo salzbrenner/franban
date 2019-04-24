@@ -1,4 +1,4 @@
-from flask import Blueprint
+from flask import Blueprint, json
 from .model import List
 from connexion import request, NoContent
 from src import db
@@ -30,7 +30,7 @@ def get_all(board_id):
     :return:
     """
     results = []
-    lists = List.query.filter_by(board_id=board_id)
+    lists = List.query.filter_by(board_id=board_id).order_by(List.order)
 
     for list in lists:
         res = {
@@ -54,13 +54,13 @@ def put(board_id, id, body):
     """
     list = List.query.filter_by(board_id=board_id, id=id).first()
     name = body['name']
-    order = body['order']
-    print(order)
+    # lists_order = json.loads(body['lists_order'])
+    order = int(body['order'])
     if list:
         list.update(name, order)
-        return 'Updated list name to: ' + list.name + ' and order to:' + str(list.order), 200
-    else:
-        return 'List does not exist', 404
+    #     return 'Updated list name to: ' + list.name + ' and order to:' + str(list.order), 200
+    # else:
+    #     return 'List does not exist', 404
 
 
 def delete(board_id, id):

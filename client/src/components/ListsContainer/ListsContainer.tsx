@@ -6,7 +6,7 @@ import {
   listOrderSelector,
   listsSelector,
   resetLists,
-  updateListsOrder,
+  updateListsOrderAndSendToServer,
   updateListTasks,
 } from 'redux/modules/lists';
 import { AppState } from 'redux/modules/rootReducer';
@@ -26,7 +26,7 @@ type ListsContainerProps = {
   order?: number[];
   getListsAndTasks?: any;
   resetLists?: any;
-  updateListsOrder?: any;
+  updateListsOrderAndSendToServer?: any;
 };
 
 const ListsContainer: FunctionComponent<
@@ -39,7 +39,7 @@ const ListsContainer: FunctionComponent<
   order,
   getListsAndTasks,
   resetLists,
-  updateListsOrder,
+  updateListsOrderAndSendToServer,
 }: any) => {
   useEffect(() => {
     if (getListsAndTasks) {
@@ -80,10 +80,11 @@ const ListsContainer: FunctionComponent<
         draggableId
       );
 
-      updateListsOrder(
+      updateListsOrderAndSendToServer(
         boardId,
-        sourceList.id,
-        newListOrder.indexOf(draggableId)
+        draggableId,
+        // sourceList.id,
+        newListOrder
       );
       return;
     }
@@ -179,7 +180,7 @@ const mapDispatchToProps = {
   updateListTasks,
   getListsAndTasks,
   resetLists,
-  updateListsOrder,
+  updateListsOrderAndSendToServer,
 };
 
 export default connect(

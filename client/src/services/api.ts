@@ -161,14 +161,25 @@ export const getLists = (boardId: number) => {
 export const updateListsOrder = (
   boardId: number,
   listId: number,
-  order: string
+  order: any,
+  name: string
 ) => {
   const headers = {
     'Content-Type': 'application/x-www-form-urlencoded',
   };
 
+  // const numsOnly = order.map(listId => {
+  //   const num = listId.match(/\d+/);
+  //   if (num) {
+  //     return Number.parseInt(num[0]);
+  //   } else {
+  //     return 0;
+  //   }
+  // });
+
   const bodyFormData = new FormData();
-  bodyFormData.set('name', 'DEROP');
+  bodyFormData.set('name', name);
+  // bodyFormData.set('lists_order', JSON.stringify(numsOnly));
   bodyFormData.set('order', order);
 
   return makeApiCall(

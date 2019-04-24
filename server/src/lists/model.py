@@ -11,6 +11,7 @@ class List(db.Model):
     name = db.Column(db.String(255))
     order = db.Column(db.Integer)
     board_id = db.Column(db.Integer, db.ForeignKey(Board.id))
+    board_order = db.deferred(db.select([order]).where(Board.id == board_id))
 
     def __init__(self, name, board_id):
         self.name = name
@@ -30,19 +31,14 @@ class List(db.Model):
         db.session.commit()
 
     def update(self, name, order):
-        self.order = order
         self.name = name
-
-        # rows = db.session.query(List).count()
-        ordered = db.session\
-            .query(List)\
-            .order_by(List.order)\
-            .all()
-
-        # reorder all rows to be consecutive integers
-        if ordered:
-            for idx, row in enumerate(ordered):
-                row.order = idx
+        # update order
+        # ordering is handled via the relationship on Board,
+        # with the ordering_list
+        # https://docs.sqlalchemy.org/en/13/orm/extensions/orderinglist.html
+        board_lists = self.board.lists
+        board_lists.remove(self)
+        board_lists.insert(order, self)
 
         db.session.commit()
 

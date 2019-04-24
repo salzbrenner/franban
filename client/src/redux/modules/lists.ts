@@ -110,11 +110,12 @@ export const getLists: getListsInterface = (
   try {
     const res = await api.getLists(boardId);
     const order: string[] = [];
+    console.log(res.data, 'LISTS');
 
     const lists: {} = res.data
-      .sort(
-        (a: ListProps, b: ListProps) => a.order - b.order
-      )
+      // .sort(
+      //   (a: ListProps, b: ListProps) => a.order - b.order
+      // )
       .reduce((a: any, b: any) => {
         const { board_id: boardId, ...rest } = b;
         order.push(`list-${b.id}`);
@@ -162,23 +163,30 @@ export const getListsAndTasks: any = (
   }
 };
 
-export const updateListsOrder: any = (
+export const updateListsOrder: any = (order: any) => {
+  return {
+    type: UPDATE_LISTS_ORDER,
+    payload: order,
+  };
+};
+
+export const updateListsOrderAndSendToServer: any = (
   boardId: any,
   listId: any,
   order: any
 ) => async (dispatch: Function, getState: Function) => {
   try {
-    console.log(order);
+    const lists = getState().lists.lists;
+    const index = order.indexOf(listId);
+    dispatch(updateListsOrder(order));
     const res = await api.updateListsOrder(
       boardId,
-      listId,
-      order
+      lists[listId].id,
+      index,
+      // order,
+      lists[listId].name
     );
-
-    // return {
-    //   type: UPDATE_LISTS_ORDER,
-    //   payload: order,
-    // };
+    console.log(res);
   } catch (e) {
     console.log(e);
   }
