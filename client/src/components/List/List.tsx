@@ -40,6 +40,7 @@ class List extends React.Component<ListProps> {
               {...provided.dragHandleProps}
             >
               {this.props.name}
+              {this.props.stateId}
             </div>
             <Droppable
               droppableId={`${this.props.stateId}`}

@@ -1,21 +1,23 @@
-import React from 'react';
+import React, { FC } from 'react';
 import FormAddList from 'components/FormAddList/FormAddList';
 import ListsContainer from 'components/ListsContainer/ListsContainer';
-import {
-  DragDropContext,
-  Droppable,
-} from 'react-beautiful-dnd';
 
-export interface BoardsInterface {
-  id: string;
+type Props = {
+  boardId: number;
   name: string;
-}
+  listIds: any[];
+};
 
-const BoardOverview = ({ boardId, listIds }: any) => {
+const BoardOverview: FC<Props> = ({
+  boardId,
+  listIds,
+  name,
+}) => {
   return (
     <>
+      <h1>{name}</h1>
       <div className={`d-inline-flex`}>
-        {console.log(boardId, listIds)}
+        {console.log(listIds, 'JUST BEFORE RENDER')}
         {listIds && (
           <ListsContainer
             boardId={boardId}

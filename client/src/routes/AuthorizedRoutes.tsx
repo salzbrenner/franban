@@ -8,10 +8,9 @@ import {
 } from 'react-router-dom';
 import UserBoards from './user/boards/UserBoards';
 import Styleguide from './styleguide/Styleguide';
-import BoardOverview from 'routes/board/BoardOverview/BoardOverview';
 import BoardOverviewContainer from 'routes/board/BoardOverview/BoardOverviewContainer';
 
-const AuthorizedRoutes = ({ uid, authorized }: any) => {
+const AuthorizedRoutes = ({ uid }: any) => {
   return (
     <Switch>
       <Route
@@ -27,10 +26,7 @@ const AuthorizedRoutes = ({ uid, authorized }: any) => {
       <Route
         path={'/board/:boardId'}
         render={props => (
-          <BoardOverviewContainer
-            authorized={authorized}
-            {...props}
-          />
+          <BoardOverviewContainer {...props} />
         )}
       />
       <Route render={() => <h1>NO MATCH FOO</h1>} />

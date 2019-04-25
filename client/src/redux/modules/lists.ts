@@ -28,11 +28,10 @@ export default function reducer(
 ) {
   switch (action.type) {
     case GET_LISTS: {
-      const { lists, order } = action.payload;
+      const { lists } = action.payload;
       return {
         ...state,
         lists: lists,
-        listOrder: order,
       };
     }
     case UPDATE_LIST_TASKS: {
@@ -109,6 +108,9 @@ export const getLists: getListsInterface = (
   listIds: number[]
 ) => async (dispatch: Function, getState: Function) => {
   try {
+    // update state order with order from server
+    dispatch(updateListsOrder(listIds));
+
     const listRequests: AxiosPromise[] = await listIds.map(
       id => api.getList(id)
     );
@@ -118,36 +120,20 @@ export const getLists: getListsInterface = (
         promise.then(res => res.data)
       )
     ).then(allRes => allRes);
+
     const lists = listsResponse.reduce((a: any, b: any) => {
-      const { board_id: boardId, ...rest } = b;
-      a[`list-${b.id}`] = {
+      const { order, ...rest } = b;
+      a[b.id] = {
         ...rest,
       };
-
       return a;
     }, {});
 
-    console.log(lists);
-
-    // const res = await api.getLists(boardId);
-    // const order: string[] = [];
-    //
-    // const lists: {} = res.data
-    //   // .sort(
-    //   //   (a: ListProps, b: ListProps) => a.order - b.order
-    //   // )
-    //   .reduce((a: any, b: any) => {
-    //     const { board_id: boardId, ...rest } = b;
-    //     order.push(`list-${b.id}`);
-    //     a[`list-${b.id}`] = {
-    //       // boardId: b.board_id,
-    //       ...rest,
-    //     };
-    //     return a;
-    //   }, {});
     dispatch({
       type: GET_LISTS,
-      payload: { lists, order: null },
+      payload: {
+        lists,
+      },
     });
   } catch (e) {
     console.log(e);
@@ -196,14 +182,29 @@ export const updateListsOrderAndSendToServer: any = (
   order: any
 ) => async (dispatch: Function, getState: Function) => {
   try {
+    // update store so DND maintains order
+    await dispatch(updateListsOrder(order));
+
+    // send to server
+    dispatch(updateListOnServer(boardId, listId, order));
+  } catch (e) {
+    console.log(e);
+  }
+};
+
+export const updateListOnServer: any = (
+  boardId: any,
+  listId: any,
+  order: any
+) => async (dispatch: Function, getState: Function) => {
+  try {
     const lists = getState().lists.lists;
     const index = order.indexOf(listId);
-    dispatch(updateListsOrder(order));
+
     const res = await api.updateListsOrder(
       boardId,
-      lists[listId].id,
+      listId,
       index,
-      // order,
       lists[listId].name
     );
     console.log(res);

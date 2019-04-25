@@ -1,31 +1,47 @@
 import React, { FunctionComponent, useEffect } from 'react';
 import { AppState } from 'redux/modules/rootReducer';
 import { connect } from 'react-redux';
-import { getBoard } from 'redux/modules/boards';
+import { getBoard, resetBoard } from 'redux/modules/boards';
 import BoardOverview from 'routes/board/BoardOverview/BoardOverview';
 
+type Props = ReturnType<typeof mapStateToProps> &
+  typeof mapDispatchToProps & {
+    match: any;
+  };
+
 const BoardOverviewContainer: FunctionComponent<
-  any
+  Props
 > = props => {
   const boardId = +props.match.params.boardId;
   useEffect(() => {
     props.getBoard(boardId);
+    return function cleanup() {
+      props.resetBoard();
+    };
   }, []);
   return (
-    <BoardOverview
-      boardId={boardId}
-      listIds={props.board.lists}
-    />
+    props.board && (
+      <BoardOverview
+        boardId={boardId}
+        name={props.board.name}
+        listIds={props.board.lists}
+      />
+    )
   );
 };
 
 function mapStateToProps({ board }: AppState) {
   return {
-    board, // TODO: finish hooking up
+    board,
   };
 }
 
+const mapDispatchToProps = {
+  getBoard,
+  resetBoard,
+};
+
 export default connect(
   mapStateToProps,
-  { getBoard }
+  mapDispatchToProps
 )(BoardOverviewContainer);

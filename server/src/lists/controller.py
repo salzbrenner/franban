@@ -60,6 +60,10 @@ def get_all(board_id):
 def put(board_id, id, body):
     """
     Responds to PUT request for /api/lists/<board_id>/<id>
+    - Updates board name
+    - Updates the order of a single list in a board
+    - Other list orders in same board are updated automatically
+    via the relationship definition in Board
     :param board_id:
     :param id:
     :param body: the request body needs key: 'name'
@@ -67,13 +71,12 @@ def put(board_id, id, body):
     """
     list = List.query.filter_by(board_id=board_id, id=id).first()
     name = body['name']
-    # lists_order = json.loads(body['lists_order'])
     order = int(body['order'])
     if list:
         list.update(name, order)
-    #     return 'Updated list name to: ' + list.name + ' and order to:' + str(list.order), 200
-    # else:
-    #     return 'List does not exist', 404
+        return 'Updated list name to: ' + list.name + ' and order to:' + str(list.order), 200
+    else:
+        return 'List does not exist', 404
 
 
 def delete(board_id, id):

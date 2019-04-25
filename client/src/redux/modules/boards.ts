@@ -1,7 +1,9 @@
 import * as api from '../../services/api';
 import { ActionInterface } from 'redux/modules/action.type';
+import { RESET_LISTS } from 'redux/modules/lists';
 
 export const GET_BOARD = 'boards/GET_BOARD';
+export const RESET_BOARD = 'boards/RESET_BOARD';
 
 export interface BoardState {}
 
@@ -15,10 +17,20 @@ export default function reducer(
     case GET_BOARD:
       return action.payload;
 
+    case RESET_BOARD: {
+      return initialState;
+    }
+
     default:
       return state;
   }
 }
+
+export const resetBoard = () => {
+  return {
+    type: RESET_BOARD,
+  };
+};
 
 export const getBoard: any = (boardId: any) => async (
   dispatch: Function,
