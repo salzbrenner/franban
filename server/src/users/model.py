@@ -15,10 +15,8 @@ class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(256), nullable=False, unique=True)
     password = db.Column(db.String(256), nullable=False)
-    todos = db.relationship(
-        'Todo', order_by='Todo.id', cascade="all, delete-orphan")
     boards = db.relationship(
-        'Board', order_by='Board.id')
+        'Board', order_by='Board.id', backref='user')
 
     def __init__(self, email, password):
         """

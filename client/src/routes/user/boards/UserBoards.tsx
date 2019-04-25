@@ -10,20 +10,18 @@ import './UserBoards.css';
 import { subscribeToBoards } from 'services/socket';
 
 interface UserBoardsInterface {
-  match: any;
-  boards: BoardsInterface[];
-  getUserBoards: Function;
+  uid: any;
+  boards?: BoardsInterface[];
+  getUserBoards?: Function;
 }
 
 const UserBoards = ({
-  match,
+  uid,
   boards,
   getUserBoards,
 }: UserBoardsInterface) => {
-  const uid = match.params.uid;
-
   useEffect(() => {
-    if (!isNaN(uid)) {
+    if (!isNaN(uid) && getUserBoards) {
       // make the call, which is available in store
       getUserBoards(uid);
       subscribeToBoards(() => getUserBoards(uid));

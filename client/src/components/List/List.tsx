@@ -20,9 +20,9 @@ class List extends React.Component<ListProps> {
     super(props);
   }
   render() {
-    if (this.props.loading) {
-      return <h1 />;
-    }
+    // if (this.props.loading) {
+    //   return <h1 />;
+    // }
     return (
       <Draggable
         draggableId={this.props.stateId}

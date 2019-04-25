@@ -11,20 +11,18 @@ export interface BoardsInterface {
   name: string;
 }
 
-const BoardOverview: React.FC<any> = (props: any) => {
-  const boardId = +props.match.params.boardId;
-  const onDragEnd = (result: any) => {
-    const {
-      destination,
-      source,
-      draggableId,
-      type,
-    } = result;
-  };
+const BoardOverview = ({ boardId, listIds }: any) => {
   return (
     <>
       <div className={`d-inline-flex`}>
-        <ListsContainer boardId={boardId} />
+        {console.log(boardId, listIds)}
+        {listIds && (
+          <ListsContainer
+            boardId={boardId}
+            listIds={listIds}
+          />
+        )}
+
         <FormAddList />
       </div>
     </>

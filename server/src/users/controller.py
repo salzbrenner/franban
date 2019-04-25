@@ -1,8 +1,6 @@
 from flask import Blueprint, jsonify, current_app, session, Response
 from src.users.model import User
-from src.boards.model import Board
 from connexion import request, NoContent
-import jwt
 
 user = Blueprint('user', __name__)
 
@@ -39,8 +37,7 @@ def register(body):
             response = jsonify({
                 'message': str(e)
             })
-            response.status_code = 401
-            return response
+            return response, 401
 
     else:
         response = jsonify({
@@ -124,9 +121,9 @@ def get_boards(uid):
     if uid != User.get_user_session_id():
         return results, 403
 
-    boards = Board.query.filter_by(uid=str(uid))
+    user = User.query.filter_by(id=str(uid)).first()
 
-    for board in boards:
+    for board in user.boards:
         obj = {
             'id': board.id,
             'name': board.name,

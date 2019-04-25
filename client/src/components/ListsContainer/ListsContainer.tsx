@@ -27,6 +27,7 @@ type ListsContainerProps = {
   getListsAndTasks?: any;
   resetLists?: any;
   updateListsOrderAndSendToServer?: any;
+  listIds: any;
 };
 
 const ListsContainer: FunctionComponent<
@@ -36,15 +37,17 @@ const ListsContainer: FunctionComponent<
   updateListTasks,
   boardId,
   lists = {},
+  listIds,
   order,
   getListsAndTasks,
   resetLists,
   updateListsOrderAndSendToServer,
 }: any) => {
   useEffect(() => {
-    if (getListsAndTasks) {
-      getListsAndTasks(boardId);
-    }
+    // if (getListsAndTasks) {
+    //   getListsAndTasks(boardId);
+    // }
+    getLists(listIds);
 
     return function cleanup() {
       resetLists();
@@ -83,7 +86,6 @@ const ListsContainer: FunctionComponent<
       updateListsOrderAndSendToServer(
         boardId,
         draggableId,
-        // sourceList.id,
         newListOrder
       );
       return;
@@ -146,18 +148,20 @@ const ListsContainer: FunctionComponent<
                 {...provided.droppableProps}
                 ref={provided.innerRef}
               >
-                {order &&
-                  order.map((listId: any, index: any) => {
-                    return (
-                      <List
-                        key={listId}
-                        loading={true}
-                        stateId={listId}
-                        {...lists[listId]}
-                        index={index}
-                      />
-                    );
-                  })}
+                {lists &&
+                  Object.keys(lists).map(
+                    (listId: any, index: any) => {
+                      return (
+                        <List
+                          key={listId}
+                          loading={true}
+                          stateId={listId}
+                          {...lists[listId]}
+                          index={index}
+                        />
+                      );
+                    }
+                  )}
                 {provided.placeholder}
               </div>
             )}

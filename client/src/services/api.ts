@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios, { AxiosPromise } from 'axios';
 export const baseUrl = `${
   process.env.REACT_APP_BASE_URL
 }/api`;
@@ -143,6 +143,16 @@ export const getUserBoards = (uid: string) => {
   });
 };
 
+export const getBoard = (boardId: string) => {
+  const headers = {
+    'Content-Type': 'application/json',
+  };
+
+  return instance.get(`boards/${boardId}`, {
+    headers,
+  });
+};
+
 /**
  * Gets a list of user boards
  *  @param boardId
@@ -158,6 +168,21 @@ export const getLists = (boardId: number) => {
   });
 };
 
+/**
+ * Gets a list of user boards
+ *  @param boardId
+ *  @return {AxiosPromise}
+ */
+export const getList = (listId: number): AxiosPromise => {
+  const headers = {
+    'Content-Type': 'application/json',
+  };
+
+  return instance.get(`${baseUrl}/lists/${listId}`, {
+    headers,
+  });
+};
+
 export const updateListsOrder = (
   boardId: number,
   listId: number,
@@ -168,18 +193,8 @@ export const updateListsOrder = (
     'Content-Type': 'application/x-www-form-urlencoded',
   };
 
-  // const numsOnly = order.map(listId => {
-  //   const num = listId.match(/\d+/);
-  //   if (num) {
-  //     return Number.parseInt(num[0]);
-  //   } else {
-  //     return 0;
-  //   }
-  // });
-
   const bodyFormData = new FormData();
   bodyFormData.set('name', name);
-  // bodyFormData.set('lists_order', JSON.stringify(numsOnly));
   bodyFormData.set('order', order);
 
   return makeApiCall(

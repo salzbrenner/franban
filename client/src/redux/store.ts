@@ -20,8 +20,8 @@ const store = createStore(
   reducer, // root reducer
   composeEnhancers(
     applyMiddleware(
-      reduxThunk,
       axiosMiddleware,
+      reduxThunk,
       logger // logger must be last in chain
     )
   )

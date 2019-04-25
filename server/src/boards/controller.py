@@ -1,4 +1,4 @@
-from flask import Blueprint
+from flask import Blueprint, jsonify
 from .model import Board
 from connexion import request, NoContent
 from src import socketio
@@ -31,10 +31,14 @@ def get(id):
     :return:
     """
     board = Board.query.filter_by(id=id).first()
+    lists = board.lists
+    list_ids = [l.id for l in lists]
+
     if board:
         result = {
             'id': board.id,
             'name': board.name,
+            'lists': list_ids
         }
         return result, 200
     else:

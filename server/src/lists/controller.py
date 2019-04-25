@@ -1,4 +1,6 @@
 from flask import Blueprint, json
+
+from src.boards.model import Board
 from .model import List
 from connexion import request, NoContent
 from src import db
@@ -21,6 +23,17 @@ def create(body):
         'order': list.order
     }
     return response, 201
+
+
+def get(list_id):
+    list = List.query.filter_by(id=list_id).first()
+    res = {
+        'name': list.name,
+        'order': list.order,
+        'id': list.id,
+        'board_id': list.board_id
+    }
+    return res, 200
 
 
 def get_all(board_id):
