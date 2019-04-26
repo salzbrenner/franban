@@ -1,4 +1,6 @@
 import * as api from '../../services/api';
+import { ThunkDispatch } from 'redux-thunk';
+import { ActionInterface } from 'redux/modules/action.type';
 
 export const GET_BOARDS = 'user/GET_BOARDS';
 export const READ_ERROR = 'user/READ_ERROR';
@@ -6,7 +8,7 @@ export const ADD_BOARD = 'user/ADD_BOARD';
 export const ADD_ERROR = 'user/ADD_BOARD';
 
 export interface UserState {
-  boards: {}[];
+  boards: any[];
   readError: string;
   addErrorMessage: string;
 }
@@ -23,7 +25,7 @@ export const initialState: UserState = {
 
 export default function reducer(
   state = initialState,
-  action: any
+  action: ActionInterface
 ) {
   switch (action.type) {
     case GET_BOARDS: {
@@ -63,17 +65,15 @@ export const userBoards = (state: UserState) =>
 export const getAddErrorMessage = (state: UserState) =>
   state.addErrorMessage;
 
-export const getUserBoards = (
-  uid: string,
-  callback?: Function
-) => async (dispatch: Function, getState: Function) => {
+export const getUserBoards = (uid: string) => async (
+  dispatch: ThunkDispatch<{}, {}, any>
+): Promise<void> => {
   try {
     const res = await api.getUserBoards(uid);
     dispatch({
       type: GET_BOARDS,
       payload: res.data,
     });
-    // callback();
   } catch (e) {
     console.log(e);
     dispatch({
@@ -87,7 +87,7 @@ export const addBoard = ({
 }: FormAddBoardValues) => async (
   dispatch: Function,
   getState: Function
-) => {
+): Promise<void> => {
   try {
     const { uid } = getState().auth;
     const res = await api.addBoard(uid, name);

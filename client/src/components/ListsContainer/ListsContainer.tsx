@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useEffect } from 'react';
+import React from 'react';
 import {
   getLists,
   getListsAndTasks,
@@ -28,7 +28,7 @@ export function mapStateToProps(
   };
 }
 
-export const mapDispatchToProps = {
+export const mapDispatchToProps: any = {
   getLists,
   updateListTasks,
   getListsAndTasks,

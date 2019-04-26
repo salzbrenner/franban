@@ -12,6 +12,7 @@ type Props = ReturnType<typeof mapStateToProps> &
 const BoardOverviewContainer: FunctionComponent<
   Props
 > = props => {
+  // TODO: move this to BoardOverviewComponent
   const boardId = +props.match.params.boardId;
   useEffect(() => {
     props.getBoard(boardId);
@@ -20,13 +21,11 @@ const BoardOverviewContainer: FunctionComponent<
     };
   }, []);
   return (
-    props.board && (
-      <BoardOverview
-        boardId={boardId}
-        name={props.board.name}
-        listIds={props.board.lists}
-      />
-    )
+    <BoardOverview
+      boardId={boardId}
+      name={props.board.name}
+      listIds={props.board.lists}
+    />
   );
 };
 

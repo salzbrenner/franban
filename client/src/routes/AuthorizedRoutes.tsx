@@ -10,7 +10,7 @@ import UserBoards from './user/boards/UserBoards';
 import Styleguide from './styleguide/Styleguide';
 import BoardOverviewContainer from 'routes/board/BoardOverview/BoardOverviewContainer';
 
-const AuthorizedRoutes = ({ uid }: any) => {
+const AuthorizedRoutes = ({ uid }: { uid: string }) => {
   return (
     <Switch>
       <Route

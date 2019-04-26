@@ -131,7 +131,7 @@ const ListsDND: FunctionComponent<Props> = props => {
                     <List
                       key={listId}
                       loading={true}
-                      stateId={listId}
+                      id={listId}
                       {...lists[listId]}
                       index={index}
                     />

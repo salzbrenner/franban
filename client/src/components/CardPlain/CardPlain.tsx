@@ -1,7 +1,11 @@
-import React, { Component } from 'react';
+import React, { Component, FC } from 'react';
 import './CardPlain.css';
 
-const CardPlain = (props: any) => (
+type Props = {
+  extraClassName: string;
+};
+
+const CardPlain: FC<Props> = props => (
   <div
     className={`card-plain ${
       props.extraClassName ? props.extraClassName : ''

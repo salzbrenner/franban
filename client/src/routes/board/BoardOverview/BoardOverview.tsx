@@ -17,14 +17,12 @@ const BoardOverview: FC<Props> = ({
     <>
       <h1>{name}</h1>
       <div className={`d-inline-flex`}>
-        {console.log(listIds, 'JUST BEFORE RENDER')}
         {listIds && (
           <ListsContainer
             boardId={boardId}
             listIds={listIds}
           />
         )}
-
         <FormAddList />
       </div>
     </>

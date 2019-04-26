@@ -7,7 +7,6 @@ import tasks, { TasksState } from 'redux/modules/tasks';
 import board, { BoardState } from './boards';
 
 export interface AppState {
-  // form: {},
   user: UserState;
   auth: AuthState;
   lists: any;

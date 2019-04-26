@@ -1,5 +1,9 @@
-import React from 'react';
-import { Field, reduxForm } from 'redux-form';
+import React, { FC } from 'react';
+import {
+  Field,
+  InjectedFormProps,
+  reduxForm,
+} from 'redux-form';
 import {
   addBoard,
   FormAddBoardValues,
@@ -9,7 +13,11 @@ import {
 import { connect } from 'react-redux';
 import ButtonMain from 'components/ButtonMain/ButtonMain';
 
-const FormAddBoard = (props: any) => {
+type Props = ReturnType<typeof mapStateToProps> &
+  typeof mapDispatchToProps &
+  InjectedFormProps & {};
+
+const FormAddBoard: FC<Props> = props => {
   const { handleSubmit, pristine, submitting } = props;
 
   const submit = (values: FormAddBoardValues) => {
@@ -57,11 +65,15 @@ function mapStateToProps(state: UserState) {
   };
 }
 
+const mapDispatchToProps: any = {
+  addBoard,
+};
+
 const reduxFormAddBoard = reduxForm({
   form: 'addBoard', // a unique identifier for this form
 })(FormAddBoard);
 
 export default connect(
   mapStateToProps,
-  { addBoard }
+  mapDispatchToProps
 )(reduxFormAddBoard);

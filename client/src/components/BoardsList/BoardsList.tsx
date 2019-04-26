@@ -3,16 +3,16 @@ import BoardCard from '../BoardCard/BoardCard';
 import './BoardsList.css';
 import { Link, Route } from 'react-router-dom';
 
+type Props = {
+  boards: BoardsInterface[];
+};
+
 export interface BoardsInterface {
   id: string;
   name: string;
 }
 
-const BoardsList: React.FC<any> = ({
-  boards,
-}: {
-  boards: BoardsInterface[];
-}) => (
+const BoardsList: React.FC<Props> = ({ boards }) => (
   <div className={'container'}>
     <div className={'row'}>
       {boards.map(board => (

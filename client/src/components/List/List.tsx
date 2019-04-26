@@ -1,12 +1,11 @@
 import React from 'react';
 import './List.css';
-import CardPlain from 'components/CardPlain/CardPlain';
 import { Draggable, Droppable } from 'react-beautiful-dnd';
 import TasksContainer from 'components/TasksContainer/TasksContainer';
 
 export type ListProps = {
+  [index: number]: object;
   id: number;
-  stateId: string;
   board_id: number;
   name: string;
   order: number;
@@ -25,7 +24,7 @@ class List extends React.Component<ListProps> {
     // }
     return (
       <Draggable
-        draggableId={this.props.stateId}
+        draggableId={`${this.props.id}`}
         index={this.props.index}
         type={`LIST`}
       >
@@ -40,10 +39,9 @@ class List extends React.Component<ListProps> {
               {...provided.dragHandleProps}
             >
               {this.props.name}
-              {this.props.stateId}
             </div>
             <Droppable
-              droppableId={`${this.props.stateId}`}
+              droppableId={`${this.props.id}`}
               type={`TASK`}
             >
               {(provided, snapshot) => (

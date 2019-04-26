@@ -1,10 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import {
-  getUid,
-  getJwt,
-  AuthState,
-} from '../redux/modules/auth';
+import { getUid, getJwt } from '../redux/modules/auth';
 import { AppState } from 'redux/modules/rootReducer';
 
 type Props = {
@@ -47,7 +43,7 @@ export default (ChildComponent: Function) => {
     }
   }
 
-  function mapStateToProps({ auth }: AppState): any {
+  function mapStateToProps({ auth }: AppState) {
     return {
       authorized: getJwt(auth),
       uid: getUid(auth),

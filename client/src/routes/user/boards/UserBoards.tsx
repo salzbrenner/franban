@@ -1,52 +1,54 @@
-import React, { useState, useEffect } from 'react';
-import { getUserBoards } from 'redux/modules/user';
-import BoardsList, {
-  BoardsInterface,
-} from 'components/BoardsList/BoardsList';
+import React, { useEffect, FunctionComponent } from 'react';
+import {
+  getUserBoards,
+  userBoards,
+} from 'redux/modules/user';
+import BoardsList from 'components/BoardsList/BoardsList';
 import { connect } from 'react-redux';
 import { AppState } from 'redux/modules/rootReducer';
 import FormAddBoard from 'components/FormAddBoard/FormAddBoard';
 import './UserBoards.css';
 import { subscribeToBoards } from 'services/socket';
 
-interface UserBoardsInterface {
-  uid: any;
-  boards?: BoardsInterface[];
-  getUserBoards?: Function;
-}
+type Props = ReturnType<typeof mapStateToProps> &
+  typeof mapDispatchToProps;
 
-const UserBoards = ({
-  uid,
-  boards,
-  getUserBoards,
-}: UserBoardsInterface) => {
+type OwnProps = {
+  uid: string;
+};
+
+const UserBoards: FunctionComponent<Props> = props => {
+  const { uid, boards, getUserBoards } = props;
   useEffect(() => {
-    if (!isNaN(uid) && getUserBoards) {
-      // make the call, which is available in store
+    if (getUserBoards) {
       getUserBoards(uid);
       subscribeToBoards(() => getUserBoards(uid));
     }
   }, []);
 
-  if (isNaN(uid)) {
-    return <h1>NOT FOUND</h1>;
-  } else {
-    return (
-      <>
-        <FormAddBoard />
-        <BoardsList boards={boards} />
-      </>
-    );
-  }
+  return (
+    <>
+      <FormAddBoard />
+      <BoardsList boards={boards} />
+    </>
+  );
 };
 
-function mapStateToProps({ user }: AppState): any {
+function mapStateToProps(
+  { user }: AppState,
+  ownProps: OwnProps
+) {
   return {
-    boards: user.boards,
+    boards: userBoards(user),
+    ...ownProps,
   };
 }
 
+const mapDispatchToProps: any = {
+  getUserBoards: getUserBoards,
+};
+
 export default connect(
   mapStateToProps,
-  { getUserBoards }
+  mapDispatchToProps
 )(UserBoards);

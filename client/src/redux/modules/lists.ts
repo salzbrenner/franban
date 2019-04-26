@@ -3,6 +3,7 @@ import { getTasks } from 'redux/modules/tasks';
 import { ListProps } from 'components/List/List';
 import { ActionInterface } from 'redux/modules/action.type';
 import { AxiosPromise, AxiosResponse } from 'axios';
+import { ThunkDispatch } from 'redux-thunk';
 
 export const GET_LISTS = 'lists/GET_LISTS';
 export const RESET_LISTS = 'lists/RESET_LISTS';
@@ -121,13 +122,16 @@ export const getLists: getListsInterface = (
       )
     ).then(allRes => allRes);
 
-    const lists = listsResponse.reduce((a: any, b: any) => {
-      const { order, ...rest } = b;
-      a[b.id] = {
-        ...rest,
-      };
-      return a;
-    }, {});
+    const lists = listsResponse.reduce(
+      (a: ListProps, b: ListProps) => {
+        const { order, ...rest } = b;
+        a[b.id] = {
+          ...rest,
+        };
+        return a;
+      },
+      {}
+    );
 
     dispatch({
       type: GET_LISTS,
@@ -153,9 +157,10 @@ export const listLoading = (
   };
 };
 
-export const getListsAndTasks: any = (
-  boardId: number
-) => async (dispatch: Function, getState: Function) => {
+export const getListsAndTasks = (boardId: number) => async (
+  dispatch: Function,
+  getState: Function
+): Promise<void> => {
   try {
     // await dispatch(getLists(boardId));
     const lists = getState().lists.lists;
@@ -169,18 +174,21 @@ export const getListsAndTasks: any = (
   }
 };
 
-export const updateListsOrder: any = (order: any) => {
+export const updateListsOrder = (order: any) => {
   return {
     type: UPDATE_LISTS_ORDER,
     payload: order,
   };
 };
 
-export const updateListsOrderAndSendToServer: any = (
-  boardId: any,
-  listId: any,
-  order: any
-) => async (dispatch: Function, getState: Function) => {
+export const updateListsOrderAndSendToServer = (
+  boardId: number,
+  listId: number,
+  order: number[]
+) => async (
+  dispatch: ThunkDispatch<{}, {}, any>,
+  getState: Function
+): Promise<void> => {
   try {
     // update store so DND maintains order
     await dispatch(updateListsOrder(order));
@@ -192,11 +200,14 @@ export const updateListsOrderAndSendToServer: any = (
   }
 };
 
-export const updateListOnServer: any = (
-  boardId: any,
-  listId: any,
-  order: any
-) => async (dispatch: Function, getState: Function) => {
+export const updateListOnServer = (
+  boardId: number,
+  listId: number,
+  order: number[]
+) => async (
+  dispatch: ThunkDispatch<{}, {}, any>,
+  getState: Function
+): Promise<void> => {
   try {
     const lists = getState().lists.lists;
     const index = order.indexOf(listId);
@@ -207,7 +218,6 @@ export const updateListOnServer: any = (
       index,
       lists[listId].name
     );
-    console.log(res);
   } catch (e) {
     console.log(e);
   }
