@@ -215,32 +215,10 @@ paths:
         200:
           description: Successful read of board's lists
 
-#  /lists/{board_id}:
-#    get:
-#      operationId: src.lists.controller.get_all
-#      description: Read lists belonging to board
-#      parameters:
-#      - in: path
-#        name: board_id
-#        required: true
-#        schema:
-#          type: integer
-#        description: The board's id, which the list belongs to
-#      responses:
-#        200:
-#          description: Successful read of board's lists
-
-  /lists/{board_id}/{id}:
     put:
       operationId: src.lists.controller.put
       description: Update a list's name and/or order
       parameters:
-      - name: board_id
-        in: path
-        required: true
-        schema:
-          type: integer
-        description: the parent's board id
       - name: id
         in: path
         required: true
@@ -254,8 +232,6 @@ paths:
             schema:
               type: object
               properties:
-#                lists_order:
-#                  type: string
                 order:
                   type: number
                 name:
@@ -268,12 +244,6 @@ paths:
       operationId: src.lists.controller.delete
       description: Delete a List by id
       parameters:
-      - name: board_id
-        in: path
-        required: true
-        schema:
-          type: integer
-        description: the parent's board id
       - in: path
         name: id
         required: true
@@ -324,68 +294,6 @@ paths:
           description: Successful read of list's tasks
 
   ################################################
-
-#  /todos:
-#    post:
-#      operationId: src.todos.controller.create
-#      description: Create a Todo
-#      requestBody:
-#        required: true
-#        content:
-#          application/json:
-#            schema:
-#              type: object
-#              properties:
-#                name:     # <!--- form field name
-#                  type: string
-#                created_by:    # <!--- form field name
-#                  type: integer
-#              required:
-#              - name
-#              - created_by
-#      responses:
-#        201:
-#          description: Successful Todo creation
-#
-#    get:
-#      operationId: src.todos.controller.get_all
-#      description: Read the list of Todos
-#      parameters:
-#      - in: query
-#        name: created_by
-#        schema:
-#          type: integer
-#        description: Th
-#      responses:
-#        200:
-#          description: Successful Todos read
-#
-#  /todos/{id}:
-#    get:
-#      operationId: src.todos.controller.get
-#      description: Read a Todo by id
-#      parameters:
-#      - in: path
-#        name: id
-#        schema:
-#          type: integer
-#        description: The Todo id
-#      responses:
-#        200:
-#          description: Successful Todo read
-#
-#    delete:
-#      operationId: src.todos.controller.delete
-#      description: Delete a Todo by id
-#      parameters:
-#      - in: path
-#        name: id
-#        schema:
-#          type: integer
-#        description: The puppy id
-#      responses:
-#        204:
-#          description: Todo deleted
 
 components:
   securitySchemes:

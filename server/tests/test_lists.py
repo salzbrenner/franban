@@ -54,7 +54,7 @@ class TestLists(object):
 
         # Since only two lists exist, the max order possible is 1 i.e. [0,1].
         # The list is being updated to order of 100 - so it should get the max order value - 1
-        res = authenticated_client.put('/api/lists/1/1', data=data, headers=headers)
+        res = authenticated_client.put('/api/lists/1', data=data, headers=headers)
         assert res.status_code == 200
         assert 'Updated List' in str(res.data)
         assert '1' in str(res.data)
@@ -79,5 +79,5 @@ class TestLists(object):
         :return:
         """
         # first board has id of 1
-        res = authenticated_client.delete('/api/lists/1/1', headers=get_auth_headers(authenticated_client))
+        res = authenticated_client.delete('/api/lists/1', headers=get_auth_headers(authenticated_client))
         assert res.status_code == 204

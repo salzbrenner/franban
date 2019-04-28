@@ -62,7 +62,7 @@ const ListsDND: FunctionComponent<Props> = props => {
       );
 
       updateListsOrderAndSendToServer(
-        boardId,
+        // boardId,
         draggableId,
         newListOrder
       );

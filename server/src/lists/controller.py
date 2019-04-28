@@ -59,19 +59,18 @@ def get(id):
 #     return results, 200
 
 
-def put(board_id, id, body):
+def put(id, body):
     """
     Responds to PUT request for /api/lists/<board_id>/<id>
     - Updates board name
     - Updates the order of a single list in a board
     - Other list orders in same board are updated automatically
     via the relationship definition in Board
-    :param board_id:
     :param id:
     :param body: the request body needs key: 'name'
     :return:
     """
-    list = List.query.filter_by(board_id=board_id, id=id).first()
+    list = List.query.filter_by(id=id).first()
     name = body['name']
     position = int(body['order'])
     if list:
@@ -81,13 +80,13 @@ def put(board_id, id, body):
         return 'List does not exist', 404
 
 
-def delete(board_id, id):
+def delete(id):
     """
     :param id:
     Responds to DELETE request for /api/lists/<board_id>/<id>
     :return:
     """
-    list = List.query.filter_by(board_id=board_id, id=id).first()
+    list = List.query.filter_by(id=id).first()
 
     if list:
         list.delete()

@@ -184,7 +184,7 @@ export const getList = (listId: number): AxiosPromise => {
 };
 
 export const updateListsOrder = (
-  boardId: number,
+  // boardId: number,
   listId: number,
   order: string,
   name: string
@@ -199,7 +199,7 @@ export const updateListsOrder = (
 
   return makeApiCall(
     'put',
-    `${baseUrl}/lists/${boardId}/${listId}`,
+    `${baseUrl}/lists/${listId}`,
     bodyFormData,
     headers
   );
