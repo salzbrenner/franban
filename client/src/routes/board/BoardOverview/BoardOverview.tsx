@@ -5,7 +5,7 @@ import ListsContainer from 'components/ListsContainer/ListsContainer';
 type Props = {
   boardId: number;
   name: string;
-  listIds: any[];
+  listIds: number[];
 };
 
 const BoardOverview: FC<Props> = ({

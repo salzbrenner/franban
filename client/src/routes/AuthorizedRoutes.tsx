@@ -1,11 +1,6 @@
 import React from 'react';
 import requireAuth from '../components/requireAuth';
-import {
-  Route,
-  Switch,
-  Redirect,
-  RouteComponentProps,
-} from 'react-router-dom';
+import { Route, Switch, Redirect } from 'react-router-dom';
 import UserBoards from './user/boards/UserBoards';
 import Styleguide from './styleguide/Styleguide';
 import BoardOverviewContainer from 'routes/board/BoardOverview/BoardOverviewContainer';

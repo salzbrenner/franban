@@ -43,7 +43,7 @@ class TestLists(object):
         }
         data = {
             'name': 'Updated List',
-            'order': 100,
+            'order': 1,
         }
         # Create additional list, will have an order of 1
         new_list_data = {
@@ -59,16 +59,18 @@ class TestLists(object):
         assert 'Updated List' in str(res.data)
         assert '1' in str(res.data)
 
-    def test_list_get_all(self, authenticated_client):
+    def test_list_get(self, authenticated_client):
         """
-        Tests that user can get all lists related to a board
+        Tests that user can get list
         :param authenticated_client:
         :return:
         """
         headers = get_auth_headers(authenticated_client)
         res = authenticated_client.get('/api/lists/1', headers=headers)
         assert res.status_code == 200
-        assert len(res.json) == 2
+        assert res.json.get('id') == 1
+        assert res.json.get('board_id') == 1
+        assert res.json.get('name') == 'Updated List'
 
     def test_list_deletion(self, authenticated_client):
         """
@@ -76,7 +78,6 @@ class TestLists(object):
         :param authenticated_client:
         :return:
         """
-
         # first board has id of 1
         res = authenticated_client.delete('/api/lists/1/1', headers=get_auth_headers(authenticated_client))
         assert res.status_code == 204

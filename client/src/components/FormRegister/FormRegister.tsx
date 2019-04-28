@@ -1,5 +1,9 @@
-import React from 'react';
-import { Field, reduxForm } from 'redux-form';
+import React, { FC } from 'react';
+import {
+  Field,
+  InjectedFormProps,
+  reduxForm,
+} from 'redux-form';
 import {
   register,
   getErrorMessage,
@@ -7,7 +11,11 @@ import {
 } from 'redux/modules/auth';
 import { connect } from 'react-redux';
 
-const FormRegister = (props: any) => {
+type Props = ReturnType<typeof mapStateToProps> &
+  typeof mapDispatchToProps &
+  InjectedFormProps;
+
+const FormRegister: FC<Props> = props => {
   const { handleSubmit, pristine, submitting } = props;
 
   const submit = (values: {}) => {
@@ -59,11 +67,15 @@ function mapStateToProps(state: AuthState) {
   };
 }
 
+const mapDispatchToProps: any = {
+  register,
+};
+
 const reduxFormRegister = reduxForm({
   form: 'register', // a unique identifier for this form
 })(FormRegister);
 
 export default connect(
   mapStateToProps,
-  { register }
+  mapDispatchToProps
 )(reduxFormRegister);

@@ -1,5 +1,9 @@
-import React from 'react';
-import { Field, reduxForm } from 'redux-form';
+import React, { FC } from 'react';
+import {
+  Field,
+  InjectedFormProps,
+  reduxForm,
+} from 'redux-form';
 import {
   login,
   getErrorMessage,
@@ -11,7 +15,11 @@ import ButtonMain from 'components/ButtonMain/ButtonMain';
 import './FormLogin.css';
 import { Link } from 'react-router-dom';
 
-const FormLogin = (props: any) => {
+type Props = ReturnType<typeof mapStateToProps> &
+  typeof mapDispatchToProps &
+  InjectedFormProps;
+
+const FormLogin: FC<Props> = props => {
   const { handleSubmit, pristine, submitting } = props;
 
   const submit = (values: FormAuthValues) => {
@@ -71,6 +79,10 @@ function mapStateToProps(state: AuthState) {
     errorMessage: getErrorMessage(state),
   };
 }
+
+const mapDispatchToProps: any = {
+  login,
+};
 
 const reduxFormLogin = reduxForm({
   form: 'login', // a unique identifier for this form

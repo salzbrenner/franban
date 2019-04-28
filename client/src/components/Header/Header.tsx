@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import './Header.css';
+import { mapStateToProps } from './HeaderContainer';
 
-type Props = {
-  authorized?: string;
-};
+type Props = ReturnType<typeof mapStateToProps>;
 
 class Header extends Component<Props> {
   renderLinks() {

@@ -38,10 +38,10 @@ const setLoginOrRegistrationFormData = (
  * @return {AxiosPromise}
  */
 const makeApiCall = (
-  type: any,
-  path: any,
+  type: string,
+  path: string,
   data: any,
-  headers: any
+  headers: {}
 ) => {
   return instance(path, {
     method: type,
@@ -143,7 +143,7 @@ export const getUserBoards = (uid: string) => {
   });
 };
 
-export const getBoard = (boardId: string) => {
+export const getBoard = (boardId: number) => {
   const headers = {
     'Content-Type': 'application/json',
   };
@@ -186,7 +186,7 @@ export const getList = (listId: number): AxiosPromise => {
 export const updateListsOrder = (
   boardId: number,
   listId: number,
-  order: any,
+  order: string,
   name: string
 ) => {
   const headers = {

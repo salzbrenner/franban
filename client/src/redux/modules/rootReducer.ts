@@ -9,9 +9,9 @@ import board, { BoardState } from './boards';
 export interface AppState {
   user: UserState;
   auth: AuthState;
-  lists: any;
+  lists: ListsState;
   tasks: TasksState;
-  board: any;
+  board: BoardState;
   form: any;
 }
 

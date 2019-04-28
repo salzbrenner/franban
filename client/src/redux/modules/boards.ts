@@ -1,6 +1,6 @@
 import * as api from '../../services/api';
 import { ActionInterface } from 'redux/modules/action.type';
-import { RESET_LISTS } from 'redux/modules/lists';
+import { ThunkDispatch } from 'redux-thunk';
 
 export const GET_BOARD = 'boards/GET_BOARD';
 export const RESET_BOARD = 'boards/RESET_BOARD';
@@ -32,10 +32,10 @@ export const resetBoard = () => {
   };
 };
 
-export const getBoard: any = (boardId: any) => async (
-  dispatch: Function,
+export const getBoard = (boardId: number) => async (
+  dispatch: ThunkDispatch<{}, {}, any>,
   getState: Function
-) => {
+): Promise<void> => {
   try {
     const res = await api.getBoard(boardId);
     dispatch({

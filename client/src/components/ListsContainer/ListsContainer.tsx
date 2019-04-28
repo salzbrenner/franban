@@ -14,7 +14,7 @@ import ListsDND from 'components/ListsDND/ListsDnd';
 
 type OwnProps = {
   boardId: number;
-  listIds: any;
+  listIds: number[];
 };
 
 export function mapStateToProps(

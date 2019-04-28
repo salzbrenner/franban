@@ -65,6 +65,9 @@ paths:
           description: User logged out
       security: []
 
+
+  # User routes
+  ###############
   /{uid}:
     get:
       operationId: src.users.controller.get_profile
@@ -173,6 +176,8 @@ paths:
         204:
           description: Todo deleted
 
+  # Lists routes
+  ###############
   /lists:
     post:
       operationId: src.lists.controller.create
@@ -195,13 +200,13 @@ paths:
         201:
           description: Successful List creation
 
-  /lists/{list_id}:
+  /lists/{id}:
     get:
       operationId: src.lists.controller.get
       description: Read list belonging to list
       parameters:
       - in: path
-        name: list_id
+        name: id
         required: true
         schema:
           type: integer
@@ -320,67 +325,67 @@ paths:
 
   ################################################
 
-  /todos:
-    post:
-      operationId: src.todos.controller.create
-      description: Create a Todo
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                name:     # <!--- form field name
-                  type: string
-                created_by:    # <!--- form field name
-                  type: integer
-              required:
-              - name
-              - created_by
-      responses:
-        201:
-          description: Successful Todo creation
-
-    get:
-      operationId: src.todos.controller.get_all
-      description: Read the list of Todos
-      parameters:
-      - in: query
-        name: created_by
-        schema:
-          type: integer
-        description: Th
-      responses:
-        200:
-          description: Successful Todos read
-
-  /todos/{id}:
-    get:
-      operationId: src.todos.controller.get
-      description: Read a Todo by id
-      parameters:
-      - in: path
-        name: id
-        schema:
-          type: integer
-        description: The Todo id
-      responses:
-        200:
-          description: Successful Todo read
-
-    delete:
-      operationId: src.todos.controller.delete
-      description: Delete a Todo by id
-      parameters:
-      - in: path
-        name: id
-        schema:
-          type: integer
-        description: The puppy id
-      responses:
-        204:
-          description: Todo deleted
+#  /todos:
+#    post:
+#      operationId: src.todos.controller.create
+#      description: Create a Todo
+#      requestBody:
+#        required: true
+#        content:
+#          application/json:
+#            schema:
+#              type: object
+#              properties:
+#                name:     # <!--- form field name
+#                  type: string
+#                created_by:    # <!--- form field name
+#                  type: integer
+#              required:
+#              - name
+#              - created_by
+#      responses:
+#        201:
+#          description: Successful Todo creation
+#
+#    get:
+#      operationId: src.todos.controller.get_all
+#      description: Read the list of Todos
+#      parameters:
+#      - in: query
+#        name: created_by
+#        schema:
+#          type: integer
+#        description: Th
+#      responses:
+#        200:
+#          description: Successful Todos read
+#
+#  /todos/{id}:
+#    get:
+#      operationId: src.todos.controller.get
+#      description: Read a Todo by id
+#      parameters:
+#      - in: path
+#        name: id
+#        schema:
+#          type: integer
+#        description: The Todo id
+#      responses:
+#        200:
+#          description: Successful Todo read
+#
+#    delete:
+#      operationId: src.todos.controller.delete
+#      description: Delete a Todo by id
+#      parameters:
+#      - in: path
+#        name: id
+#        schema:
+#          type: integer
+#        description: The puppy id
+#      responses:
+#        204:
+#          description: Todo deleted
 
 components:
   securitySchemes:

@@ -126,17 +126,19 @@ const ListsDND: FunctionComponent<Props> = props => {
                 {...provided.droppableProps}
                 ref={provided.innerRef}
               >
-                {order.map((listId: any, index: any) => {
-                  return (
-                    <List
-                      key={listId}
-                      loading={true}
-                      id={listId}
-                      {...lists[listId]}
-                      index={index}
-                    />
-                  );
-                })}
+                {order.map(
+                  (listId: number, index: number) => {
+                    return (
+                      <List
+                        key={listId}
+                        loading={true}
+                        id={listId}
+                        {...lists[listId]}
+                        index={index}
+                      />
+                    );
+                  }
+                )}
                 {provided.placeholder}
               </div>
             )}

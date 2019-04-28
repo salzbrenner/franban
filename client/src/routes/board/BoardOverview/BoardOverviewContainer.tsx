@@ -35,7 +35,7 @@ function mapStateToProps({ board }: AppState) {
   };
 }
 
-const mapDispatchToProps = {
+const mapDispatchToProps: any = {
   getBoard,
   resetBoard,
 };

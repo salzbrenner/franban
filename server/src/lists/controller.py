@@ -1,9 +1,6 @@
 from flask import Blueprint, json
-
-from src.boards.model import Board
 from .model import List
 from connexion import request, NoContent
-from src import db
 
 lists = Blueprint('lists', __name__)
 
@@ -25,8 +22,13 @@ def create(body):
     return response, 201
 
 
-def get(list_id):
-    list = List.query.filter_by(id=list_id).first()
+def get(id):
+    """
+    Responds to a GET request for /api/lists/<list_id>
+    :param list_id:
+    :return:
+    """
+    list = List.query.filter_by(id=id).first()
     res = {
         'name': list.name,
         'order': list.order,
@@ -36,25 +38,25 @@ def get(list_id):
     return res, 200
 
 
-def get_all(board_id):
-    """
-    Responds to GET request for /api/lists/<board_id>
-    :param board_id:
-    :return:
-    """
-    results = []
-    lists = List.query.filter_by(board_id=board_id).order_by(List.order)
-
-    for list in lists:
-        res = {
-            'name': list.name,
-            'order': list.order,
-            'id': list.id,
-            'board_id': list.board_id
-        }
-        results.append(res)
-
-    return results, 200
+# def get_all(board_id):
+#     """
+#     Responds to GET request for /api/lists/<board_id>
+#     :param board_id:
+#     :return:
+#     """
+#     results = []
+#     lists = List.query.filter_by(board_id=board_id).order_by(List.order)
+#
+#     for list in lists:
+#         res = {
+#             'name': list.name,
+#             'order': list.order,
+#             'id': list.id,
+#             'board_id': list.board_id
+#         }
+#         results.append(res)
+#
+#     return results, 200
 
 
 def put(board_id, id, body):
@@ -71,9 +73,9 @@ def put(board_id, id, body):
     """
     list = List.query.filter_by(board_id=board_id, id=id).first()
     name = body['name']
-    order = int(body['order'])
+    position = int(body['order'])
     if list:
-        list.update(name, order)
+        list.update(name, position)
         return 'Updated list name to: ' + list.name + ' and order to:' + str(list.order), 200
     else:
         return 'List does not exist', 404

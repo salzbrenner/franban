@@ -3,7 +3,6 @@ import {
   listLoading,
   updateListTasks,
 } from 'redux/modules/lists';
-import { Dispatch } from 'redux';
 
 export const GET_TASKS = 'tasks/GET_TASKS';
 

@@ -8,7 +8,7 @@ export const ADD_BOARD = 'user/ADD_BOARD';
 export const ADD_ERROR = 'user/ADD_BOARD';
 
 export interface UserState {
-  boards: any[];
+  boards: {}[];
   readError: string;
   addErrorMessage: string;
 }

@@ -10,7 +10,7 @@ export type ListProps = {
   name: string;
   order: number;
   taskIds: string[];
-  index?: any;
+  index: number;
   loading?: boolean;
 };
 

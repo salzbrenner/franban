@@ -1,6 +1,5 @@
 import * as api from '../../services/api';
 import { ActionInterface } from 'redux/modules/action.type';
-import { AppState } from 'redux/modules/rootReducer';
 
 export const AUTHENTICATED = 'auth/AUTHENTICATED';
 export const AUTHENTICATION_ERROR =
@@ -25,7 +24,7 @@ export const initialState: AuthState = {
 
 export default function reducer(
   state = initialState,
-  action: any
+  action: ActionInterface
 ) {
   switch (action.type) {
     case AUTHENTICATED:

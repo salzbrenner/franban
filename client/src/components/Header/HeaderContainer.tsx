@@ -1,10 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import Header from './Header';
-import { AuthState, getJwt } from 'redux/modules/auth';
+import { getJwt } from 'redux/modules/auth';
 import { AppState } from 'redux/modules/rootReducer';
 
-const mapStateToProps = ({ auth }: AppState): any => {
+export const mapStateToProps = ({ auth }: AppState) => {
   return {
     authorized: getJwt(auth),
   };

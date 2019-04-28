@@ -158,7 +158,7 @@ export const listLoading = (
 };
 
 export const getListsAndTasks = (boardId: number) => async (
-  dispatch: Function,
+  dispatch: ThunkDispatch<{}, {}, any>,
   getState: Function
 ): Promise<void> => {
   try {
@@ -174,7 +174,7 @@ export const getListsAndTasks = (boardId: number) => async (
   }
 };
 
-export const updateListsOrder = (order: any) => {
+export const updateListsOrder = (order: number[]) => {
   return {
     type: UPDATE_LISTS_ORDER,
     payload: order,
@@ -210,7 +210,7 @@ export const updateListOnServer = (
 ): Promise<void> => {
   try {
     const lists = getState().lists.lists;
-    const index = order.indexOf(listId);
+    const index = order.indexOf(listId).toString();
 
     const res = await api.updateListsOrder(
       boardId,

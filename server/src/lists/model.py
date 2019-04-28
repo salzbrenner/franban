@@ -6,7 +6,6 @@ class List(db.Model):
     """
     This class represents the list table
     """
-
     id = db.Column(db.Integer, primary_key=True, unique=True)
     name = db.Column(db.String(255))
     order = db.Column(db.Integer)
@@ -30,7 +29,7 @@ class List(db.Model):
         db.session.add(self)
         db.session.commit()
 
-    def update(self, name, order):
+    def update(self, name, position):
         self.name = name
         # update order
         # ordering is handled via the relationship on Board,
@@ -38,7 +37,7 @@ class List(db.Model):
         # https://docs.sqlalchemy.org/en/13/orm/extensions/orderinglist.html
         board_lists = self.board.lists
         board_lists.remove(self)
-        board_lists.insert(order, self)
+        board_lists.insert(position, self)
 
         db.session.commit()
 

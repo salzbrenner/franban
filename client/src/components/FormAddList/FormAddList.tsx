@@ -1,5 +1,9 @@
-import React from 'react';
-import { Field, reduxForm } from 'redux-form';
+import React, { FC } from 'react';
+import {
+  Field,
+  InjectedFormProps,
+  reduxForm,
+} from 'redux-form';
 import {
   login,
   getErrorMessage,
@@ -10,7 +14,11 @@ import { connect } from 'react-redux';
 import ButtonMain from 'components/ButtonMain/ButtonMain';
 import './FormAddList.css';
 
-const FormAddList = (props: any) => {
+type Props = ReturnType<typeof mapStateToProps> &
+  typeof mapDispatchToProps &
+  InjectedFormProps & {};
+
+const FormAddList: FC<Props> = props => {
   const { handleSubmit, pristine, submitting } = props;
 
   const submit = (values: FormAuthValues) => {
@@ -58,11 +66,15 @@ function mapStateToProps(state: AuthState) {
   };
 }
 
+const mapDispatchToProps: any = {
+  login,
+};
+
 const reduxFormAddList = reduxForm({
   form: 'addList', // a unique identifier for this form
 })(FormAddList);
 
 export default connect(
   mapStateToProps,
-  { login }
+  mapDispatchToProps
 )(reduxFormAddList);
