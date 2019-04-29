@@ -15,11 +15,8 @@ type Props = ReturnType<typeof mapStateToProps> &
 
 const ListsDND: FunctionComponent<Props> = props => {
   const {
-    getLists,
     updateListTasks,
-    boardId,
     lists,
-    listIds,
     order,
     getListsAndTasks,
     resetLists,
@@ -27,7 +24,6 @@ const ListsDND: FunctionComponent<Props> = props => {
   } = props;
 
   useEffect(() => {
-    getLists(listIds);
     return function cleanup() {
       resetLists();
     };
@@ -82,7 +78,7 @@ const ListsDND: FunctionComponent<Props> = props => {
         taskIds: newTaskIds,
       };
 
-      // updateListTasks(newList.id, newList);
+      updateListTasks(newList.id, newList);
       return;
     }
 
@@ -101,14 +97,8 @@ const ListsDND: FunctionComponent<Props> = props => {
       taskIds: finishTaskIds,
     };
     // update both lists
-    // updateListTasks(
-    //   newStartList.id,
-    //   newStartList
-    // );
-    // updateListTasks(
-    //   newFinishList.id,
-    //   newFinishList
-    // );
+    updateListTasks(newStartList.id, newStartList);
+    updateListTasks(newFinishList.id, newFinishList);
   }
 
   return (

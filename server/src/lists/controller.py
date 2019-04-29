@@ -22,6 +22,29 @@ def create(body):
     return response, 201
 
 
+def get_all_in_board(**kwargs):
+    """
+    Responds to GET request for /api/lists
+    :param board_id:
+    :return:
+    """
+    board_id = request.args.get('board')
+
+    results = []
+    lists = List.query.filter_by(board_id=board_id).all()
+
+    for list in lists:
+        res = {
+            'name': list.name,
+            'order': list.order,
+            'id': list.id,
+            'board_id': list.board_id
+        }
+        results.append(res)
+
+    return results, 200
+
+
 def get(id):
     """
     Responds to a GET request for /api/lists/<list_id>

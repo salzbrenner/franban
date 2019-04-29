@@ -1,9 +1,9 @@
-import axios, { AxiosPromise } from 'axios';
+import axios, { AxiosInstance, AxiosPromise } from 'axios';
 export const baseUrl = `${
   process.env.REACT_APP_BASE_URL
 }/api`;
 
-export const instance = axios.create({
+export const instance: AxiosInstance = axios.create({
   baseURL: baseUrl,
   withCredentials: true,
   headers: {
@@ -158,12 +158,15 @@ export const getBoard = (boardId: number) => {
  *  @param boardId
  *  @return {AxiosPromise}
  */
-export const getLists = (boardId: number) => {
+export const getListsForBoard = (boardId: number) => {
   const headers = {
     'Content-Type': 'application/json',
   };
 
-  return instance.get(`${baseUrl}/lists/${boardId}`, {
+  return instance.get(`${baseUrl}/lists`, {
+    params: {
+      board: boardId,
+    },
     headers,
   });
 };

@@ -4,13 +4,13 @@ from src.lists.model import List
 
 class Task(db.Model):
     """
-    This class represents the list table
+    This class represents the task table
     """
-
     id = db.Column(db.Integer, primary_key=True, unique=True)
     name = db.Column(db.String(255))
     order = db.Column(db.Integer)
     list_id = db.Column(db.Integer, db.ForeignKey(List.id))
+    list_order = db.deferred(db.select([order]).where(List.id == list_id))
 
     def __init__(self, name, list_id):
         self.name = name

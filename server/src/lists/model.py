@@ -1,3 +1,4 @@
+from sqlalchemy.ext.orderinglist import ordering_list
 from src import db
 from src.boards.model import Board
 
@@ -11,6 +12,10 @@ class List(db.Model):
     order = db.Column(db.Integer)
     board_id = db.Column(db.Integer, db.ForeignKey(Board.id))
     board_order = db.deferred(db.select([order]).where(Board.id == board_id))
+    lists = db.relationship('Task',
+                            order_by="Task.list_order",
+                            backref='list',
+                            collection_class=ordering_list('order'))
 
     def __init__(self, name, board_id):
         self.name = name

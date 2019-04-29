@@ -105,7 +105,43 @@ export const updateListTasks = (
   };
 };
 
-export const getLists: getListsInterface = (
+export const getListsForBoard = (
+  listIds: any,
+  boardId: number
+) => async (
+  dispatch: Function,
+  getState: Function
+): Promise<void> => {
+  try {
+    // update state order with order from server
+    dispatch(updateListsOrder(listIds));
+
+    const res: AxiosResponse = await api.getListsForBoard(
+      boardId
+    );
+    const lists = res.data.reduce(
+      (a: ListProps, b: ListProps) => {
+        const { order, ...rest } = b;
+        a[b.id] = {
+          ...rest,
+        };
+        return a;
+      },
+      {}
+    );
+
+    await dispatch({
+      type: GET_LISTS,
+      payload: {
+        lists,
+      },
+    });
+  } catch (e) {
+    console.log(e);
+  }
+};
+
+export const getList: getListsInterface = (
   listIds: number[]
 ) => async (dispatch: Function, getState: Function) => {
   try {
@@ -133,12 +169,14 @@ export const getLists: getListsInterface = (
       {}
     );
 
-    dispatch({
+    await dispatch({
       type: GET_LISTS,
       payload: {
         lists,
       },
     });
+
+    // dispatch()
   } catch (e) {
     console.log(e);
   }

@@ -200,6 +200,18 @@ paths:
         201:
           description: Successful List creation
 
+    get:
+      operationId: src.lists.controller.get_all_in_board
+      description: Get all lists for a board
+      parameters:
+      - in: query
+        name: board
+        schema:
+          type: integer
+      responses:
+        200:
+          description: Successful read of board's lists
+
   /lists/{id}:
     get:
       operationId: src.lists.controller.get
@@ -213,7 +225,7 @@ paths:
         description: The list's id
       responses:
         200:
-          description: Successful read of board's lists
+          description: Successful read of list
 
     put:
       operationId: src.lists.controller.put

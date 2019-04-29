@@ -12,30 +12,23 @@ type Props = ReturnType<typeof mapStateToProps> &
 const BoardOverviewContainer: FunctionComponent<
   Props
 > = props => {
-  // TODO: move this to BoardOverviewComponent
   const boardId = +props.match.params.boardId;
-  useEffect(() => {
-    props.getBoard(boardId);
-    return function cleanup() {
-      props.resetBoard();
-    };
-  }, []);
   return (
     <BoardOverview
-      boardId={boardId}
       name={props.board.name}
-      listIds={props.board.lists}
+      boardId={boardId}
+      {...props}
     />
   );
 };
 
-function mapStateToProps({ board }: AppState) {
+export function mapStateToProps({ board }: AppState) {
   return {
     board,
   };
 }
 
-const mapDispatchToProps: any = {
+export const mapDispatchToProps: any = {
   getBoard,
   resetBoard,
 };

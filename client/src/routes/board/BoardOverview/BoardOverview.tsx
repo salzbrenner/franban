@@ -1,28 +1,31 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect } from 'react';
 import FormAddList from 'components/FormAddList/FormAddList';
 import ListsContainer from 'components/ListsContainer/ListsContainer';
+import {
+  mapDispatchToProps,
+  mapStateToProps,
+} from 'routes/board/BoardOverview/BoardOverviewContainer';
 
-type Props = {
-  boardId: number;
-  name: string;
-  listIds: number[];
-};
+type Props = ReturnType<typeof mapStateToProps> &
+  typeof mapDispatchToProps;
 
 const BoardOverview: FC<Props> = ({
-  boardId,
-  listIds,
   name,
+  getBoard,
+  resetBoard,
+  boardId,
 }) => {
+  useEffect(() => {
+    getBoard(boardId);
+    return function cleanup() {
+      resetBoard();
+    };
+  }, []);
   return (
     <>
       <h1>{name}</h1>
       <div className={`d-inline-flex`}>
-        {listIds && (
-          <ListsContainer
-            boardId={boardId}
-            listIds={listIds}
-          />
-        )}
+        <ListsContainer />
         <FormAddList />
       </div>
     </>

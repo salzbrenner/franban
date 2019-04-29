@@ -1,6 +1,5 @@
 import React from 'react';
 import {
-  getLists,
   getListsAndTasks,
   listOrderSelector,
   listsSelector,
@@ -13,8 +12,8 @@ import { connect } from 'react-redux';
 import ListsDND from 'components/ListsDND/ListsDnd';
 
 type OwnProps = {
-  boardId: number;
-  listIds: number[];
+  // boardId: number;
+  // listIds: number[];
 };
 
 export function mapStateToProps(
@@ -29,7 +28,6 @@ export function mapStateToProps(
 }
 
 export const mapDispatchToProps: any = {
-  getLists,
   updateListTasks,
   getListsAndTasks,
   resetLists,
