@@ -10,6 +10,10 @@ import {
 import { AppState } from 'redux/modules/rootReducer';
 import { connect } from 'react-redux';
 import ListsDND from 'components/ListsDND/ListsDnd';
+import {
+  getTasks,
+  updateTaskOnServer,
+} from 'redux/modules/tasks';
 
 type OwnProps = {
   // boardId: number;
@@ -32,6 +36,8 @@ export const mapDispatchToProps: any = {
   getListsAndTasks,
   resetLists,
   updateListsOrderAndSendToServer,
+  getTasks,
+  updateTaskOnServer,
 };
 
 export default connect(

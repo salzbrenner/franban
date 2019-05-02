@@ -3,6 +3,8 @@ import {
   listLoading,
   updateListTasks,
 } from 'redux/modules/lists';
+import { AxiosResponse } from 'axios';
+import { ThunkDispatch } from 'redux-thunk';
 
 export const GET_TASKS = 'tasks/GET_TASKS';
 
@@ -43,28 +45,38 @@ export const getTasks: getTasksInterface = listId => async (
   getState: Function
 ) => {
   try {
-    const res = await api.getTasks(listId);
-    const taskIds: string[] = [];
-    const tasks = res.data
-      .sort((a: any, b: any) => {
-        return a.order - b.order;
-      })
-      .reduce((a: any, b: any) => {
-        const { ...rest } = b;
-        const taskId = `task-${b.id}`;
-        taskIds.push(taskId);
-        a[`task-${b.id}`] = { ...rest };
-        return a;
-      }, {});
+    const res: AxiosResponse = await api.getTasksForList(
+      listId
+    );
+    const taskIds: number[] = [];
 
-    // add tasks to state
+    const tasks = res.data.reduce((a: any, b: any) => {
+      taskIds.push(b.id);
+      const { order, ...rest } = b;
+      a[b.id] = { ...rest };
+      return a;
+    }, {});
+
+    // const tasks = res.data
+    //   .sort((a: any, b: any) => {
+    //     return a.order - b.order;
+    //   })
+    //   .reduce((a: any, b: any) => {
+    //     const { ...rest } = b;
+    //     const taskId = `task-${b.id}`;
+    //     taskIds.push(taskId);
+    //     a[`task-${b.id}`] = { ...rest };
+    //     return a;
+    //   }, {});
+    //
+    // // add tasks to state
     await dispatch({
       type: GET_TASKS,
       payload: tasks,
     });
-
-    // finish adding taskIds to lists
-    dispatch(addTasksToList(`list-${listId}`, taskIds));
+    //
+    // // finish adding taskIds to lists
+    dispatch(addTasksToList(`${listId}`, taskIds));
   } catch (e) {
     console.log(e);
   }
@@ -77,5 +89,28 @@ export const addTasksToList: any = (
   const list = getState().lists.lists[listId];
   const newList = { ...list, taskIds };
   dispatch(updateListTasks(listId, newList));
-  dispatch(listLoading(listId, false));
+  // dispatch(listLoading(listId, false));
+};
+
+export const updateTaskOnServer = (
+  listId: string,
+  taskId: number,
+  order: number[]
+) => async (
+  dispatch: ThunkDispatch<{}, {}, any>,
+  getState: Function
+): Promise<void> => {
+  try {
+    const tasks = getState().tasks;
+    const index = order.indexOf(taskId).toString();
+
+    const res = await api.updateTasksOrder(
+      listId,
+      taskId,
+      index,
+      tasks[taskId].name
+    );
+  } catch (e) {
+    console.log(e);
+  }
 };

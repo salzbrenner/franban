@@ -18,16 +18,11 @@ const ListsDND: FunctionComponent<Props> = props => {
     updateListTasks,
     lists,
     order,
-    getListsAndTasks,
+    getTasks,
     resetLists,
+    updateTaskOnServer,
     updateListsOrderAndSendToServer,
   } = props;
-
-  useEffect(() => {
-    return function cleanup() {
-      resetLists();
-    };
-  }, []);
 
   function onDragEnd(result: DropResult) {
     const {
@@ -58,7 +53,6 @@ const ListsDND: FunctionComponent<Props> = props => {
       );
 
       updateListsOrderAndSendToServer(
-        // boardId,
         draggableId,
         newListOrder
       );
@@ -79,6 +73,11 @@ const ListsDND: FunctionComponent<Props> = props => {
       };
 
       updateListTasks(newList.id, newList);
+      updateTaskOnServer(
+        newList.id,
+        draggableId,
+        newTaskIds
+      );
       return;
     }
 
@@ -99,6 +98,12 @@ const ListsDND: FunctionComponent<Props> = props => {
     // update both lists
     updateListTasks(newStartList.id, newStartList);
     updateListTasks(newFinishList.id, newFinishList);
+
+    updateTaskOnServer(
+      newFinishList.id,
+      draggableId,
+      finishTaskIds
+    );
   }
 
   return (
@@ -119,13 +124,15 @@ const ListsDND: FunctionComponent<Props> = props => {
                 {order.map(
                   (listId: number, index: number) => {
                     return (
-                      <List
-                        key={listId}
-                        loading={true}
-                        id={listId}
-                        {...lists[listId]}
-                        index={index}
-                      />
+                      <div key={listId}>
+                        <List
+                          loading={true}
+                          id={listId}
+                          {...lists[listId]}
+                          tasksRequestHandler={getTasks}
+                          index={index}
+                        />
+                      </div>
                     );
                   }
                 )}

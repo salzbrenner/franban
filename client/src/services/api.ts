@@ -186,6 +186,13 @@ export const getList = (listId: number): AxiosPromise => {
   });
 };
 
+/**
+ * Updates the list order on the server
+ * - Updates order
+ * - TODO: update name
+ *  @param boardId
+ *  @return {AxiosPromise}
+ */
 export const updateListsOrder = (
   // boardId: number,
   listId: number,
@@ -209,16 +216,50 @@ export const updateListsOrder = (
 };
 
 /**
+ * Updates the task order on the server
+ * - Updates order
+ * - TODO: update name
+ *  @param boardId
+ *  @return {AxiosPromise}
+ */
+export const updateTasksOrder = (
+  // boardId: number,
+  listId: string,
+  taskId: number,
+  order: string,
+  name: string
+) => {
+  const headers = {
+    'Content-Type': 'application/x-www-form-urlencoded',
+  };
+
+  const bodyFormData = new FormData();
+  bodyFormData.set('name', name);
+  bodyFormData.set('order', order);
+  bodyFormData.set('list_id', listId);
+
+  return makeApiCall(
+    'put',
+    `${baseUrl}/tasks/${taskId}`,
+    bodyFormData,
+    headers
+  );
+};
+
+/**
  * Gets a list of user boards
  *  @param listId
  *  @return {AxiosPromise}
  */
-export const getTasks = (listId: number) => {
+export const getTasksForList = (listId: number) => {
   const headers = {
     'Content-Type': 'application/json',
   };
 
-  return instance.get(`${baseUrl}/tasks/${listId}`, {
+  return instance.get(`${baseUrl}/tasks`, {
+    params: {
+      list: listId,
+    },
     headers,
   });
 };

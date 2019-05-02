@@ -220,7 +220,6 @@ export const updateListsOrder = (order: number[]) => {
 };
 
 export const updateListsOrderAndSendToServer = (
-  // boardId: number,
   listId: number,
   order: number[]
 ) => async (
@@ -232,7 +231,6 @@ export const updateListsOrderAndSendToServer = (
     await dispatch(updateListsOrder(order));
 
     // send to server
-    // dispatch(updateListOnServer(boardId, listId, order));
     dispatch(updateListOnServer(listId, order));
   } catch (e) {
     console.log(e);
@@ -240,7 +238,6 @@ export const updateListsOrderAndSendToServer = (
 };
 
 export const updateListOnServer = (
-  // boardId: number,
   listId: number,
   order: number[]
 ) => async (
@@ -252,7 +249,6 @@ export const updateListOnServer = (
     const index = order.indexOf(listId).toString();
 
     const res = await api.updateListsOrder(
-      // boardId,
       listId,
       index,
       lists[listId].name

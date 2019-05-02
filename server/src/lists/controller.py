@@ -84,7 +84,7 @@ def get(id):
 
 def put(id, body):
     """
-    Responds to PUT request for /api/lists/<board_id>/<id>
+    Responds to PUT request for /api/lists/<id>
     - Updates board name
     - Updates the order of a single list in a board
     - Other list orders in same board are updated automatically

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import './List.css';
 import { Draggable, Droppable } from 'react-beautiful-dnd';
 import TasksContainer from 'components/TasksContainer/TasksContainer';
@@ -12,58 +12,55 @@ export type ListProps = {
   taskIds: string[];
   index: number;
   loading?: boolean;
+  tasksRequestHandler: any;
 };
 
-class List extends React.Component<ListProps> {
-  constructor(props: ListProps) {
-    super(props);
-  }
-  render() {
-    // if (this.props.loading) {
-    //   return <h1 />;
-    // }
-    return (
-      <Draggable
-        draggableId={`${this.props.id}`}
-        index={this.props.index}
-        type={`LIST`}
-      >
-        {provided => (
+const List: React.FC<ListProps> = props => {
+  const { id, tasksRequestHandler } = props;
+  useEffect(() => {
+    tasksRequestHandler(id);
+  }, []);
+  return (
+    <Draggable
+      draggableId={`${props.id}`}
+      index={props.index}
+      type={`LIST`}
+    >
+      {provided => (
+        <div
+          className={`list`}
+          {...provided.draggableProps}
+          ref={provided.innerRef}
+        >
           <div
-            className={`list`}
-            {...provided.draggableProps}
-            ref={provided.innerRef}
+            className={`list__name`}
+            {...provided.dragHandleProps}
           >
-            <div
-              className={`list__name`}
-              {...provided.dragHandleProps}
-            >
-              {this.props.name}
-            </div>
-            <Droppable
-              droppableId={`${this.props.id}`}
-              type={`TASK`}
-            >
-              {(provided, snapshot) => (
-                <div
-                  className={`list__tasks-wrapper ${snapshot.isDraggingOver &&
-                    `list__tasks-wrapper--dragging-over`}`}
-                  {...provided.droppableProps}
-                  ref={provided.innerRef}
-                >
-                  <TasksContainer
-                    listId={this.props.id}
-                    taskIds={this.props.taskIds}
-                  />
-                  {provided.placeholder}
-                </div>
-              )}
-            </Droppable>
+            {props.name}
           </div>
-        )}
-      </Draggable>
-    );
-  }
-}
+          <Droppable
+            droppableId={`${props.id}`}
+            type={`TASK`}
+          >
+            {(provided, snapshot) => (
+              <div
+                className={`list__tasks-wrapper ${snapshot.isDraggingOver &&
+                  `list__tasks-wrapper--dragging-over`}`}
+                {...provided.droppableProps}
+                ref={provided.innerRef}
+              >
+                <TasksContainer
+                  listId={props.id}
+                  taskIds={props.taskIds}
+                />
+                {provided.placeholder}
+              </div>
+            )}
+          </Droppable>
+        </div>
+      )}
+    </Draggable>
+  );
+};
 
 export default List;

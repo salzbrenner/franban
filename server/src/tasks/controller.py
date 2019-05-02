@@ -23,14 +23,18 @@ def create(body):
     return response, 201
 
 
-def get_all(list_id):
+def get_all_in_list(**kwargs):
     """
-    Responds to GET request for /api/tasks/<list_id>
+    Responds to GET request for /api/tasks
     :param list_id:
-    :return:
+    :return: all tasks for list
     """
+    list_id = request.args.get('list')
+
     results = []
-    tasks = Task.query.filter_by(list_id=list_id)
+    tasks = Task.query\
+        .filter_by(list_id=list_id)\
+        .order_by(Task.order).all()
 
     for task in tasks:
         res = {
@@ -44,19 +48,22 @@ def get_all(list_id):
     return results, 200
 
 
-def put(task_id, id, body):
+def put(id, body):
     """
-    Responds to PUT request for /api/tasks/<task_id>/<id>
+    Responds to PUT request for /api/tasks/<id>
+    - Updates task name
+    - Updates the order of task
     :param task_id:
     :param id:
     :param body: the request body needs key: 'name'
     :return:
     """
-    task = Task.query.filter_by(task_id=task_id, id=id).first()
+    task = Task.query.filter_by(id=id).first()
     name = body['name']
-    order = int(body['order'])
+    position = int(body['order'])
+    list_id = int(body['list_id'])
     if task:
-        task.update(name, order)
+        task.update(list_id, name, position)
         return 'Updated task name to: ' + task.name + ' and order to:' + str(task.order), 200
     else:
         return 'Task does not exist', 404

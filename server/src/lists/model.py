@@ -12,7 +12,7 @@ class List(db.Model):
     order = db.Column(db.Integer)
     board_id = db.Column(db.Integer, db.ForeignKey(Board.id))
     board_order = db.deferred(db.select([order]).where(Board.id == board_id))
-    lists = db.relationship('Task',
+    tasks = db.relationship('Task',
                             order_by="Task.list_order",
                             backref='list',
                             collection_class=ordering_list('order'))
@@ -40,7 +40,7 @@ class List(db.Model):
         # ordering is handled via the relationship on Board,
         # with the ordering_list
         # https://docs.sqlalchemy.org/en/13/orm/extensions/orderinglist.html
-        board_lists = self.board.lists
+        board_lists = self.board.lists  # backref relationship
         board_lists.remove(self)
         board_lists.insert(position, self)
 

@@ -15,11 +15,11 @@ class Task(db.Model):
     def __init__(self, name, list_id):
         self.name = name
         self.list_id = list_id
-        self.order = self.set_order()
+        self.order = self.set_order(self.list_id)
 
     @staticmethod
-    def set_order():
-        highest_order = Task.query.order_by(Task.order.desc()).first()
+    def set_order(list_id):
+        highest_order = Task.query.filter_by(list_id=list_id).order_by(Task.order.desc()).first()
         if highest_order:
             return highest_order.order + 1
         else:
@@ -29,20 +29,25 @@ class Task(db.Model):
         db.session.add(self)
         db.session.commit()
 
-    def update(self, name, order):
-        self.order = order
+    def update(self, list_id, name, position):
+        # self.order = order
         self.name = name
+        self.list_id = list_id
 
-        # rows = db.session.query(Task).count()
-        ordered = db.session\
-            .query(List)\
-            .order_by(List.order)\
-            .all()
+        list_tasks = self.list.tasks  # backref relationship
+        list_tasks.remove(self)
+        list_tasks.insert(position, self)
 
-        # reorder all rows to be consecutive integers
-        if ordered:
-            for idx, row in enumerate(ordered):
-                row.order = idx
+        # # rows = db.session.query(Task).count()
+        # ordered = db.session\
+        #     .query(List)\
+        #     .order_by(List.order)\
+        #     .all()
+        #
+        # # reorder all rows to be consecutive integers
+        # if ordered:
+        #     for idx, row in enumerate(ordered):
+        #         row.order = idx
 
         db.session.commit()
 

@@ -19,7 +19,7 @@
 }
 
 .list__tasks-wrapper--dragging-over {
-  /*background: var(--primary-color);*/
+  background: var(--primary-color);
 }
 
 .list__tasks-wrapper .task {

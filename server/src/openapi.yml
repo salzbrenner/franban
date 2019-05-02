@@ -290,20 +290,45 @@ paths:
         201:
           description: Successful task creation
 
-  /tasks/{list_id}:
     get:
-      operationId: src.tasks.controller.get_all
-      description: Read tasks belonging to list
+      operationId: src.tasks.controller.get_all_in_list
+      description: Get all tasks for a list
       parameters:
-      - in: path
-        name: list_id
+      - in: query
+        name: list
+        schema:
+          type: integer
+      responses:
+        200:
+          description: Successful read of lists's tasks
+
+  /tasks/{id}:
+    put:
+      operationId: src.tasks.controller.put
+      description: Update a task's name and/or order
+      parameters:
+      - name: id
+        in: path
         required: true
         schema:
           type: integer
-        description: The lists's id, which the task belongs to
+        description: the task id
+      requestBody:
+        description: New name and/or order for the task
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                order:
+                  type: number
+                name:
+                  type: string
+                list_id:
+                  type: number
       responses:
         200:
-          description: Successful read of list's tasks
+          description: Successfully updated the task's name/order
 
   ################################################
 
