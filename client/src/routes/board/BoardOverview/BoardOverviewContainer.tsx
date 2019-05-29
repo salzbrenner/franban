@@ -3,6 +3,7 @@ import { AppState } from 'redux/modules/rootReducer';
 import { connect } from 'react-redux';
 import { getBoard, resetBoard } from 'redux/modules/boards';
 import BoardOverview from 'routes/board/BoardOverview/BoardOverview';
+import { resetLists } from 'redux/modules/lists';
 
 type Props = ReturnType<typeof mapStateToProps> &
   typeof mapDispatchToProps & {
@@ -31,6 +32,7 @@ export function mapStateToProps({ board }: AppState) {
 export const mapDispatchToProps: any = {
   getBoard,
   resetBoard,
+  resetLists,
 };
 
 export default connect(

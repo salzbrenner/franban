@@ -14,11 +14,13 @@ const BoardOverview: FC<Props> = ({
   getBoard,
   resetBoard,
   boardId,
+  resetLists,
 }) => {
   useEffect(() => {
     getBoard(boardId);
     return function cleanup() {
       resetBoard();
+      resetLists();
     };
   }, []);
   return (

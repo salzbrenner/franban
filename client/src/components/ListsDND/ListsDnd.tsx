@@ -126,7 +126,6 @@ const ListsDND: FunctionComponent<Props> = props => {
                     return (
                       <div key={listId}>
                         <List
-                          loading={true}
                           id={listId}
                           {...lists[listId]}
                           tasksRequestHandler={getTasks}

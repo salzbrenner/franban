@@ -1,6 +1,5 @@
 import React from 'react';
 import {
-  getListsAndTasks,
   listOrderSelector,
   listsSelector,
   resetLists,
@@ -33,7 +32,6 @@ export function mapStateToProps(
 
 export const mapDispatchToProps: any = {
   updateListTasks,
-  getListsAndTasks,
   resetLists,
   updateListsOrderAndSendToServer,
   getTasks,

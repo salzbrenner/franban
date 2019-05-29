@@ -40,6 +40,7 @@ export const getBoard = (boardId: number) => async (
   try {
     const res = await api.getBoard(boardId);
     const { lists } = res.data;
+    console.log('SFUOH');
     await dispatch({
       type: GET_BOARD,
       payload: res.data,

@@ -1,5 +1,4 @@
 import * as api from '../../services/api';
-import { getTasks } from 'redux/modules/tasks';
 import { ListProps } from 'components/List/List';
 import { ActionInterface } from 'redux/modules/action.type';
 import { AxiosPromise, AxiosResponse } from 'axios';
@@ -18,11 +17,20 @@ export interface ListsState {
   listOrder: string[];
 }
 
+export interface getListsInterface {
+  (listIds: number[]): void;
+}
+
 export const initialState: ListsState = {
   lists: {},
   listOrder: [],
 };
 
+/**
+ * Lists reducer
+ * @param state
+ * @param action
+ */
 export default function reducer(
   state = initialState,
   action: ActionInterface
@@ -47,14 +55,13 @@ export default function reducer(
     }
 
     case UPDATE_LIST_READY_STATE: {
-      const { loading, listId } = action.payload;
+      const { listId } = action.payload;
       return {
         ...state,
         lists: {
           ...state.lists,
           [listId]: {
             ...state.lists[listId],
-            loading,
           },
         },
       };
@@ -76,22 +83,34 @@ export default function reducer(
   }
 }
 
+/**
+ * Get lists
+ * @param state
+ */
 export const listsSelector = (state: ListsState) =>
   state.lists;
 
+/**
+ * Get list order
+ * @param state
+ */
 export const listOrderSelector = (state: ListsState) =>
   state.listOrder;
 
-export interface getListsInterface {
-  (listIds: number[]): void;
-}
-
+/**
+ * Reset lists action
+ */
 export const resetLists = () => {
   return {
     type: RESET_LISTS,
   };
 };
 
+/**
+ * Update lists action
+ * @param listId
+ * @param newList
+ */
 export const updateListTasks = (
   listId: string,
   newList: string[]
@@ -105,6 +124,13 @@ export const updateListTasks = (
   };
 };
 
+/**
+ * Gets lists for <boardId> from API
+ * Dispatches get get lists action
+ *
+ * @param listIds
+ * @param boardId
+ */
 export const getListsForBoard = (
   listIds: any,
   boardId: number
@@ -114,7 +140,7 @@ export const getListsForBoard = (
 ): Promise<void> => {
   try {
     // update state order with order from server
-    dispatch(updateListsOrder(listIds));
+    await dispatch(updateListsOrder(listIds));
 
     const res: AxiosResponse = await api.getListsForBoard(
       boardId
@@ -141,6 +167,10 @@ export const getListsForBoard = (
   }
 };
 
+/**
+ * Gets single list
+ * @param listIds
+ */
 export const getList: getListsInterface = (
   listIds: number[]
 ) => async (dispatch: Function, getState: Function) => {
@@ -175,43 +205,28 @@ export const getList: getListsInterface = (
         lists,
       },
     });
-
-    // dispatch()
   } catch (e) {
     console.log(e);
   }
 };
 
-export const listLoading = (
-  listId: string,
-  loading: boolean
-) => {
+/**
+ * Dispatch list ready state action
+ * @param listId
+ */
+export const listLoading = (listId: string) => {
   return {
     type: UPDATE_LIST_READY_STATE,
     payload: {
       listId,
-      loading,
     },
   };
 };
 
-export const getListsAndTasks = (boardId: number) => async (
-  dispatch: ThunkDispatch<{}, {}, any>,
-  getState: Function
-): Promise<void> => {
-  try {
-    // await dispatch(getLists(boardId));
-    const lists = getState().lists.lists;
-    // get all tasks for each list
-    Object.keys(lists).forEach(key => {
-      dispatch(listLoading(key, true));
-      return dispatch(getTasks(lists[key].id));
-    });
-  } catch (e) {
-    console.log(e);
-  }
-};
-
+/**
+ * Update list order action
+ * @param order
+ */
 export const updateListsOrder = (order: number[]) => {
   return {
     type: UPDATE_LISTS_ORDER,
@@ -219,6 +234,12 @@ export const updateListsOrder = (order: number[]) => {
   };
 };
 
+/**
+ * Dispatch list order update for client
+ * Dispatch list order update for server
+ * @param listId
+ * @param order
+ */
 export const updateListsOrderAndSendToServer = (
   listId: number,
   order: number[]
@@ -237,6 +258,11 @@ export const updateListsOrderAndSendToServer = (
   }
 };
 
+/**
+ * Makes api call to update list order in server
+ * @param listId
+ * @param order
+ */
 export const updateListOnServer = (
   listId: number,
   order: number[]

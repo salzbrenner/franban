@@ -11,7 +11,6 @@ export type ListProps = {
   order: number;
   taskIds: string[];
   index: number;
-  loading?: boolean;
   tasksRequestHandler: any;
 };
 
