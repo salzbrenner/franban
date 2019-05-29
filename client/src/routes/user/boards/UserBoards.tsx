@@ -20,11 +20,9 @@ type OwnProps = {
 const UserBoards: FunctionComponent<Props> = props => {
   const { uid, boards, getUserBoards } = props;
   useEffect(() => {
-    if (getUserBoards) {
-      getUserBoards(uid);
-      subscribeToBoards(() => getUserBoards(uid));
-    }
-  }, []);
+    getUserBoards(uid); // initial load
+    subscribeToBoards(() => getUserBoards(uid)); // subscribes socket responses for same event
+  }, [uid]);
 
   return (
     <>

@@ -1,0 +1,8 @@
+.board-overview {
+  padding: 0 20px 20px;
+}
+
+.board-overview__back {
+  display: inline-block;
+  margin-bottom: 20px;
+}

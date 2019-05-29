@@ -1,4 +1,10 @@
 .form-add-list {
   display: inline-block;
+  background: rgba(0, 0, 0, 0.05);
   vertical-align: top;
+  padding: 10px;
+}
+
+.form-add-list__fields {
+  margin-bottom: 10px;
 }

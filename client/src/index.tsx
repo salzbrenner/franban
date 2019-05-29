@@ -6,6 +6,8 @@ import App from './components/App';
 import * as serviceWorker from './serviceWorker';
 import { BrowserRouter as Router } from 'react-router-dom';
 import store from './redux/store';
+import Modal from 'react-modal';
+Modal.setAppElement('#root');
 
 ReactDOM.render(
   <Provider store={store}>

@@ -5,6 +5,9 @@ import {
   mapDispatchToProps,
   mapStateToProps,
 } from 'routes/board/BoardOverview/BoardOverviewContainer';
+import './BoardOverview.css';
+import BoardCard from 'components/BoardsList/BoardsList';
+import { Link } from 'react-router-dom';
 
 type Props = ReturnType<typeof mapStateToProps> &
   typeof mapDispatchToProps;
@@ -24,13 +27,23 @@ const BoardOverview: FC<Props> = ({
     };
   }, []);
   return (
-    <>
+    <div className={`board-overview`}>
+      <Link
+        to={`/`}
+        className={`link board-overview__back`}
+      >
+        <div className={`arrow`} />
+        {`BACK`}
+      </Link>
+
       <h1>{name}</h1>
       <div className={`d-inline-flex`}>
         <ListsContainer />
-        <FormAddList />
+        <div>
+          <FormAddList />
+        </div>
       </div>
-    </>
+    </div>
   );
 };
 

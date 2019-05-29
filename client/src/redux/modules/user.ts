@@ -40,28 +40,36 @@ export default function reducer(
       return state;
     }
 
-    case ADD_ERROR: {
-      return {
-        ...state,
-        addErrorMessage: action.payload,
-      };
-    }
-
-    case READ_ERROR: {
-      return {
-        ...state,
-        readError: action.payload,
-      };
-    }
+    // case ADD_ERROR: {
+    //   return {
+    //     ...state,
+    //     addErrorMessage: action.payload,
+    //   };
+    // }
+    //
+    // case READ_ERROR: {
+    //   return {
+    //     ...state,
+    //     readError: action.payload,
+    //   };
+    // }
 
     default:
       return state;
   }
 }
 
+/**
+ * Get user boards
+ * @param state
+ */
 export const userBoards = (state: UserState) =>
   state.boards;
 
+/**
+ * Get error message for adding board
+ * @param state
+ */
 export const getAddErrorMessage = (state: UserState) =>
   state.addErrorMessage;
 
@@ -76,16 +84,13 @@ export const getUserBoards = (uid: string) => async (
     });
   } catch (e) {
     console.log(e);
-    dispatch({
-      type: READ_ERROR,
-    });
   }
 };
 
 export const addBoard = ({
   name,
 }: FormAddBoardValues) => async (
-  dispatch: Function,
+  dispatch: ThunkDispatch<{}, {}, any>,
   getState: Function
 ): Promise<void> => {
   try {
@@ -97,8 +102,5 @@ export const addBoard = ({
     });
   } catch (e) {
     console.log(e);
-    dispatch({
-      type: ADD_ERROR,
-    });
   }
 };
