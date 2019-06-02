@@ -19,9 +19,10 @@ const ListsDND: FunctionComponent<Props> = props => {
     lists,
     order,
     getTasks,
-    resetLists,
     updateTaskOnServer,
     updateListsOrderAndSendToServer,
+    deleteList,
+    boardId,
   } = props;
 
   function onDragEnd(result: DropResult) {
@@ -128,6 +129,9 @@ const ListsDND: FunctionComponent<Props> = props => {
                         <List
                           id={listId}
                           {...lists[listId]}
+                          deleteHandler={() =>
+                            deleteList(listId)
+                          }
                           tasksRequestHandler={getTasks}
                           index={index}
                         />

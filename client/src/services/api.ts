@@ -1,4 +1,5 @@
 import axios, { AxiosInstance, AxiosPromise } from 'axios';
+import { FormAddListValues } from 'redux/modules/lists';
 export const baseUrl = `${
   process.env.REACT_APP_BASE_URL
 }/api`;
@@ -115,16 +116,36 @@ export const addBoard = (uid: string, name: string) => {
  * @return {AxiosPromise}
  */
 export const addList = (
-  email: string,
-  password: string
-) => {
+  name: string,
+  boardId: number
+): AxiosPromise => {
   const headers = {
     'Content-Type': 'application/x-www-form-urlencoded',
   };
+
+  const bodyFormData = new FormData();
+  bodyFormData.set('board_id', `${boardId}`);
+  bodyFormData.set('name', name);
+
   return makeApiCall(
     'post',
-    '/register',
-    setLoginOrRegistrationFormData(email, password),
+    '/lists',
+    bodyFormData,
+    headers
+  );
+};
+
+/**
+ * Deletes a list
+ */
+export const deleteList = (id: number): AxiosPromise => {
+  const headers = {
+    'Content-Type': 'application/json',
+  };
+  return makeApiCall(
+    'delete',
+    `lists/${id}`,
+    null,
     headers
   );
 };

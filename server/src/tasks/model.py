@@ -26,6 +26,10 @@ class Task(db.Model):
             return 0
 
     def save(self):
+        """
+        Save task to db
+        :return:
+        """
         db.session.add(self)
         db.session.commit()
 
@@ -37,17 +41,6 @@ class Task(db.Model):
         list_tasks = self.list.tasks  # backref relationship
         list_tasks.remove(self)
         list_tasks.insert(position, self)
-
-        # # rows = db.session.query(Task).count()
-        # ordered = db.session\
-        #     .query(List)\
-        #     .order_by(List.order)\
-        #     .all()
-        #
-        # # reorder all rows to be consecutive integers
-        # if ordered:
-        #     for idx, row in enumerate(ordered):
-        #         row.order = idx
 
         db.session.commit()
 

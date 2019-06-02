@@ -1,5 +1,6 @@
 import React from 'react';
 import {
+  deleteList,
   listOrderSelector,
   listsSelector,
   resetLists,
@@ -36,6 +37,7 @@ export const mapDispatchToProps: any = {
   updateListsOrderAndSendToServer,
   getTasks,
   updateTaskOnServer,
+  deleteList,
 };
 
 export default connect(

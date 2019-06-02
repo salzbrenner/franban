@@ -6,23 +6,31 @@ import TasksContainer from 'components/TasksContainer/TasksContainer';
 export type ListProps = {
   [index: number]: object;
   id: number;
-  board_id: number;
+  boardId: number;
   name: string;
   order: number;
   taskIds: string[];
   index: number;
-  tasksRequestHandler: any;
+  tasksRequestHandler: Function;
+  deleteHandler: () => void;
 };
 
 const List: React.FC<ListProps> = props => {
-  const { id, tasksRequestHandler } = props;
+  const {
+    id,
+    tasksRequestHandler,
+    index,
+    taskIds,
+    deleteHandler,
+    name,
+  } = props;
   useEffect(() => {
     tasksRequestHandler(id);
   }, []);
   return (
     <Draggable
-      draggableId={`${props.id}`}
-      index={props.index}
+      draggableId={`${id}`}
+      index={index}
       type={`LIST`}
     >
       {provided => (
@@ -35,12 +43,12 @@ const List: React.FC<ListProps> = props => {
             className={`list__name`}
             {...provided.dragHandleProps}
           >
-            {props.name}
+            {name}
           </div>
-          <Droppable
-            droppableId={`${props.id}`}
-            type={`TASK`}
-          >
+          <div>
+            <button onClick={deleteHandler}>delete</button>
+          </div>
+          <Droppable droppableId={`${id}`} type={`TASK`}>
             {(provided, snapshot) => (
               <div
                 className={`list__tasks-wrapper ${snapshot.isDraggingOver &&
@@ -49,8 +57,8 @@ const List: React.FC<ListProps> = props => {
                 ref={provided.innerRef}
               >
                 <TasksContainer
-                  listId={props.id}
-                  taskIds={props.taskIds}
+                  listId={id}
+                  taskIds={taskIds}
                 />
                 {provided.placeholder}
               </div>

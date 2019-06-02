@@ -212,6 +212,7 @@ paths:
         200:
           description: Successful read of board's lists
 
+
   /lists/{id}:
     get:
       operationId: src.lists.controller.get

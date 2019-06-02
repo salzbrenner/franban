@@ -3,6 +3,7 @@ import { ListProps } from 'components/List/List';
 import { ActionInterface } from 'redux/modules/action.type';
 import { AxiosPromise, AxiosResponse } from 'axios';
 import { ThunkDispatch } from 'redux-thunk';
+import { ADD_BOARD } from 'redux/modules/user';
 
 export const GET_LISTS = 'lists/GET_LISTS';
 export const RESET_LISTS = 'lists/RESET_LISTS';
@@ -19,6 +20,11 @@ export interface ListsState {
 
 export interface getListsInterface {
   (listIds: number[]): void;
+}
+
+export interface FormAddListValues {
+  name: string;
+  boardId: number;
 }
 
 export const initialState: ListsState = {
@@ -282,4 +288,33 @@ export const updateListOnServer = (
   } catch (e) {
     console.log(e);
   }
+};
+
+/**
+ * Deletes list
+ * @param listId
+ */
+export const deleteList = (listId: number) => async (
+  dispatch: ThunkDispatch<{}, {}, any>,
+  getState: Function
+): Promise<void> => {
+  try {
+    const res = await api.deleteList(listId);
+  } catch (e) {
+    console.log(e);
+  }
+};
+
+export const addList = (
+  name: string,
+  boardId: number
+) => async (
+  dispatch: ThunkDispatch<{}, {}, any>,
+  getState: Function
+): Promise<void> => {
+  const res = await api.addList(name, boardId);
+  dispatch({
+    type: ADD_BOARD,
+    payload: res.data,
+  });
 };

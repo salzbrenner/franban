@@ -8,4 +8,16 @@ function subscribeToBoards(cb: Function) {
   });
 }
 
-export { subscribeToBoards };
+const subscribeToLists = {
+  listAdded: (cb: Function) =>
+    socket.on('LIST_ADDED', () => cb()),
+  listDeleted: (cb: Function) => {
+    socket.on('LIST_DELETED', () => cb());
+  },
+  offAll: () => {
+    socket.removeListener('LIST_ADDED');
+    socket.removeListener('LIST_DELETED');
+  },
+};
+
+export { subscribeToBoards, subscribeToLists };

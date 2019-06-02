@@ -4,33 +4,25 @@ import {
   InjectedFormProps,
   reduxForm,
 } from 'redux-form';
-import {
-  login,
-  getErrorMessage,
-  FormAuthValues,
-  AuthState,
-} from 'redux/modules/auth';
 import { connect } from 'react-redux';
 import ButtonMain from 'components/ButtonMain/ButtonMain';
 import './FormAddList.css';
+import {
+  addList,
+  FormAddListValues,
+  listOrderSelector,
+  listsSelector,
+} from 'redux/modules/lists';
+import { AppState } from 'redux/modules/rootReducer';
 
-type Props = ReturnType<typeof mapStateToProps> &
-  typeof mapDispatchToProps &
+type Props = typeof mapDispatchToProps &
   InjectedFormProps & {};
 
 const FormAddList: FC<Props> = props => {
   const { handleSubmit, pristine, submitting } = props;
 
-  const submit = (values: FormAuthValues) => {
-    props.login(values);
-  };
-
-  const errorMessage = () => {
-    if (props.errorMessage) {
-      return (
-        <div className="error">{props.errorMessage}</div>
-      );
-    }
+  const submit = ({ name, boardId }: FormAddListValues) => {
+    props.addList(name, boardId);
   };
 
   return (
@@ -38,7 +30,7 @@ const FormAddList: FC<Props> = props => {
       <form onSubmit={handleSubmit(submit)}>
         <div className={'form-add-list__fields'}>
           <Field
-            name="email"
+            name="name"
             component="input"
             type="text"
             placeholder="Enter list title..."
@@ -53,21 +45,12 @@ const FormAddList: FC<Props> = props => {
           />
         </div>
       </form>
-      <div className="form-add-list__error">
-        {errorMessage()}
-      </div>
     </div>
   );
 };
 
-function mapStateToProps(state: AuthState) {
-  return {
-    errorMessage: getErrorMessage(state),
-  };
-}
-
 const mapDispatchToProps: any = {
-  login,
+  addList,
 };
 
 const reduxFormAddList = reduxForm({
@@ -75,6 +58,6 @@ const reduxFormAddList = reduxForm({
 })(FormAddList);
 
 export default connect(
-  mapStateToProps,
+  null,
   mapDispatchToProps
 )(reduxFormAddList);

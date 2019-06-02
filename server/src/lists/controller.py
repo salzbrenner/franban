@@ -1,4 +1,7 @@
 from flask import Blueprint, json
+
+from src import socketio
+from src.socket import LIST_ADDED, LIST_DELETED
 from .model import List
 from connexion import request, NoContent
 
@@ -19,6 +22,8 @@ def create(body):
         'name': list.name,
         'order': list.order
     }
+    socketio.emit(LIST_ADDED)
+
     return response, 201
 
 
@@ -113,6 +118,7 @@ def delete(id):
 
     if list:
         list.delete()
+        socketio.emit(LIST_DELETED)
         return NoContent, 204
     else:
         return 'List does not exist', 404
