@@ -111,7 +111,7 @@ def put(id, body):
 def delete(id):
     """
     :param id:
-    Responds to DELETE request for /api/lists/<board_id>/<id>
+    Responds to DELETE request for /api/lists/<id>
     :return:
     """
     list = List.query.filter_by(id=id).first()

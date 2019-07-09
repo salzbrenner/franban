@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import CardPlain from 'components/CardPlain/CardPlain';
 import { Draggable } from 'react-beautiful-dnd';
 import 'components/CardPlain/CardPlain.css';
 import './Task.css';
@@ -32,7 +31,6 @@ class Task extends React.Component<Props> {
     this.setState({
       isOpen: false,
     });
-    console.log(this.state);
   }
 
   render() {

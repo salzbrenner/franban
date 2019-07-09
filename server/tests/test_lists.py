@@ -74,7 +74,7 @@ class TestLists(object):
 
     def test_list_deletion(self, authenticated_client):
         """
-        Test a user can delete a board by board id
+        Test a user can delete a list by id
         :param authenticated_client:
         :return:
         """

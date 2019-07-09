@@ -23,6 +23,22 @@ def create(body):
     return response, 201
 
 
+def get(id):
+    """
+    Responds to GET request for /api/tasks/<task_id>
+    :param id:
+    :return:
+    """
+    task = Task.query.filter_by(id=id).first()
+    res = {
+        'id': task.id,
+        'name': task.name,
+        'order': task.order,
+        'list_id': task.list_id,
+    }
+    return res, 200
+
+
 def get_all_in_list(**kwargs):
     """
     Responds to GET request for /api/tasks
@@ -69,14 +85,13 @@ def put(id, body):
         return 'Task does not exist', 404
 
 
-
-def delete(task_id, id):
+def delete(id):
     """
     :param id:
-    Responds to DELETE request for /api/tasks/<task_id>/<id>
+    Responds to DELETE request for /api/tasks/<id>
     :return:
     """
-    task = Task.query.filter_by(task_id=task_id, id=id).first()
+    task = Task.query.filter_by(id=id).first()
 
     if task:
         task.delete()

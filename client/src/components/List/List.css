@@ -1,7 +1,7 @@
 .list {
   background: var(--white);
   width: 240px;
-  padding: 5px 0 0;
+  padding: 5px 0 20px;
   box-shadow: var(--box-shadow-2);
   margin-right: 10px;
 }
@@ -24,4 +24,13 @@
 
 .list__tasks-wrapper .task {
   margin-bottom: 10px;
+}
+
+.list__bottom {
+  display: flex;
+}
+
+.list__delete button {
+  font-size: 0.7em;
+  font-weight: bold;
 }

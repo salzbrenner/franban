@@ -92,6 +92,11 @@ export const addTasksToList: any = (
   // dispatch(listLoading(listId, false));
 };
 
+export const addSingleTask: any = (
+  listId: string,
+  taskId: string
+) => async (dispatch: Function, getState: Function) => {};
+
 export const updateTaskOnServer = (
   listId: string,
   taskId: number,

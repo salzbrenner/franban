@@ -1,0 +1,11 @@
+.form-add-task__open {
+  text-align: center;
+}
+.form-add-task__open:hover {
+  cursor: pointer;
+  background: rgba(0, 0, 0, 0.1);
+}
+
+.form-add-task {
+  margin-top: -20px;
+}

@@ -73,6 +73,10 @@ button {
   text-transform: uppercase;
 }
 
+button:hover {
+  cursor: pointer;
+}
+
 .container {
   max-width: 1200px;
   margin-left: auto;
@@ -124,6 +128,10 @@ button {
   transform: rotate(-45deg);
   border-top: solid 2px var(--primary-color);
   border-left: solid 2px var(--primary-color);
+}
+
+.button-link {
+  color: var(--primary-color);
 }
 
 /*.gu-mirror {*/

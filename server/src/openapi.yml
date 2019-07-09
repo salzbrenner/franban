@@ -304,6 +304,20 @@ paths:
           description: Successful read of lists's tasks
 
   /tasks/{id}:
+    get:
+      operationId: src.tasks.controller.get
+      description: Read task
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: integer
+        description: The tasks's id
+      responses:
+        200:
+          description: Successful read of task
+
     put:
       operationId: src.tasks.controller.put
       description: Update a task's name and/or order
@@ -330,6 +344,20 @@ paths:
       responses:
         200:
           description: Successfully updated the task's name/order
+
+    delete:
+      operationId: src.tasks.controller.delete
+      description: Delete a task by id
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: integer
+        description: the task id
+      responses:
+        204:
+          description: Task deleted
 
   ################################################
 

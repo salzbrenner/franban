@@ -44,7 +44,6 @@ const BoardOverview: FC<Props> = props => {
 
       <h1>{name}</h1>
       <div className={`d-inline-flex`}>
-        {boardId}
         <ListsContainer />
         <div>
           <FormAddList initialValues={{ boardId }} />
