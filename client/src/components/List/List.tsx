@@ -67,7 +67,7 @@ const List: React.FC<ListProps> = props => {
           </Droppable>
 
           <div className="">
-            <FormAddTask />
+            <FormAddTask listId={id} />
             <div className={`list__delete`}>
               <button
                 className={`button-link`}

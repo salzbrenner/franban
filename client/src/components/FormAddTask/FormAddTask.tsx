@@ -6,23 +6,35 @@ import {
 } from 'redux-form';
 import { connect } from 'react-redux';
 import './FormAddTask.css';
+import { addTask } from 'redux/modules/tasks';
 
-type Props = typeof mapDispatchToProps &
-  InjectedFormProps & {};
+export interface FormAddTaskValues {
+  name: string;
+  listId: number;
+  submit: Function;
+}
 
-class FormAddTask extends Component<Props> {
+interface XXX {
+  listId: any;
+  addTask?: typeof mapDispatchToProps;
+}
+
+type YYY = InjectedFormProps<{}, XXX> & XXX;
+
+class FormAddTask extends Component<YYY> {
   formRef: RefObject<HTMLDivElement>;
   openRef: RefObject<HTMLDivElement>;
   state = {
     formVisible: false,
   };
 
-  constructor(props: Props) {
+  constructor(props: YYY) {
     super(props);
     this.formRef = React.createRef();
     this.openRef = React.createRef();
     this.openForm = this.openForm.bind(this);
     this.checkDomEl = this.checkDomEl.bind(this);
+    this.submit = this.submit.bind(this);
   }
 
   openForm() {
@@ -59,17 +71,35 @@ class FormAddTask extends Component<Props> {
     document.removeEventListener('click', this.checkDomEl);
   }
 
+  submit({ name }: any): void {
+    const { addTask, listId } = this.props;
+    addTask(name, listId);
+  }
+
   renderForm(): React.ReactNode {
+    const {
+      pristine,
+      submitting,
+      handleSubmit,
+    } = this.props;
     return (
       <div className={'form-add-task'} ref={this.formRef}>
-        <form onSubmit={() => console.log('HELLO')}>
+        <form onSubmit={handleSubmit(this.submit)}>
           <div className={'form-add-task__fields'}>
             <Field
               name="name"
               component="input"
               type="text"
-              placeholder="Enter list title..."
+              placeholder="Task Name"
             />
+          </div>
+          <div>
+            <button
+              type={'submit'}
+              disabled={pristine || submitting}
+            >
+              Add Task
+            </button>
           </div>
         </form>
       </div>
@@ -92,9 +122,11 @@ class FormAddTask extends Component<Props> {
   }
 }
 
-const mapDispatchToProps: any = {};
+const mapDispatchToProps: any = {
+  addTask,
+};
 
-const reduxFormAddTask = reduxForm({
+const reduxFormAddTask = reduxForm<{}, XXX>({
   form: 'addTask', // a unique identifier for this form
 })(FormAddTask);
 

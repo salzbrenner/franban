@@ -284,3 +284,27 @@ export const getTasksForList = (listId: number) => {
     headers,
   });
 };
+
+/**
+ * Posts form data to /tasks endpoint
+ * @return {AxiosPromise}
+ */
+export const addTask = (
+  name: string,
+  listId: number
+): AxiosPromise => {
+  const headers = {
+    'Content-Type': 'application/x-www-form-urlencoded',
+  };
+
+  const bodyFormData = new FormData();
+  bodyFormData.set('list_id', `${listId}`);
+  bodyFormData.set('name', name);
+
+  return makeApiCall(
+    'post',
+    '/tasks',
+    bodyFormData,
+    headers
+  );
+};

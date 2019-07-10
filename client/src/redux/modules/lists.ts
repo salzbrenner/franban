@@ -305,6 +305,12 @@ export const deleteList = (listId: number) => async (
   }
 };
 
+/**
+ * Adds List
+ *
+ * @param name
+ * @param boardId
+ */
 export const addList = (
   name: string,
   boardId: number

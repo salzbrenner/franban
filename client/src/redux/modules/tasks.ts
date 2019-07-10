@@ -7,6 +7,7 @@ import { AxiosResponse } from 'axios';
 import { ThunkDispatch } from 'redux-thunk';
 
 export const GET_TASKS = 'tasks/GET_TASKS';
+export const ADD_TASK = 'tasks/ADD_TASK';
 
 export interface TaskInterface {
   id: number;
@@ -118,4 +119,24 @@ export const updateTaskOnServer = (
   } catch (e) {
     console.log(e);
   }
+};
+
+/**
+ * Adds Task
+ *
+ * @param name
+ * @param listId
+ */
+export const addTask = (
+  name: string,
+  listId: number
+) => async (
+  dispatch: ThunkDispatch<{}, {}, any>,
+  getState: Function
+): Promise<void> => {
+  const res = await api.addTask(name, listId);
+  dispatch({
+    type: ADD_TASK,
+    payload: res.data,
+  });
 };
