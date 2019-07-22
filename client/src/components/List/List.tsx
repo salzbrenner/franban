@@ -3,6 +3,11 @@ import './List.css';
 import { Draggable, Droppable } from 'react-beautiful-dnd';
 import TasksContainer from 'components/TasksContainer/TasksContainer';
 import FormAddTask from 'components/FormAddTask/FormAddTask';
+import {
+  socketEvents,
+  socketUnsubscribeFrom,
+  subscribeToLists,
+} from 'services/socket';
 
 export type ListProps = {
   [index: number]: object;
@@ -28,7 +33,8 @@ const List: React.FC<ListProps> = props => {
 
   useEffect(() => {
     tasksRequestHandler(id);
-  }, []);
+    return function cleanup() {};
+  }, [id]);
 
   return (
     <Draggable

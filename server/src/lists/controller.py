@@ -1,7 +1,10 @@
-from flask import Blueprint, json
+from flask import Blueprint, json, request as flask_request
+from flask_socketio import send, emit
 
 from src import socketio
 from src.socket import LIST_ADDED, LIST_DELETED
+from src.tasks.controller import delete as task_delete
+from src.users.model import User
 from .model import List
 from connexion import request, NoContent
 
@@ -22,7 +25,7 @@ def create(body):
         'name': list.name,
         'order': list.order
     }
-    socketio.emit(LIST_ADDED)
+    socketio.emit(LIST_ADDED, data=User.get_user_session_id(),  skip_sid=User.get_user_session_id())
 
     return response, 201
 
@@ -117,6 +120,8 @@ def delete(id):
     list = List.query.filter_by(id=id).first()
 
     if list:
+        for t in list.tasks:
+            task_delete(t.id)
         list.delete()
         socketio.emit(LIST_DELETED)
         return NoContent, 204

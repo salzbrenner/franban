@@ -8,6 +8,7 @@ import { ThunkDispatch } from 'redux-thunk';
 
 export const GET_TASKS = 'tasks/GET_TASKS';
 export const ADD_TASK = 'tasks/ADD_TASK';
+export const DELETE_TASK = 'tasks/DELETE_TASK';
 
 export interface TaskInterface {
   id: number;
@@ -16,7 +17,13 @@ export interface TaskInterface {
   order: number;
 }
 
-export interface TasksState {}
+export interface TasksState {
+  [id: number]: {
+    id: number;
+    list_id: number;
+    name: string;
+  };
+}
 
 export const initialState: TasksState = {};
 
@@ -29,6 +36,23 @@ export default function reducer(
       return {
         ...state,
         ...action.payload,
+      };
+    }
+
+    case ADD_TASK: {
+      const { id } = action.payload;
+      return {
+        ...state,
+        [id]: action.payload,
+      };
+    }
+
+    case DELETE_TASK: {
+      const idToDelete = action.payload;
+      const { [idToDelete]: value, ...withoutId } = state;
+
+      return {
+        ...withoutId,
       };
     }
     default:
@@ -58,25 +82,13 @@ export const getTasks: getTasksInterface = listId => async (
       return a;
     }, {});
 
-    // const tasks = res.data
-    //   .sort((a: any, b: any) => {
-    //     return a.order - b.order;
-    //   })
-    //   .reduce((a: any, b: any) => {
-    //     const { ...rest } = b;
-    //     const taskId = `task-${b.id}`;
-    //     taskIds.push(taskId);
-    //     a[`task-${b.id}`] = { ...rest };
-    //     return a;
-    //   }, {});
-    //
-    // // add tasks to state
+    // add tasks to state
     await dispatch({
       type: GET_TASKS,
       payload: tasks,
     });
-    //
-    // // finish adding taskIds to lists
+
+    // finish adding taskIds to lists
     dispatch(addTasksToList(`${listId}`, taskIds));
   } catch (e) {
     console.log(e);
@@ -134,9 +146,44 @@ export const addTask = (
   dispatch: ThunkDispatch<{}, {}, any>,
   getState: Function
 ): Promise<void> => {
-  const res = await api.addTask(name, listId);
-  dispatch({
-    type: ADD_TASK,
-    payload: res.data,
-  });
+  try {
+    const res = await api.addTask(name, listId);
+    const { order, ...rest } = res.data;
+    const newTask = { ...rest, list_id: listId };
+
+    // add tasks to state
+    dispatch({
+      type: ADD_TASK,
+      payload: newTask,
+    });
+
+    // update list with task
+    const list = getState().lists.lists[listId];
+    const newList = {
+      ...list,
+      taskIds: [...list.taskIds, newTask.id],
+    };
+    dispatch(updateListTasks(`${listId}`, newList));
+  } catch (e) {
+    console.log(e);
+  }
+};
+
+export const deleteAllTasksFromDeletedList = (
+  taskIds: number[]
+) => async (
+  dispatch: ThunkDispatch<{}, {}, any>,
+  getState: Function
+): Promise<void> => {
+  try {
+    // add tasks to state
+    taskIds.forEach(id => {
+      dispatch({
+        type: DELETE_TASK,
+        payload: id,
+      });
+    });
+  } catch (e) {
+    console.log(e);
+  }
 };

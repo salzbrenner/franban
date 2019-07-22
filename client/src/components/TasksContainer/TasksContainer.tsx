@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react';
+import React, { FunctionComponent, useEffect } from 'react';
 import {
   getTasks,
   getTasksInterface,
@@ -10,29 +10,31 @@ import Task from 'components/Task/Task';
 
 type TasksContainerProps = {
   listId: number;
-  getTasks?: getTasksInterface;
+  // getTasks?: getTasksInterface;
   tasks?: { [index: string]: TaskInterface };
   taskIds: string[];
 };
 const TasksContainer: FunctionComponent<
   TasksContainerProps
-> = React.memo(
-  ({ getTasks, listId, tasks = {}, taskIds = [] }) => {
-    return (
-      <>
-        {taskIds.length > 0 &&
-          taskIds.map((taskId: string, index: any) => (
-            <Task
-              key={taskId}
-              stateId={taskId}
-              {...tasks[taskId]}
-              index={index}
-            />
-          ))}
-      </>
-    );
-  }
-);
+> = React.memo(({ listId, tasks = {}, taskIds = [] }) => {
+  // useEffect(() => {
+  //   // tasksRequestHandler(id);
+  // }, []);
+
+  return (
+    <>
+      {taskIds.length > 0 &&
+        taskIds.map((taskId: string, index: any) => (
+          <Task
+            key={taskId}
+            stateId={taskId}
+            {...tasks[taskId]}
+            index={index}
+          />
+        ))}
+    </>
+  );
+});
 
 function mapStateToProps({ tasks }: AppState): any {
   return {

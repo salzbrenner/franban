@@ -23,6 +23,7 @@ const ListsDND: FunctionComponent<Props> = props => {
     updateListsOrderAndSendToServer,
     deleteList,
     boardId,
+    getListsForBoard,
   } = props;
 
   function onDragEnd(result: DropResult) {

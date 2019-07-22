@@ -6,6 +6,7 @@ import {
   resetLists,
   updateListsOrderAndSendToServer,
   updateListTasks,
+  getListsForBoard,
 } from 'redux/modules/lists';
 import { AppState } from 'redux/modules/rootReducer';
 import { connect } from 'react-redux';
@@ -16,7 +17,7 @@ import {
 } from 'redux/modules/tasks';
 
 type OwnProps = {
-  // boardId: number;
+  boardId: number;
   // listIds: number[];
 };
 
@@ -37,6 +38,7 @@ export const mapDispatchToProps: any = {
   updateListsOrderAndSendToServer,
   getTasks,
   updateTaskOnServer,
+  getListsForBoard,
   deleteList,
 };
 

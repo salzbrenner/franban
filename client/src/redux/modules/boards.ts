@@ -39,14 +39,14 @@ export const getBoard = (boardId: number) => async (
 ): Promise<void> => {
   try {
     const res = await api.getBoard(boardId);
-    const { lists } = res.data;
+    const { lists: listIds } = res.data;
     await dispatch({
       type: GET_BOARD,
       payload: res.data,
     });
 
     // get lists for board
-    dispatch(getListsForBoard(lists, boardId));
+    dispatch(getListsForBoard(listIds, boardId));
   } catch (e) {
     console.log(e);
   }

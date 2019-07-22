@@ -6,7 +6,6 @@ import {
   mapStateToProps,
 } from 'routes/board/BoardOverview/BoardOverviewContainer';
 import './BoardOverview.css';
-import BoardCard from 'components/BoardsList/BoardsList';
 import { Link } from 'react-router-dom';
 import { subscribeToLists } from 'services/socket';
 
@@ -23,7 +22,6 @@ const BoardOverview: FC<Props> = props => {
   } = props;
   useEffect(() => {
     getBoard(boardId);
-    // TODO: optimize subscriptions
     subscribeToLists.listAdded(() => getBoard(boardId));
     subscribeToLists.listDeleted(() => getBoard(boardId));
     return function cleanup() {
@@ -44,7 +42,7 @@ const BoardOverview: FC<Props> = props => {
 
       <h1>{name}</h1>
       <div className={`d-inline-flex`}>
-        <ListsContainer />
+        <ListsContainer boardId={boardId} />
         <div>
           <FormAddList initialValues={{ boardId }} />
         </div>

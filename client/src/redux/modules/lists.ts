@@ -3,9 +3,10 @@ import { ListProps } from 'components/List/List';
 import { ActionInterface } from 'redux/modules/action.type';
 import { AxiosPromise, AxiosResponse } from 'axios';
 import { ThunkDispatch } from 'redux-thunk';
-import { ADD_BOARD } from 'redux/modules/user';
+import { deleteAllTasksFromDeletedList } from 'redux/modules/tasks';
 
 export const GET_LISTS = 'lists/GET_LISTS';
+export const ADD_LIST = 'lists/ADD_LIST';
 export const RESET_LISTS = 'lists/RESET_LISTS';
 export const UPDATE_LISTS_ORDER =
   'lists/UPDATE_LISTS_ORDER';
@@ -44,9 +45,10 @@ export default function reducer(
   switch (action.type) {
     case GET_LISTS: {
       const { lists } = action.payload;
+      const newLists = { ...lists, ...state.lists };
       return {
         ...state,
-        lists: lists,
+        lists: newLists,
       };
     }
     case UPDATE_LIST_TASKS: {
@@ -82,6 +84,18 @@ export default function reducer(
 
     case RESET_LISTS: {
       return initialState;
+    }
+
+    case ADD_LIST: {
+      const { id } = action.payload;
+
+      return {
+        ...state,
+        lists: {
+          ...state.lists,
+          [id]: action.payload,
+        },
+      };
     }
 
     default:
@@ -151,6 +165,7 @@ export const getListsForBoard = (
     const res: AxiosResponse = await api.getListsForBoard(
       boardId
     );
+
     const lists = res.data.reduce(
       (a: ListProps, b: ListProps) => {
         const { order, ...rest } = b;
@@ -291,7 +306,9 @@ export const updateListOnServer = (
 };
 
 /**
- * Deletes list
+ * Deletes list and dispatches action to delete all
+ * associated tasks
+ *
  * @param listId
  */
 export const deleteList = (listId: number) => async (
@@ -300,6 +317,23 @@ export const deleteList = (listId: number) => async (
 ): Promise<void> => {
   try {
     const res = await api.deleteList(listId);
+    console.log(getState());
+    const listsState = getState().lists;
+    const listTasks = listsState.lists[listId].taskIds;
+
+    const listsOrder = listsState.listOrder;
+    const newOrder = listsOrder.filter(
+      (id: number) => id !== listId
+    );
+
+    await dispatch(
+      deleteAllTasksFromDeletedList(listTasks)
+    );
+
+    dispatch({
+      type: UPDATE_LISTS_ORDER,
+      payload: newOrder,
+    });
   } catch (e) {
     console.log(e);
   }
@@ -319,8 +353,22 @@ export const addList = (
   getState: Function
 ): Promise<void> => {
   const res = await api.addList(name, boardId);
+  const { order, ...rest } = res.data;
+
+  const newList = {
+    ...rest,
+    board_id: boardId,
+    taskIds: [],
+  };
+
+  await dispatch({
+    type: ADD_LIST,
+    payload: newList,
+  });
+
+  const listsOrder = getState().lists.listOrder;
   dispatch({
-    type: ADD_BOARD,
-    payload: res.data,
+    type: UPDATE_LISTS_ORDER,
+    payload: [...listsOrder, newList.id],
   });
 };

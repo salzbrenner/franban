@@ -38,6 +38,10 @@ export default function reducer(
     case ADD_BOARD: {
       console.log('Successfully added board');
       return state;
+      return {
+        ...state,
+        boards: [...state.boards, action.payload],
+      };
     }
 
     // case ADD_ERROR: {
