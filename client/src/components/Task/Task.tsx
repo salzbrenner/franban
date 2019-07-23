@@ -7,6 +7,7 @@ type Props = {
   stateId: string;
   index: number;
   name: string;
+  deleteHandler: Function;
 };
 
 class Task extends React.Component<Props> {
@@ -19,6 +20,7 @@ class Task extends React.Component<Props> {
 
     this.openModal = this.openModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
+    this.deleteTask = this.deleteTask.bind(this);
   }
 
   openModal() {
@@ -33,6 +35,10 @@ class Task extends React.Component<Props> {
     });
   }
 
+  deleteTask() {
+    this.props.deleteHandler(this.props.stateId);
+  }
+
   render() {
     return (
       <>
@@ -42,7 +48,6 @@ class Task extends React.Component<Props> {
         >
           {(provided, snapshot) => (
             <div
-              onClick={this.openModal}
               className={`task card-plain ${snapshot.isDragging &&
                 'task--dragging'}`}
               {...provided.dragHandleProps}
@@ -52,19 +57,30 @@ class Task extends React.Component<Props> {
               <div className="task__name">
                 {this.props.name}
               </div>
+              <div className="task__delete">
+                <div
+                  onClick={() => this.deleteTask()}
+                  className={`task__delete-button color-danger`}
+                >
+                  <span className={`task__delete-x`}>
+                    <div>&times;</div>
+                  </span>
+                  Delete
+                </div>
+              </div>
             </div>
           )}
         </Draggable>
-        <Modal
-          isOpen={this.state.isOpen}
-          onRequestClose={this.closeModal}
-          contentLabel="Example Modal"
-        >
-          <>
-            <button onClick={this.closeModal}>close</button>
-            <div>I am a modal {this.state.isOpen}</div>
-          </>
-        </Modal>
+        {/*<Modal*/}
+        {/*isOpen={this.state.isOpen}*/}
+        {/*onRequestClose={this.closeModal}*/}
+        {/*contentLabel="Example Modal"*/}
+        {/*>*/}
+        {/*<>*/}
+        {/*<button onClick={this.closeModal}>close</button>*/}
+        {/*<div>I am a modal {this.state.isOpen}</div>*/}
+        {/*</>*/}
+        {/*</Modal>*/}
       </>
     );
   }

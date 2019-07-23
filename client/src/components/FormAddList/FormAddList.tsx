@@ -19,10 +19,17 @@ type Props = typeof mapDispatchToProps &
   InjectedFormProps & {};
 
 const FormAddList: FC<Props> = props => {
-  const { handleSubmit, pristine, submitting } = props;
+  const {
+    handleSubmit,
+    pristine,
+    submitting,
+    reset,
+  } = props;
 
   const submit = ({ name, boardId }: FormAddListValues) => {
-    props.addList(name, boardId);
+    return props.addList(name, boardId).then((val: any) => {
+      reset();
+    });
   };
 
   return (

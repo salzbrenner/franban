@@ -1,11 +1,34 @@
+.form-add-task {
+  padding: 0 10px;
+  margin-top: -20px;
+}
+
 .form-add-task__open {
   text-align: center;
 }
+
 .form-add-task__open:hover {
   cursor: pointer;
   background: rgba(0, 0, 0, 0.1);
 }
 
-.form-add-task {
-  margin-top: -20px;
+.form-add-task__fields input {
+  height: 30px;
+  width: calc(100% - 10px);
+}
+
+.form-add-task__submit:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.form-add-task__submit-wrap {
+  text-align: right;
+}
+
+.form-add-task__submit {
+  font-size: 12px;
+  font-weight: bold;
+  color: var(--primary-color);
+  margin-left: auto;
 }

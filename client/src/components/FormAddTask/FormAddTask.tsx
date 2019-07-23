@@ -56,9 +56,12 @@ class FormAddTask extends Component<YYY> {
       const node = e.target as HTMLDivElement;
 
       if (!this.formRef.current.contains(node)) {
+        const { reset } = this.props;
+
         this.setState({
           formVisible: false,
         });
+        reset();
       }
     }
   }
@@ -73,7 +76,13 @@ class FormAddTask extends Component<YYY> {
 
   submit({ name }: any): void {
     const { addTask, listId } = this.props;
-    addTask(name, listId);
+    const { reset } = this.props;
+    addTask(name, listId).then(() => {
+      this.setState({
+        formVisible: false,
+      });
+      reset();
+    });
   }
 
   renderForm(): React.ReactNode {
@@ -93,8 +102,9 @@ class FormAddTask extends Component<YYY> {
               placeholder="Task Name"
             />
           </div>
-          <div>
+          <div className={`form-add-task__submit-wrap`}>
             <button
+              className={`form-add-task__submit`}
               type={'submit'}
               disabled={pristine || submitting}
             >

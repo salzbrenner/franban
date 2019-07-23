@@ -14,9 +14,11 @@ const BoardOverviewContainer: FunctionComponent<
   Props
 > = props => {
   const boardId = +props.match.params.boardId;
+  const { name, users } = props.board;
   return (
     <BoardOverview
-      name={props.board.name}
+      name={name}
+      users={users}
       boardId={boardId}
       {...props}
     />

@@ -76,10 +76,10 @@ const List: React.FC<ListProps> = props => {
             <FormAddTask listId={id} />
             <div className={`list__delete`}>
               <button
-                className={`button-link`}
+                className={`button-link color-danger`}
                 onClick={deleteHandler}
               >
-                delete
+                delete list
               </button>
             </div>
           </div>

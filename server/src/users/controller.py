@@ -111,6 +111,19 @@ def get_profile():
     return 'got it', 200
 
 
+def get_user(id):
+    """
+    Returns specific user
+    :param id:
+    :return:
+    """
+    user = User.query.filter_by(id=id).first()
+    return {
+        'id': user.id,
+        'email': user.email,
+    }
+
+
 def get_boards(uid):
     """
     Responds to a GET request for /api/{uid}/boards

@@ -8,7 +8,9 @@ export const RESET_BOARD = 'boards/RESET_BOARD';
 
 export interface BoardState {}
 
-export const initialState: BoardState = {};
+export const initialState: BoardState = {
+  users: [],
+};
 
 export default function reducer(
   state = initialState,
@@ -16,7 +18,12 @@ export default function reducer(
 ) {
   switch (action.type) {
     case GET_BOARD:
-      return action.payload;
+      const { users, name } = action.payload;
+      return {
+        ...state,
+        name,
+        users,
+      };
 
     case RESET_BOARD: {
       return initialState;
@@ -39,7 +46,9 @@ export const getBoard = (boardId: number) => async (
 ): Promise<void> => {
   try {
     const res = await api.getBoard(boardId);
-    const { lists: listIds } = res.data;
+
+    const { lists: listIds, users } = res.data;
+
     await dispatch({
       type: GET_BOARD,
       payload: res.data,

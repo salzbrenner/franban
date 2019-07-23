@@ -19,7 +19,7 @@ const ListsDND: FunctionComponent<Props> = props => {
     lists,
     order,
     getTasks,
-    updateTaskOnServer,
+    updateTask,
     updateListsOrderAndSendToServer,
     deleteList,
     boardId,
@@ -75,11 +75,7 @@ const ListsDND: FunctionComponent<Props> = props => {
       };
 
       updateListTasks(newList.id, newList);
-      updateTaskOnServer(
-        newList.id,
-        draggableId,
-        newTaskIds
-      );
+      updateTask(newList.id, draggableId, newTaskIds);
       return;
     }
 
@@ -101,7 +97,7 @@ const ListsDND: FunctionComponent<Props> = props => {
     updateListTasks(newStartList.id, newStartList);
     updateListTasks(newFinishList.id, newFinishList);
 
-    updateTaskOnServer(
+    updateTask(
       newFinishList.id,
       draggableId,
       finishTaskIds

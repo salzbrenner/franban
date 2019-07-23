@@ -8,6 +8,7 @@ import { ThunkDispatch } from 'redux-thunk';
 
 export const GET_TASKS = 'tasks/GET_TASKS';
 export const ADD_TASK = 'tasks/ADD_TASK';
+export const UPDATE_TASK = 'tasks/UPDATE_TASK';
 export const DELETE_TASK = 'tasks/DELETE_TASK';
 
 export interface TaskInterface {
@@ -44,6 +45,17 @@ export default function reducer(
       return {
         ...state,
         [id]: action.payload,
+      };
+    }
+
+    case UPDATE_TASK: {
+      const { taskId, listId } = action.payload;
+      return {
+        ...state,
+        [taskId]: {
+          ...state[taskId],
+          list_id: listId,
+        },
       };
     }
 
@@ -102,15 +114,9 @@ export const addTasksToList: any = (
   const list = getState().lists.lists[listId];
   const newList = { ...list, taskIds };
   dispatch(updateListTasks(listId, newList));
-  // dispatch(listLoading(listId, false));
 };
 
-export const addSingleTask: any = (
-  listId: string,
-  taskId: string
-) => async (dispatch: Function, getState: Function) => {};
-
-export const updateTaskOnServer = (
+export const updateTask = (
   listId: string,
   taskId: number,
   order: number[]
@@ -128,6 +134,14 @@ export const updateTaskOnServer = (
       index,
       tasks[taskId].name
     );
+
+    dispatch({
+      type: UPDATE_TASK,
+      payload: {
+        taskId,
+        listId,
+      },
+    });
   } catch (e) {
     console.log(e);
   }
@@ -176,13 +190,49 @@ export const deleteAllTasksFromDeletedList = (
   getState: Function
 ): Promise<void> => {
   try {
-    // add tasks to state
     taskIds.forEach(id => {
       dispatch({
         type: DELETE_TASK,
         payload: id,
       });
     });
+  } catch (e) {
+    console.log(e);
+  }
+};
+
+export const deleteTask = (id: number) => async (
+  dispatch: ThunkDispatch<{}, {}, any>,
+  getState: Function
+): Promise<void> => {
+  try {
+    await api.deleteTask(id);
+
+    const {
+      [id]: target,
+      ...withoutTarget
+    } = getState().tasks;
+
+    await dispatch({
+      type: DELETE_TASK,
+      payload: id,
+    });
+
+    const list = getState().lists.lists[target.list_id];
+    const taskIdsForCurrentList = Object.keys(
+      withoutTarget
+    ).filter(taskId => {
+      return (
+        withoutTarget[taskId].list_id === target.list_id
+      );
+    });
+    const newList = {
+      ...list,
+      taskIds: taskIdsForCurrentList,
+    };
+    console.log(newList);
+
+    dispatch(updateListTasks(target.list_id, newList));
   } catch (e) {
     console.log(e);
   }

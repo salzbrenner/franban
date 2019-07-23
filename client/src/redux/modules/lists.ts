@@ -317,7 +317,6 @@ export const deleteList = (listId: number) => async (
 ): Promise<void> => {
   try {
     const res = await api.deleteList(listId);
-    console.log(getState());
     const listsState = getState().lists;
     const listTasks = listsState.lists[listId].taskIds;
 

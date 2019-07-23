@@ -1,4 +1,6 @@
 from flask import Blueprint, jsonify
+
+from src.users.controller import get_user
 from .model import Board
 from connexion import request, NoContent
 from src import socketio
@@ -33,12 +35,19 @@ def get(id):
     board = Board.query.filter_by(id=id).first()
     lists = board.lists
     list_ids = [l.id for l in lists]
+    users = []
+
+    for uid in board.users:
+        users.append(get_user(uid))
+
+    users.append(get_user(board.owner))
 
     if board:
         result = {
             'id': board.id,
             'name': board.name,
-            'lists': list_ids
+            'lists': list_ids,
+            'users': users,
         }
         return result, 200
     else:

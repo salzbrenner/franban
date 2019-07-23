@@ -1,5 +1,7 @@
+import json
 from src import db
 from sqlalchemy.ext.orderinglist import ordering_list
+from sqlalchemy.ext.hybrid import hybrid_property
 from src.users.model import User
 
 
@@ -10,16 +12,27 @@ class Board(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(255))
-    uid = db.Column(db.Integer, db.ForeignKey(User.id))
+    owner = db.Column(db.Integer, db.ForeignKey(User.id))
     lists = db.relationship('List',
                             order_by="List.board_order",
                             backref='board',
                             collection_class=ordering_list('order'))
+    # other users
+    # users = db.Column(db.ARRAY(db.Integer))
+    _users = db.Column('users', db.Integer, default='[]', server_default='[]')
 
     def __init__(self, name, uid):
         """Initialize with name"""
         self.name = name
-        self.uid = uid
+        self.owner = uid
+
+    @hybrid_property
+    def users(self):
+        return json.loads(self._users)
+
+    @users.setter
+    def users(self, users):
+        self._users = json.dumps(users)
 
     def save(self):
         db.session.add(self)
@@ -28,9 +41,6 @@ class Board(db.Model):
     def update(self, name):
         self.name = name
         db.session.commit()
-
-    def getXXX(self):
-        return self.name
 
     def delete(self):
         db.session.delete(self)

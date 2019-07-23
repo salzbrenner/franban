@@ -18,6 +18,10 @@
   --col-3-width: 100%;
 }
 
+.color-danger {
+  color: var(--text-danger) !important;
+}
+
 @media screen and (min-width: 750px) {
   :root {
     --col-2-width: calc(50% - 5px);

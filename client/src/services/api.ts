@@ -308,3 +308,18 @@ export const addTask = (
     headers
   );
 };
+
+/**
+ * Deletes a task
+ */
+export const deleteTask = (id: number): AxiosPromise => {
+  const headers = {
+    'Content-Type': 'application/json',
+  };
+  return makeApiCall(
+    'delete',
+    `tasks/${id}`,
+    null,
+    headers
+  );
+};
