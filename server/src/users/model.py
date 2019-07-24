@@ -4,6 +4,8 @@ from flask_bcrypt import Bcrypt
 import jwt
 from datetime import datetime, timedelta
 
+from src.users.utils import send_reset_email
+
 
 class User(db.Model):
     """
@@ -84,17 +86,18 @@ class User(db.Model):
         session.pop('current_user', None)
 
     @staticmethod
-    def generate_token(user_id):
+    def generate_token(user_id, minutes=50):
         """
         Creates access token
         :param user_id: number
+        :param minutes: number
         :return: string, encoded jwt
         """
         try:
             # create payload with expiration
             payload = {
                 'iat': datetime.utcnow(),
-                'exp': datetime.utcnow() + timedelta(minutes=50),
+                'exp': datetime.utcnow() + timedelta(minutes=minutes),
                 'sub': str(user_id),
             }
 
@@ -117,3 +120,7 @@ class User(db.Model):
             raise Exception('Expired token')
         except jwt.InvalidTokenError:
             raise Exception('Invalid token')
+
+
+
+

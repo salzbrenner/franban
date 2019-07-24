@@ -2,6 +2,8 @@ from flask import Blueprint, jsonify, current_app, session, Response
 from src.users.model import User
 from connexion import request, NoContent
 
+from src.users.utils import send_reset_email
+
 user = Blueprint('user', __name__)
 
 
@@ -145,15 +147,22 @@ def get_boards(uid):
 
     return results, 200
 
-# def authenticate(access_token):
-#     uid = User.decode_token(access_token)
-#     if isinstance(uid, str):
-#         return None
-#     return {'uid': uid, 'scope': ['uid']}
 
-# try:
-#     return jwt.decode(access_token,
-#                       current_app.config.get('SECRET'),
-#                       algorithm='HS256')
-# except:
-#     return None
+def reset_password_request(body):
+    """
+    Sends an email to reset password
+    :param email:
+    :return:
+    """
+    email=body['email']
+
+    try:
+        user = User.query.filter_by(email=email).first()
+        send_reset_email(user)
+        return 'An email has been sent with instructions to reset your password', 200
+
+    except Exception as e:
+        response = jsonify({
+            'message': str(e)
+        })
+        return response, 401

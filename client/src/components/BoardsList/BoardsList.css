@@ -1,6 +1,7 @@
 .boards-list {
 }
 
-.boards-list .card-plain {
+.boards-list__link {
   margin-bottom: 20px;
+  text-decoration: none;
 }

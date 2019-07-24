@@ -2,6 +2,7 @@ import * as api from '../../services/api';
 import { ActionInterface } from 'redux/modules/action.type';
 
 export const AUTHENTICATED = 'auth/AUTHENTICATED';
+export const RESET_PASSWORD = 'auth/RESET_PASSWORD';
 export const AUTHENTICATION_ERROR =
   'auth/AUTHENTICATION_ERROR';
 
@@ -40,6 +41,9 @@ export default function reducer(
         errorMessage: action.payload,
       };
     }
+
+    case RESET_PASSWORD:
+      return state;
 
     default:
       return state;
@@ -100,6 +104,32 @@ export const login = (
       res.data.access_token
     );
     localStorage.setItem('prello-uid', res.data.uid);
+    callback();
+  } catch (e) {
+    console.log(e);
+    dispatch({
+      type: AUTHENTICATION_ERROR,
+      payload: 'Invalid email or password',
+    });
+  }
+};
+
+export const resetPassword = (
+  { email }: { email: string },
+  callback = () => null
+) => async (dispatch: Function) => {
+  try {
+    const res = await api.resetPassword(email);
+    dispatch({
+      type: RESET_PASSWORD,
+    });
+
+    // // update api service
+    // localStorage.setItem(
+    //   'prello-token',
+    //   res.data.access_token
+    // );
+    // localStorage.setItem('prello-uid', res.data.uid);
     callback();
   } catch (e) {
     console.log(e);

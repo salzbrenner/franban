@@ -18,10 +18,17 @@ type Props = ReturnType<typeof mapStateToProps> &
   InjectedFormProps & {};
 
 const FormAddBoard: FC<Props> = props => {
-  const { handleSubmit, pristine, submitting } = props;
+  const {
+    handleSubmit,
+    pristine,
+    submitting,
+    addBoard,
+    reset,
+  } = props;
 
   const submit = (values: FormAddBoardValues) => {
-    props.addBoard(values);
+    addBoard(values);
+    reset();
   };
 
   const errorMessage = () => {
@@ -40,7 +47,7 @@ const FormAddBoard: FC<Props> = props => {
             name="name"
             component="input"
             type="text"
-            placeholder="Enter board title..."
+            placeholder="Board name..."
           />
         </div>
         <div>

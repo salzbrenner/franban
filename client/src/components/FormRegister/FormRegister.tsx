@@ -10,53 +10,34 @@ import {
   AuthState,
 } from 'redux/modules/auth';
 import { connect } from 'react-redux';
+import FormAuth from 'components/FormAuth/FormAuth';
+import './FormRegister.css';
 
 type Props = ReturnType<typeof mapStateToProps> &
   typeof mapDispatchToProps &
   InjectedFormProps;
 
 const FormRegister: FC<Props> = props => {
-  const { handleSubmit, pristine, submitting } = props;
+  const {
+    handleSubmit,
+    pristine,
+    submitting,
+    errorMessage,
+  } = props;
 
   const submit = (values: {}) => {
     props.register(values);
   };
 
-  const errorMessage = () => {
-    if (props.errorMessage) {
-      return (
-        <div className="error">{props.errorMessage}</div>
-      );
-    }
-  };
-
   return (
-    <div>
-      <form onSubmit={handleSubmit(submit)}>
-        <div>
-          <Field
-            name="email"
-            component="input"
-            type="email"
-            placeholder="Email"
-          />
-          <Field
-            name="password"
-            component="input"
-            type="password"
-            placeholder="Password"
-          />
-        </div>
-        <div>
-          <button
-            type="submit"
-            disabled={pristine || submitting}
-          >
-            Register
-          </button>
-        </div>
-      </form>
-      {errorMessage()}
+    <div className={`form-register`}>
+      <h1>Sign up</h1>
+      <FormAuth
+        submitHandler={handleSubmit(submit)}
+        pristine={pristine}
+        submitting={submitting}
+        errorMessage={errorMessage}
+      />
     </div>
   );
 };

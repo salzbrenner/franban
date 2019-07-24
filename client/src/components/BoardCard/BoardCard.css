@@ -1,0 +1,17 @@
+.board-card {
+}
+
+.board-card__inner {
+  font-size: 24px;
+  font-weight: bold;
+  background: var(--white);
+  padding: 20px;
+  border-radius: 3px;
+  box-shadow: var(--box-shadow-2);
+  color: var(--secondary-color);
+  transition: transform 100ms ease;
+}
+
+.board-card:hover .board-card__inner {
+  transform: translateY(-10px);
+}

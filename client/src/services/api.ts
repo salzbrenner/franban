@@ -69,6 +69,22 @@ export const login = (email: string, password: string) => {
   );
 };
 
+export const resetPassword = (email: string) => {
+  const headers = {
+    'Content-Type': 'application/x-www-form-urlencoded',
+  };
+  const bodyFormData = new FormData();
+  bodyFormData.set('email', email);
+  console.log(bodyFormData.get('email'));
+
+  return makeApiCall(
+    'post',
+    '/reset-password',
+    bodyFormData,
+    headers
+  );
+};
+
 /**
  * Posts form data to /register endpoint
  * @param email

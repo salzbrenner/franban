@@ -63,7 +63,7 @@ class Task extends React.Component<Props> {
                   className={`task__delete-button color-danger`}
                 >
                   <span className={`task__delete-x`}>
-                    <div>&times;</div>
+                    {/*<div>&times;</div>*/}
                   </span>
                   Delete
                 </div>

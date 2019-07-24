@@ -26,8 +26,10 @@ const UserBoards: FunctionComponent<Props> = props => {
 
   return (
     <>
-      <FormAddBoard />
       <BoardsList boards={boards} />
+      <div className="container">
+        <FormAddBoard />
+      </div>
     </>
   );
 };

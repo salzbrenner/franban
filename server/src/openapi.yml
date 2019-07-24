@@ -65,6 +65,27 @@ paths:
           description: User logged out
       security: []
 
+  /reset-password:
+    post:
+      operationId: src.users.controller.reset_password_request
+      summary: Sends a reset email
+      requestBody:
+        description: Sends an email with a token for resetting password
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                email:     # <!--- form field name
+                  type: string
+              required:
+              - email
+      responses:
+        204:
+          description: Password reset link sent
+      security: []
+
 
   # User routes
   ###############

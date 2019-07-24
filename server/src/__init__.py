@@ -1,4 +1,5 @@
 import connexion
+from flask_mail import Mail
 from flask_sqlalchemy import SQLAlchemy
 from flask_socketio import SocketIO, join_room, emit
 from flask_cors import CORS
@@ -6,6 +7,7 @@ from .middleware.cors_header_middleware import CorsHeaderMiddleware
 
 db = SQLAlchemy()
 socketio = SocketIO()
+mail = Mail()
 
 
 def create_app(config_name):
@@ -24,6 +26,7 @@ def create_app(config_name):
     )
 
     db.init_app(flask_app)
+    mail.init_app(flask_app)
     socketio.init_app(flask_app)
 
     from .users.controller import user

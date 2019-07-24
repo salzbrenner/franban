@@ -18,6 +18,10 @@
   --col-3-width: 100%;
 }
 
+* {
+  box-sizing: border-box;
+}
+
 .color-danger {
   color: var(--text-danger) !important;
 }

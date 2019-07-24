@@ -69,7 +69,7 @@ const UserList: FC<UserListProps> = ({ users }) => {
                 )}`,
               }}
             >
-              {user.email[0]}
+              <span>{user.email[0]}</span>
               <span className={`user-list__detail`}>
                 {user.email}
               </span>

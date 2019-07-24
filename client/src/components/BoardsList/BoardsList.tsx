@@ -13,15 +13,15 @@ export interface BoardsInterface {
 }
 
 const BoardsList: React.FC<Props> = ({ boards }) => (
-  <div className={'container'}>
+  <div className={'container boards-list'}>
     <div className={'row'}>
       {boards.map(board => (
         <Link
           to={`/board/${board.id}`}
           key={board.id}
-          className={`col col-3`}
+          className={`col col-3 boards-list__link`}
         >
-          <div>
+          <div className={`boards-list__link-inner`}>
             <BoardCard name={board.name} />
           </div>
         </Link>

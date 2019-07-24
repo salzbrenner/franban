@@ -1,0 +1,12 @@
+.form-auth {
+}
+
+.form-auth__fields input {
+  display: block;
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.form-auth__error {
+  color: var(--text-danger);
+}
