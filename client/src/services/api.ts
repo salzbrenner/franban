@@ -75,7 +75,6 @@ export const resetPassword = (email: string) => {
   };
   const bodyFormData = new FormData();
   bodyFormData.set('email', email);
-  console.log(bodyFormData.get('email'));
 
   return makeApiCall(
     'post',
