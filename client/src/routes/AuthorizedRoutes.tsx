@@ -4,6 +4,7 @@ import { Route, Switch, Redirect } from 'react-router-dom';
 import UserBoards from './user/boards/UserBoards';
 import Styleguide from './styleguide/Styleguide';
 import BoardOverviewContainer from 'routes/board/BoardOverview/BoardOverviewContainer';
+import ResetPassword from 'routes/reset/ResetPassword/ResetPassword';
 
 const AuthorizedRoutes = ({ uid }: { uid: string }) => {
   return (
@@ -24,6 +25,7 @@ const AuthorizedRoutes = ({ uid }: { uid: string }) => {
           <BoardOverviewContainer {...props} />
         )}
       />
+
       <Route render={() => <h1>NO MATCH FOO</h1>} />
     </Switch>
   );

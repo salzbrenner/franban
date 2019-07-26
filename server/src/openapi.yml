@@ -86,6 +86,22 @@ paths:
           description: Password reset link sent
       security: []
 
+  /reset-password/{token}:
+    get:
+      operationId: src.users.controller.reset_password
+      description: Somwthing
+      parameters:
+      - in: path
+        name: token
+        required: true
+        schema:
+          type: integer
+        description: The user token
+      responses:
+        200:
+          description: sdfasdf
+      security: []
+
 
   # User routes
   ###############

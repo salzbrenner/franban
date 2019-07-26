@@ -338,3 +338,25 @@ export const deleteTask = (id: number): AxiosPromise => {
     headers
   );
 };
+
+export const confirmToken = (
+  token: string
+): AxiosPromise => {
+  const headers = {
+    'Content-Type': 'application/json',
+  };
+
+  return instance.get(`reset-password/${token}`, {
+    headers,
+  });
+};
+
+export const logout = () => {
+  const headers = {
+    'Content-Type': 'application/json',
+  };
+
+  return instance.get(`logout`, {
+    headers,
+  });
+};

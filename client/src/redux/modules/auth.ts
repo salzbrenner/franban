@@ -15,12 +15,14 @@ export interface AuthState {
   errorMessage: string;
   jwt: string | null;
   uid: string | null;
+  resetPasswordMessage: string | null;
 }
 
 export const initialState: AuthState = {
   jwt: localStorage.getItem('prello-token'),
   uid: localStorage.getItem('prello-uid'),
   errorMessage: '',
+  resetPasswordMessage: null,
 };
 
 export default function reducer(
@@ -43,7 +45,10 @@ export default function reducer(
     }
 
     case RESET_PASSWORD:
-      return state;
+      return {
+        ...state,
+        resetPasswordMessage: action.payload,
+      };
 
     default:
       return state;
@@ -54,6 +59,8 @@ export const getErrorMessage = (state: AuthState) =>
   state.errorMessage;
 export const getJwt = (state: AuthState) => state.jwt;
 export const getUid = (state: AuthState) => state.uid;
+export const resetPasswordMessage = (state: AuthState) =>
+  state.resetPasswordMessage;
 
 export const register = (
   { email, password }: FormAuthValues,
@@ -114,40 +121,37 @@ export const login = (
   }
 };
 
-export const resetPassword = (
-  { email }: { email: string },
-  callback = () => null
-) => async (dispatch: Function) => {
+export const resetPassword = ({
+  email,
+}: {
+  email: string;
+}) => async (dispatch: Function) => {
   try {
     const res = await api.resetPassword(email);
+    console.log(res);
     dispatch({
       type: RESET_PASSWORD,
+      payload: res.data,
     });
-
-    // // update api service
-    // localStorage.setItem(
-    //   'prello-token',
-    //   res.data.access_token
-    // );
-    // localStorage.setItem('prello-uid', res.data.uid);
-    callback();
   } catch (e) {
     console.log(e);
     dispatch({
       type: AUTHENTICATION_ERROR,
-      payload: 'Invalid email or password',
+      payload: 'Invalid email',
     });
   }
 };
 
-export const logout = () => {
+export const logout = () => async (dispatch: Function) => {
   // update api service
+  const res = await api.logout();
+
   localStorage.removeItem('prello-token');
   localStorage.removeItem('prello-uid');
-  return {
+  dispatch({
     type: AUTHENTICATED,
     payload: '',
-  };
+  });
 };
 
 export const clearErrors = () => {

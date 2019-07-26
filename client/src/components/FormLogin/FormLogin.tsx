@@ -43,6 +43,10 @@ const FormLogin: FC<Props> = props => {
       />
       <div className="form-login__register">
         <p>
+          Forgot your password?{' '}
+          <Link to={'/reset-password'}>Reset it.</Link>
+        </p>
+        <p>
           Don't have an account?{' '}
           <Link to={'/register'}>Sign up.</Link>
         </p>

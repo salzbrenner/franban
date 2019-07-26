@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { logout } from 'redux/modules/auth';
 
 type Props = {
-  logout: typeof logout;
+  logout: any;
 };
 
 class Logout extends Component<Props> {

@@ -1,4 +1,4 @@
-import React, { FC, useEffect } from 'react';
+import React, { FC } from 'react';
 import {
   Field,
   InjectedFormProps,
@@ -14,16 +14,11 @@ import {
 import { connect } from 'react-redux';
 import ButtonMain from 'components/ButtonMain/ButtonMain';
 
-interface OwnProps {
-  token: string;
-}
-
 type Props = ReturnType<typeof mapStateToProps> &
   typeof mapDispatchToProps &
-  InjectedFormProps<{}, OwnProps> &
-  OwnProps;
+  InjectedFormProps;
 
-const FormPasswordReset: FC<Props> = props => {
+const FormPasswordResetRequest: FC<Props> = props => {
   const {
     handleSubmit,
     pristine,
@@ -31,7 +26,6 @@ const FormPasswordReset: FC<Props> = props => {
     resetMessage,
     resetPassword,
     submitSucceeded,
-    token,
   } = props;
 
   const submit = (values: {}) => {
@@ -41,7 +35,7 @@ const FormPasswordReset: FC<Props> = props => {
   const renderForm = () => {
     return (
       <div className={`form-register`}>
-        <h1>ACTUAL RESER</h1>
+        <h1>Reset Password</h1>
         <p>
           Enter your email and you we will send you a link
           to update your password
@@ -95,9 +89,9 @@ const mapDispatchToProps: any = {
   resetPassword,
 };
 
-const reduxFormRegister = reduxForm<{}, OwnProps>({
-  form: 'password-reset', // a unique identifier for this form
-})(FormPasswordReset);
+const reduxFormRegister = reduxForm({
+  form: 'password-reset-request', // a unique identifier for this form
+})(FormPasswordResetRequest);
 
 export default connect(
   mapStateToProps,

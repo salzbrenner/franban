@@ -166,3 +166,13 @@ def reset_password_request(body):
             'message': str(e)
         })
         return response, 401
+
+def reset_password(token):
+    """
+    Resets user password
+    :param token: jwt token
+    :return:
+    """
+    print("HELLO")
+    # decoded = User.decode_token(token)
+    # print(decoded)
