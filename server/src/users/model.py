@@ -115,9 +115,7 @@ class User(db.Model):
         :return:
         """
         try:
-            decoded = jwt.decode(token, current_app.config.get('SECRET_API_KEY'), algorithms=['HS256'])
-            print(decoded)
-            return decoded
+            return jwt.decode(token, current_app.config.get('SECRET_API_KEY'), algorithms=['HS256'])
         except jwt.ExpiredSignatureError:
             raise Exception('Expired token')
         except jwt.InvalidTokenError:

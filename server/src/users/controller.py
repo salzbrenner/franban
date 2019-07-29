@@ -154,7 +154,7 @@ def reset_password_request(body):
     :param email:
     :return:
     """
-    email=body['email']
+    email = body['email']
 
     try:
         user = User.query.filter_by(email=email).first()
@@ -167,12 +167,26 @@ def reset_password_request(body):
         })
         return response, 401
 
+
 def reset_password(token):
     """
     Resets user password
     :param token: jwt token
     :return:
     """
-    print("HELLO")
+    try:
+        decoded = User.decode_token(token)
+        uid = decoded.get('sub')
+        user = User.query.filter_by(id=uid).first()
+        results = {
+            'uid': uid,
+            'message': 'Token verified',
+        }
+        return results, 200
+    except Exception as e:
+        response = jsonify({
+            'message': str(e)
+        })
+        return response, 401
     # decoded = User.decode_token(token)
     # print(decoded)

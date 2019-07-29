@@ -13,9 +13,11 @@ import {
 } from 'redux/modules/auth';
 import { connect } from 'react-redux';
 import ButtonMain from 'components/ButtonMain/ButtonMain';
+import { confirmToken } from 'services/api';
 
 interface OwnProps {
-  token: string;
+  token?: string;
+  uid?: string | null;
 }
 
 type Props = ReturnType<typeof mapStateToProps> &
@@ -35,17 +37,14 @@ const FormPasswordReset: FC<Props> = props => {
   } = props;
 
   const submit = (values: {}) => {
-    resetPassword(values);
+    // resetPassword(values);
   };
 
   const renderForm = () => {
     return (
       <div className={`form-register`}>
-        <h1>ACTUAL RESER</h1>
-        <p>
-          Enter your email and you we will send you a link
-          to update your password
-        </p>
+        <h1>Reset password</h1>
+        <p>Enter a new password below.</p>
         <form
           className={`form-auth`}
           onSubmit={handleSubmit(submit)}
@@ -85,9 +84,15 @@ const FormPasswordReset: FC<Props> = props => {
   );
 };
 
-function mapStateToProps(state: AuthState) {
+function mapStateToProps(
+  state: AuthState,
+  ownProps: OwnProps
+) {
   return {
     resetMessage: resetPasswordMessage(state),
+    initialValues: {
+      userId: ownProps.uid,
+    },
   };
 }
 

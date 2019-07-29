@@ -95,7 +95,7 @@ paths:
         name: token
         required: true
         schema:
-          type: integer
+          type: string
         description: The user token
       responses:
         200:
