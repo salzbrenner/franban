@@ -30,15 +30,12 @@ export default (ChildComponent: Function) => {
       if (
         path === '/login' ||
         path === '/register' ||
-        path === '/reset-password'
+        path === '/reset-password' ||
+        path.includes('/reset-password/')
       ) {
         if (this.props.authorized) {
           this.props.history.push(`/${this.props.uid}`);
         }
-      } else if (path.includes('/reset-password/')) {
-        let token;
-        token = path.split('/').pop();
-        // this.props.history.push(`/reset-password/${token}`);
       } else {
         if (!this.props.authorized) {
           this.props.history.push('/login');

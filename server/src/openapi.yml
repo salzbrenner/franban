@@ -88,7 +88,7 @@ paths:
 
   /reset-password/{token}:
     get:
-      operationId: src.users.controller.reset_password
+      operationId: src.users.controller.reset_password_verifier
       description: Somwthing
       parameters:
       - in: path
@@ -100,6 +100,33 @@ paths:
       responses:
         200:
           description: sdfasdf
+      security: []
+
+    put:
+      operationId: src.users.controller.change_user_password
+      summary: Changes a user's passsword
+      parameters:
+      - in: path
+        name: token
+        required: true
+        schema:
+          type: string
+        description: The user token
+      requestBody:
+        description: Changes user's password
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                password:     # <!--- form field name
+                  type: string
+              required:
+              - password
+      responses:
+        204:
+          description: User password updated
       security: []
 
 

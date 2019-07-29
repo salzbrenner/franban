@@ -15,6 +15,7 @@ export const instance: AxiosInstance = axios.create({
 });
 
 /**
+ * Helper for sending form data
  *
  * @param email
  * @param password
@@ -31,7 +32,7 @@ const setLoginOrRegistrationFormData = (
 };
 
 /**
- *
+ * Helper for making api calls
  * @param type
  * @param path
  * @param data
@@ -69,7 +70,13 @@ export const login = (email: string, password: string) => {
   );
 };
 
-export const resetPassword = (email: string) => {
+/**
+ * Makes request to /reset-password, which sends email if
+ * successful
+ *
+ * @param email
+ */
+export const resetPasswordRequest = (email: string) => {
   const headers = {
     'Content-Type': 'application/x-www-form-urlencoded',
   };
@@ -79,6 +86,28 @@ export const resetPassword = (email: string) => {
   return makeApiCall(
     'post',
     '/reset-password',
+    bodyFormData,
+    headers
+  );
+};
+
+/**
+ * Submits a new password to /reset-password/<token>
+ * @param password
+ * @param token
+ */
+export const resetPasswordSubmitter = (
+  password: string,
+  token: string
+) => {
+  const headers = {
+    'Content-Type': 'application/x-www-form-urlencoded',
+  };
+  const bodyFormData = new FormData();
+  bodyFormData.set('password', password);
+  return makeApiCall(
+    'put',
+    `/reset-password/${token}`,
     bodyFormData,
     headers
   );
@@ -151,7 +180,7 @@ export const addList = (
 };
 
 /**
- * Deletes a list
+ * Deletes a list, makes call to lists/<listId>
  */
 export const deleteList = (id: number): AxiosPromise => {
   const headers = {
@@ -166,7 +195,7 @@ export const deleteList = (id: number): AxiosPromise => {
 };
 
 /**
- * Gets a list of user boards
+ * Gets a list of user boards from /boards/<uid>
  *  @return {AxiosPromise}
  */
 export const getUserBoards = (uid: string) => {
@@ -179,6 +208,10 @@ export const getUserBoards = (uid: string) => {
   });
 };
 
+/**
+ * Makes call to boards/<boardId>
+ * @param boardId
+ */
 export const getBoard = (boardId: number) => {
   const headers = {
     'Content-Type': 'application/json',
@@ -190,7 +223,7 @@ export const getBoard = (boardId: number) => {
 };
 
 /**
- * Gets a list of user boards
+ * Gets a list of user boards from /lists
  *  @param boardId
  *  @return {AxiosPromise}
  */
@@ -339,6 +372,11 @@ export const deleteTask = (id: number): AxiosPromise => {
   );
 };
 
+/**
+ * Makes a request to reset-password/<token>
+ * Typically accessed via emailed link
+ * @param token
+ */
 export const confirmToken = (
   token: string
 ): AxiosPromise => {
@@ -351,6 +389,9 @@ export const confirmToken = (
   });
 };
 
+/**
+ * Logs a user out, makes request to logout
+ */
 export const logout = () => {
   const headers = {
     'Content-Type': 'application/json',

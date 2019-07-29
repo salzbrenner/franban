@@ -53,6 +53,11 @@ class User(db.Model):
         db.session.delete(self)
         db.session.commit()
 
+    def update_password(self, password):
+        self.password = Bcrypt().generate_password_hash(password).decode()
+        self.save()
+
+
     @staticmethod
     def save_user_session_id(uid):
         """

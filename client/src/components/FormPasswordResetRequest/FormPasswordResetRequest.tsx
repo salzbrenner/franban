@@ -8,7 +8,7 @@ import {
   register,
   getErrorMessage,
   AuthState,
-  resetPassword,
+  resetPasswordRequest,
   resetPasswordMessage,
 } from 'redux/modules/auth';
 import { connect } from 'react-redux';
@@ -23,13 +23,12 @@ const FormPasswordResetRequest: FC<Props> = props => {
     handleSubmit,
     pristine,
     submitting,
-    resetMessage,
-    resetPassword,
+    resetPasswordRequest,
     submitSucceeded,
   } = props;
 
   const submit = (values: {}) => {
-    resetPassword(values);
+    resetPasswordRequest(values);
   };
 
   const renderForm = () => {
@@ -86,7 +85,7 @@ function mapStateToProps(state: AuthState) {
 }
 
 const mapDispatchToProps: any = {
-  resetPassword,
+  resetPasswordRequest,
 };
 
 const reduxFormRegister = reduxForm({

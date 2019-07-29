@@ -168,9 +168,9 @@ def reset_password_request(body):
         return response, 401
 
 
-def reset_password(token):
+def reset_password_verifier(token):
     """
-    Resets user password
+    Verifies token from url path (client side) is valid
     :param token: jwt token
     :return:
     """
@@ -188,5 +188,24 @@ def reset_password(token):
             'message': str(e)
         })
         return response, 401
-    # decoded = User.decode_token(token)
-    # print(decoded)
+
+
+def change_user_password(token, body):
+    """
+    Verifies token is valid, and updates user password
+    :param token: jwt token
+    :return:
+    """
+    try:
+        decoded = User.decode_token(token)
+        uid = decoded.get('sub')
+        password = body['password']
+        user = User.query.filter_by(id=uid).first()
+        user.update_password(password)
+
+        return 'Password updated', 200
+    except Exception as e:
+        response = jsonify({
+            'message': str(e)
+        })
+        return response, 401

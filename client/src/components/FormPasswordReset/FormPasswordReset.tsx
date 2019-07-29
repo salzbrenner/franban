@@ -1,19 +1,16 @@
 import React, { FC, useEffect } from 'react';
 import {
+  SubmissionError,
   Field,
   InjectedFormProps,
   reduxForm,
 } from 'redux-form';
 import {
-  register,
-  getErrorMessage,
   AuthState,
-  resetPassword,
-  resetPasswordMessage,
+  resetPasswordSubmitter,
 } from 'redux/modules/auth';
 import { connect } from 'react-redux';
 import ButtonMain from 'components/ButtonMain/ButtonMain';
-import { confirmToken } from 'services/api';
 
 interface OwnProps {
   token?: string;
@@ -30,17 +27,26 @@ const FormPasswordReset: FC<Props> = props => {
     handleSubmit,
     pristine,
     submitting,
-    resetMessage,
-    resetPassword,
     submitSucceeded,
-    token,
+    resetPasswordSubmitter,
+    error,
   } = props;
 
-  const submit = (values: {}) => {
-    // resetPassword(values);
+  const submit = async (values: {
+    password: string;
+    token: string;
+  }) => {
+    const updated = await resetPasswordSubmitter(values);
+    if (!updated) {
+      throw new SubmissionError({
+        password: 'password could not be updated',
+        _error: 'Could not update',
+      });
+    }
   };
 
   const renderForm = () => {
+    const {} = props;
     return (
       <div className={`form-register`}>
         <h1>Reset password</h1>
@@ -51,10 +57,10 @@ const FormPasswordReset: FC<Props> = props => {
         >
           <div className={'form-auth__fields'}>
             <Field
-              name="email"
+              name="password"
               component="input"
-              type="email"
-              placeholder="Email"
+              type="password"
+              placeholder="password"
             />
           </div>
           <div>
@@ -72,13 +78,12 @@ const FormPasswordReset: FC<Props> = props => {
 
   return (
     <>
-      {!submitSucceeded ? (
-        renderForm()
-      ) : (
-        <div>
-          Thank you, we will send an email to reset your
-          password
-        </div>
+      {!(submitSucceeded || error) && renderForm()}
+      {submitSucceeded && (
+        <p>Thank you. Please login to continue</p>
+      )}
+      {error && (
+        <p>There was an error processing your request</p>
       )}
     </>
   );
@@ -89,19 +94,18 @@ function mapStateToProps(
   ownProps: OwnProps
 ) {
   return {
-    resetMessage: resetPasswordMessage(state),
     initialValues: {
-      userId: ownProps.uid,
+      token: ownProps.token,
     },
   };
 }
 
 const mapDispatchToProps: any = {
-  resetPassword,
+  resetPasswordSubmitter,
 };
 
 const reduxFormRegister = reduxForm<{}, OwnProps>({
-  form: 'password-reset', // a unique identifier for this form
+  form: 'password-reset-submitter', // a unique identifier for this form
 })(FormPasswordReset);
 
 export default connect(

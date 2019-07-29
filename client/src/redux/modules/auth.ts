@@ -121,18 +121,39 @@ export const login = (
   }
 };
 
-export const resetPassword = ({
+export const resetPasswordRequest = ({
   email,
 }: {
   email: string;
 }) => async (dispatch: Function) => {
   try {
-    const res = await api.resetPassword(email);
-    console.log(res);
+    const res = await api.resetPasswordRequest(email);
     dispatch({
       type: RESET_PASSWORD,
       payload: res.data,
     });
+  } catch (e) {
+    console.log(e);
+    dispatch({
+      type: AUTHENTICATION_ERROR,
+      payload: 'Invalid email',
+    });
+  }
+};
+
+export const resetPasswordSubmitter = ({
+  password,
+  token,
+}: {
+  password: string;
+  token: string;
+}) => async (dispatch: Function) => {
+  try {
+    const res = await api.resetPasswordSubmitter(
+      password,
+      token
+    );
+    return res.status === 200;
   } catch (e) {
     console.log(e);
     dispatch({

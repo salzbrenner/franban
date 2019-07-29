@@ -19,14 +19,10 @@ export function createAxiosAuthMiddleware() {
       token = tokenInPath();
     }
 
-    console.log(typeof jwt, token);
-
     instance.defaults.headers.common.Authorization = token
       ? `Bearer ${token}`
       : null;
-    console.log(
-      instance.defaults.headers.common.Authorization
-    );
+
     return next(action);
   };
 }

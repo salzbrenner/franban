@@ -26,7 +26,7 @@ const ResetPassword = ({
 
   return (
     <div className={'login'}>
-      {uid && <FormPasswordReset uid={uid} />}
+      {uid && <FormPasswordReset uid={uid} token={token} />}
       {invalid && (
         <p>
           Password renewal has expired. Please request
