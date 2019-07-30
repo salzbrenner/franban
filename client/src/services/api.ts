@@ -401,3 +401,26 @@ export const logout = () => {
     headers,
   });
 };
+
+/**
+ * Posts form data to /boards endpoint
+ * @return {AxiosPromise}
+ */
+export const addUserToBoard = (
+  boardId: number,
+  email: string
+) => {
+  const headers = {
+    'Content-Type': 'application/x-www-form-urlencoded',
+  };
+
+  const bodyFormData = new FormData();
+  bodyFormData.set('email', email);
+
+  return makeApiCall(
+    'post',
+    `/boards/${boardId}/invite`,
+    bodyFormData,
+    headers
+  );
+};

@@ -14,21 +14,22 @@ export interface FormAddTaskValues {
   submit: Function;
 }
 
-interface XXX {
+interface OwnProps {
   listId: any;
   addTask?: typeof mapDispatchToProps;
 }
 
-type YYY = InjectedFormProps<{}, XXX> & XXX;
+type FormAddTaskProps = InjectedFormProps<{}, OwnProps> &
+  OwnProps;
 
-class FormAddTask extends Component<YYY> {
+class FormAddTask extends Component<FormAddTaskProps> {
   formRef: RefObject<HTMLDivElement>;
   openRef: RefObject<HTMLDivElement>;
   state = {
     formVisible: false,
   };
 
-  constructor(props: YYY) {
+  constructor(props: FormAddTaskProps) {
     super(props);
     this.formRef = React.createRef();
     this.openRef = React.createRef();
@@ -136,7 +137,7 @@ const mapDispatchToProps: any = {
   addTask,
 };
 
-const reduxFormAddTask = reduxForm<{}, XXX>({
+const reduxFormAddTask = reduxForm<{}, OwnProps>({
   form: 'addTask', // a unique identifier for this form
 })(FormAddTask);
 

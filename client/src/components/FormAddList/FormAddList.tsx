@@ -10,10 +10,7 @@ import './FormAddList.css';
 import {
   addList,
   FormAddListValues,
-  listOrderSelector,
-  listsSelector,
 } from 'redux/modules/lists';
-import { AppState } from 'redux/modules/rootReducer';
 
 type Props = typeof mapDispatchToProps &
   InjectedFormProps & {};
@@ -24,10 +21,11 @@ const FormAddList: FC<Props> = props => {
     pristine,
     submitting,
     reset,
+    addList,
   } = props;
 
   const submit = ({ name, boardId }: FormAddListValues) => {
-    return props.addList(name, boardId).then((val: any) => {
+    return addList(name, boardId).then(() => {
       reset();
     });
   };

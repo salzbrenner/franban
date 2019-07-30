@@ -126,6 +126,16 @@ def get_user(id):
     }
 
 
+def get_user_by_email(email):
+    """
+    Returns specific user from email
+    :param email:
+    :return:
+    """
+    user = User.query.filter_by(email=email).first()
+    return user
+
+
 def get_boards(uid):
     """
     Responds to a GET request for /api/{uid}/boards
@@ -209,3 +219,5 @@ def change_user_password(token, body):
             'message': str(e)
         })
         return response, 401
+
+

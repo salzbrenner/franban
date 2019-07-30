@@ -34,11 +34,15 @@ class Board(db.Model):
     def users(self, users):
         self._users = json.dumps(users)
 
+    def append_user(self, val):
+        self._users = json.dumps(self.users + [val])
+        db.session.commit()
+
     def save(self):
         db.session.add(self)
         db.session.commit()
 
-    def update(self, name):
+    def update_name(self, name):
         self.name = name
         db.session.commit()
 

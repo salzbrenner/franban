@@ -1,6 +1,6 @@
 from flask import Blueprint, jsonify
 
-from src.users.controller import get_user
+from src.users.controller import get_user, get_user_by_email
 from .model import Board
 from connexion import request, NoContent
 from src import socketio
@@ -63,7 +63,7 @@ def put(id, body):
     """
     board = Board.query.filter_by(id=id).first()
     if board:
-        board.update(body['name'])
+        board.update_name(body['name'])
         return 'Updated board to ' + board.name, 200
     else:
         return 'Board does not exist', 404
@@ -82,3 +82,26 @@ def delete(id):
         return NoContent, 204
     else:
         return 'Board does not exist', 404
+
+
+def invite_user(body, id):
+    """
+    Sends an email notifying recipient that they have been granted access to a board
+    :param body: requestBody
+    :return:
+    """
+    email = body.get('email')
+    user = get_user_by_email(email)
+    board = Board.query.filter_by(id=id).first()
+
+    if user and user:
+        board.append_user(user.id)
+        result = {
+            'email': email,
+            'id': user.id,
+        }
+        return result, 200
+    else:
+        return f'''{email} is not a registered user''', 406
+
+

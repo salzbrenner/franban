@@ -16,3 +16,11 @@
   display: inline-block;
   margin-bottom: 20px;
 }
+
+.board-overview__invite {
+  font-size: 12px;
+  font-weight: bold;
+  color: var(--primary-color);
+  margin-right: 30px;
+  text-decoration: underline;
+}

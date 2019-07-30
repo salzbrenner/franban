@@ -162,6 +162,8 @@ paths:
         200:
           description: Successful User boards read
 
+
+
   # Board routes
   ###############
   /boards:
@@ -239,6 +241,33 @@ paths:
       responses:
         204:
           description: Todo deleted
+
+  /boards/{id}/invite:
+    post:
+      operationId: src.boards.controller.invite_user
+      description: Invites another user to join board
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: integer
+        description: the board id
+      requestBody:
+        description: Sends an email notifying user they have joined a board
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                email:     # <!--- form field name
+                  type: string
+              required:
+              - email
+      responses:
+        204:
+          description: User invite sent
 
   # Lists routes
   ###############
