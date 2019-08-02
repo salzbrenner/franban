@@ -21,7 +21,7 @@ const UserBoards: FunctionComponent<Props> = props => {
   const { uid, boards, getUserBoards } = props;
   useEffect(() => {
     getUserBoards(uid); // initial load
-    subscribeToBoards(() => getUserBoards(uid)); // subscribes socket responses for same event
+    // subscribeToBoards(() => getUserBoards(uid)); // subscribes socket responses for same event
   }, [uid]);
 
   return (
