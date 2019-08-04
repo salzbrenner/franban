@@ -29,12 +29,14 @@ def create_app(config_name):
     mail.init_app(flask_app)
     socketio.init_app(flask_app)
 
-    from .users.controller import user
-    from .boards.controller import boards
-    from .tasks.controller import tasks
-
-    flask_app.register_blueprint(boards)
-    flask_app.register_blueprint(user)
-    flask_app.register_blueprint(tasks)
+    # from .users.controller import user
+    # from .boards.controller import boards
+    # from .tasks.controller import tasks
+    # from .lists.controller import lists
+    #
+    # flask_app.register_blueprint(boards)
+    # flask_app.register_blueprint(user)
+    # flask_app.register_blueprint(tasks)
+    # flask_app.register_blueprint(lists)
 
     return connexion_app

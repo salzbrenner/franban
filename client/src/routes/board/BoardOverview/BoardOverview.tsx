@@ -7,7 +7,10 @@ import {
 } from 'routes/board/BoardOverview/BoardOverviewContainer';
 import './BoardOverview.css';
 import { Link } from 'react-router-dom';
-import { subscribeToLists } from 'services/socket';
+import {
+  roomHandler,
+  socketListHandlers,
+} from 'services/socket';
 import UserList from 'components/UserList/UserList';
 import FormInviteUser from 'components/FormInviteUser/FormInviteUser';
 import Modal from 'react-modal';
@@ -40,12 +43,15 @@ const BoardOverview: FC<Props> = props => {
 
   useEffect(() => {
     getBoard(boardId);
-    subscribeToLists.listAdded(() => getBoard(boardId));
-    subscribeToLists.listDeleted(() => getBoard(boardId));
+    roomHandler.joinRoom(boardId);
+    socketListHandlers.subscribeAll(() =>
+      getBoard(boardId)
+    );
     return function cleanup() {
+      roomHandler.leaveRoom(boardId);
       resetBoard();
       resetLists();
-      subscribeToLists.offAll();
+      socketListHandlers.offAll();
     };
   }, [boardId]);
 

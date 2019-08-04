@@ -1,9 +1,30 @@
 import openSocket from 'socket.io-client';
-import { connect } from 'react-redux';
 import store from '../redux/store';
-
 // @ts-ignore
 const socket = openSocket(process.env.REACT_APP_BASE_URL);
+
+type SocketEvents =
+  | 'LIST_ADDED'
+  | 'LIST_DELETED'
+  | 'LIST_UPDATED'
+  | 'TASK_ADDED'
+  | 'TASK_UPDATED'
+  | 'TASK_DELETED'
+  | 'JOIN_ROOM'
+  | 'LEAVE_ROOM';
+
+const socketEvents: {
+  [K in SocketEvents]: SocketEvents
+} = {
+  JOIN_ROOM: 'JOIN_ROOM',
+  LEAVE_ROOM: 'LEAVE_ROOM',
+  LIST_ADDED: 'LIST_ADDED',
+  LIST_DELETED: 'LIST_DELETED',
+  LIST_UPDATED: 'LIST_UPDATED',
+  TASK_ADDED: 'TASK_ADDED',
+  TASK_DELETED: 'TASK_DELETED',
+  TASK_UPDATED: 'TASK_UPDATED',
+};
 
 function subscribeToBoards(cb: Function) {
   socket.on('BOARD_ADDED', function() {
@@ -11,30 +32,90 @@ function subscribeToBoards(cb: Function) {
   });
 }
 
-type SocketEvents = 'LIST_ADDED' | 'LIST_DELETED';
-
-const socketEvents: {
-  [K in SocketEvents]: SocketEvents
-} = {
-  LIST_ADDED: 'LIST_ADDED',
-  LIST_DELETED: 'LIST_DELETED',
+const roomHandler = {
+  joinRoom: (boardId: number) => {
+    console.log('Joined room ', boardId);
+    socket.emit('join', boardId);
+  },
+  leaveRoom: (boardId: number) => {
+    console.log('Left room ', boardId);
+    socket.emit('leave', boardId);
+  },
 };
 
-const subscribeToLists = {
-  listAdded: (cb: Function) =>
-    socket.on('LIST_ADDED', (userSessionId: number) => {
-      if (
-        `${userSessionId}` !== store.getState().auth.uid
-      ) {
+const emitIfNotOriginator = (
+  userSessionId: number,
+  cb: Function
+) => {
+  const uid = store.getState().auth.uid;
+  if (`${userSessionId}` !== uid) {
+    cb();
+  }
+};
+
+const listEvents = [
+  socketEvents.LIST_ADDED,
+  socketEvents.LIST_DELETED,
+  socketEvents.LIST_UPDATED,
+];
+
+const socketListHandlers = {
+  listAdded: (cb: Function) => {
+    socket.on(
+      socketEvents.LIST_ADDED,
+      (userSessionId: number) => {
+        emitIfNotOriginator(userSessionId, cb);
       }
-      cb();
-    }),
+    );
+  },
   listDeleted: (cb: Function) => {
-    socket.on('LIST_DELETED', () => cb());
+    socket.on(
+      socketEvents.LIST_DELETED,
+      (userSessionId: number) => {
+        emitIfNotOriginator(userSessionId, cb);
+      }
+    );
+  },
+  listMoved: (cb: Function) => {
+    socket.on(
+      socketEvents.LIST_UPDATED,
+      (userSessionId: number) => {
+        emitIfNotOriginator(userSessionId, cb);
+      }
+    );
+  },
+  subscribeAll: (cb: Function) => {
+    listEvents.forEach(event => {
+      socket.on(event, (userSessionId: number) => {
+        emitIfNotOriginator(userSessionId, cb);
+      });
+    });
   },
   offAll: () => {
-    socket.removeListener('LIST_ADDED');
-    socket.removeListener('LIST_DELETED');
+    listEvents.forEach(event => {
+      socket.removeListener(event);
+    });
+  },
+};
+
+const taskEvents = [
+  socketEvents.TASK_UPDATED,
+  socketEvents.TASK_DELETED,
+  socketEvents.TASK_ADDED,
+];
+
+const socketTaskHandlers = {
+  subscribeAll: (cb: Function) => {
+    taskEvents.forEach(event => {
+      socket.on(event, (userSessionId: number) => {
+        emitIfNotOriginator(userSessionId, cb);
+      });
+    });
+  },
+  unsubscribeAll: () => {
+    taskEvents.forEach(event => {
+      socket.removeListener(event);
+    });
   },
 };
 
@@ -44,7 +125,9 @@ const socketUnsubscribeFrom = (event: SocketEvents) => {
 
 export {
   subscribeToBoards,
-  subscribeToLists,
+  socketListHandlers,
   socketUnsubscribeFrom,
+  roomHandler,
   socketEvents,
+  socketTaskHandlers,
 };

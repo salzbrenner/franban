@@ -4,8 +4,6 @@ from flask_bcrypt import Bcrypt
 import jwt
 from datetime import datetime, timedelta
 
-from src.users.utils import send_reset_email
-
 
 class User(db.Model):
     """

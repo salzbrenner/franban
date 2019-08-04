@@ -1,10 +1,8 @@
-from flask import Blueprint, json, request as flask_request
-from flask_socketio import send, emit
-
+from flask import Blueprint
 from src import socketio
-from src.socket import LIST_ADDED, LIST_DELETED
+from src.socket import LIST_ADDED, LIST_DELETED, LIST_UPDATED
 from src.tasks.controller import delete as task_delete
-from src.users.model import User
+from src.users.controller import get_user_session_id
 from .model import List
 from connexion import request, NoContent
 
@@ -25,15 +23,19 @@ def create(body):
         'name': list.name,
         'order': list.order
     }
-    socketio.emit(LIST_ADDED, data=User.get_user_session_id(),  skip_sid=User.get_user_session_id())
+    socketio.emit(
+        LIST_ADDED,
+        room=board_id,
+        data=get_user_session_id(),
+        # skip_sid=get_user_session_id() - ???
+    )
 
     return response, 201
 
 
-def get_all_in_board(**kwargs):
+def get_all_in_board():
     """
     Responds to GET request for /api/lists
-    :param board_id:
     :return:
     """
     board_id = request.args.get('board')
@@ -56,9 +58,14 @@ def get_all_in_board(**kwargs):
 def get(id):
     """
     Responds to a GET request for /api/lists/<list_id>
-    :param list_id:
+    :param id:
     :return:
     """
+    list = get_list(id)
+    return list, 200
+
+
+def get_list(id):
     list = List.query.filter_by(id=id).first()
     res = {
         'name': list.name,
@@ -66,28 +73,7 @@ def get(id):
         'id': list.id,
         'board_id': list.board_id
     }
-    return res, 200
-
-
-# def get_all(board_id):
-#     """
-#     Responds to GET request for /api/lists/<board_id>
-#     :param board_id:
-#     :return:
-#     """
-#     results = []
-#     lists = List.query.filter_by(board_id=board_id).order_by(List.order)
-#
-#     for list in lists:
-#         res = {
-#             'name': list.name,
-#             'order': list.order,
-#             'id': list.id,
-#             'board_id': list.board_id
-#         }
-#         results.append(res)
-#
-#     return results, 200
+    return res
 
 
 def put(id, body):
@@ -106,6 +92,12 @@ def put(id, body):
     position = int(body['order'])
     if list:
         list.update(name, position)
+
+        socketio.emit(
+            LIST_UPDATED,
+            room=list.board_id,
+            data=get_user_session_id(),
+        )
         return 'Updated list name to: ' + list.name + ' and order to:' + str(list.order), 200
     else:
         return 'List does not exist', 404
@@ -123,7 +115,11 @@ def delete(id):
         for t in list.tasks:
             task_delete(t.id)
         list.delete()
-        socketio.emit(LIST_DELETED)
+        socketio.emit(
+            LIST_DELETED,
+            room=list.board_id,
+            data=get_user_session_id(),
+        )
         return NoContent, 204
     else:
         return 'List does not exist', 404

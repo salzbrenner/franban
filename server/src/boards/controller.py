@@ -1,6 +1,7 @@
 from flask import Blueprint, jsonify
 
-from src.users.controller import get_user, get_user_by_email
+from src.board_members.controller import add_board_member, get_board_members, get_boards_as_member
+from src.users.controller import get_user, get_user_by_email, get_user_session_id
 from .model import Board
 from connexion import request, NoContent
 from src import socketio
@@ -35,19 +36,25 @@ def get(id):
     board = Board.query.filter_by(id=id).first()
     lists = board.lists
     list_ids = [l.id for l in lists]
-    users = []
+    all_users = []
 
-    for uid in board.users:
-        users.append(get_user(uid))
+    for board_member in get_board_members(board.id):
+        user = get_user(board_member.uid)
+        all_users.append({'id': user.id, 'email': user.email})
 
-    users.append(get_user(board.owner))
+    board_owner = get_user(board.owner)
+    all_users.append({'id': board_owner.id, 'email': board_owner.email})
+
+    # deny access if not a member of board
+    if not any(d['id'] == get_user_session_id() for d in all_users):
+        return 'Access Denied', 403
 
     if board:
         result = {
             'id': board.id,
             'name': board.name,
             'lists': list_ids,
-            'users': users,
+            'users': all_users,
         }
         return result, 200
     else:
@@ -94,8 +101,8 @@ def invite_user(body, id):
     user = get_user_by_email(email)
     board = Board.query.filter_by(id=id).first()
 
-    if user and user:
-        board.append_user(user.id)
+    if user and board:
+        add_board_member(user.id, board.id)
         result = {
             'email': email,
             'id': user.id,
@@ -105,3 +112,34 @@ def invite_user(body, id):
         return f'''{email} is not a registered user''', 406
 
 
+def get_user_boards(uid):
+    """
+    Responds to a GET request for /api/{uid}/boards
+    :param uid: integer
+    :return: {'id': number, 'name': string}
+    """
+    results = []
+    if uid != get_user_session_id():
+        return results, 403
+
+    user = get_user(uid)
+
+    # get all boards user is member of
+    as_member_boards = get_boards_as_member(uid)
+    for board_member in as_member_boards:
+        board = Board.query.filter_by(id=board_member.board_id).first()
+        obj = {
+            'id': board.id,
+            'name': board.name,
+        }
+        results.append(obj)
+
+    # get all boards user is owner of
+    for board in user.boards:
+        obj = {
+            'id': board.id,
+            'name': board.name,
+        }
+        results.append(obj)
+
+    return results, 200

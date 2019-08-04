@@ -10,8 +10,6 @@ def send_reset_email(user):
     msg = Message('Password Reset Request',
                   sender=current_app.config.get('MAIL_USERNAME'),
                   recipients=[user.email])
-    msg.body = 'HELLOW WORL'
     msg.html = render_template('reset.html', link=reset_url)
-
 
     mail.send(msg)

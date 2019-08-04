@@ -1,4 +1,6 @@
-from flask import Blueprint, jsonify, current_app, session, Response
+from flask import Blueprint, jsonify
+
+# from src.board_members.controller import get_boards_as_member
 from src.users.model import User
 from connexion import request, NoContent
 
@@ -120,10 +122,11 @@ def get_user(id):
     :return:
     """
     user = User.query.filter_by(id=id).first()
-    return {
-        'id': user.id,
-        'email': user.email,
-    }
+    return user
+    #     {
+    #     'id': user.id,
+    #     'email': user.email,
+    # }
 
 
 def get_user_by_email(email):
@@ -134,28 +137,6 @@ def get_user_by_email(email):
     """
     user = User.query.filter_by(email=email).first()
     return user
-
-
-def get_boards(uid):
-    """
-    Responds to a GET request for /api/{uid}/boards
-    :param uid: integer
-    :return: {'id': number, 'name': string}
-    """
-    results = []
-    if uid != User.get_user_session_id():
-        return results, 403
-
-    user = User.query.filter_by(id=str(uid)).first()
-
-    for board in user.boards:
-        obj = {
-            'id': board.id,
-            'name': board.name,
-        }
-        results.append(obj)
-
-    return results, 200
 
 
 def reset_password_request(body):
@@ -221,3 +202,5 @@ def change_user_password(token, body):
         return response, 401
 
 
+def get_user_session_id():
+    return User.get_user_session_id()

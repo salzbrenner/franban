@@ -24,7 +24,10 @@ class Header extends Component<Props> {
   }
   render() {
     return (
-      <div className="header">{this.renderLinks()}</div>
+      <>
+        <div className="header">{this.renderLinks()}</div>
+        <div className="header__spacer" />
+      </>
     );
   }
 }

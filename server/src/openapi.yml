@@ -149,7 +149,7 @@ paths:
 
   /{uid}/boards:
     get:
-      operationId: src.users.controller.get_boards
+      operationId: src.boards.controller.get_user_boards
       description: Read Boards belonging to user
       parameters:
       - in: path
@@ -453,6 +453,212 @@ paths:
           description: Task deleted
 
   ################################################
+  # No AUTH
+#  /noauth/boards/{id}:
+#    get:
+#      operationId: src.boards.controller.get
+#      description: Read board by id
+#      parameters:
+#      - in: path
+#        name: id
+#        required: true
+#        schema:
+#          type: integer
+#        description: The Board's ID
+#      responses:
+#        200:
+#          description: Successful read of board by id
+#      security: []
+
+#  /noauth/lists:
+#    post:
+#      operationId: src.lists.controller.create
+#      description: Create a list
+#      requestBody:
+#        required: true
+#        content:
+#          application/x-www-form-urlencoded:
+#            schema:
+#              type: object
+#              properties:
+#                name:
+#                  type: string
+#                board_id:
+#                  type: integer
+#              required:
+#              - name
+#              - board_id
+#      responses:
+#        201:
+#          description: Successful List creation
+#      security: []
+#
+#    get:
+#      operationId: src.lists.controller.get_all_in_board
+#      description: Get all lists for a board
+#      parameters:
+#      - in: query
+#        name: board
+#        schema:
+#          type: integer
+#      responses:
+#        200:
+#          description: Successful read of board's lists
+#      security: []
+#
+#  /noauth/lists/{id}:
+#    get:
+#      operationId: src.lists.controller.get
+#      description: Read list belonging to list
+#      parameters:
+#      - in: path
+#        name: id
+#        required: true
+#        schema:
+#          type: integer
+#        description: The list's id
+#      responses:
+#        200:
+#          description: Successful read of list
+#      security: []
+#
+#    put:
+#      operationId: src.lists.controller.put
+#      description: Update a list's name and/or order
+#      parameters:
+#      - name: id
+#        in: path
+#        required: true
+#        schema:
+#          type: integer
+#        description: the list id
+#      requestBody:
+#        description: New name and/or order for the list
+#        content:
+#          application/x-www-form-urlencoded:
+#            schema:
+#              type: object
+#              properties:
+#                order:
+#                  type: number
+#                name:
+#                  type: string
+#      responses:
+#        200:
+#          description: Successfully updated the list's name/order
+#      security: []
+#
+#
+#    delete:
+#      operationId: src.lists.controller.delete
+#      description: Delete a List by id
+#      parameters:
+#      - in: path
+#        name: id
+#        required: true
+#        schema:
+#          type: integer
+#        description: the list id
+#      responses:
+#        204:
+#          description: List deleted
+#      security: []
+#
+#  /noauth/tasks:
+#    post:
+#      operationId: src.tasks.controller.create
+#      description: Create a task
+#      requestBody:
+#        required: true
+#        content:
+#          application/x-www-form-urlencoded:
+#            schema:
+#              type: object
+#              properties:
+#                name:
+#                  type: string
+#                board_id:
+#                  type: integer
+#              required:
+#              - name
+#              - list_id
+#      responses:
+#        201:
+#          description: Successful task creation
+#      security: []
+#
+#    get:
+#      operationId: src.tasks.controller.get_all_in_list
+#      description: Get all tasks for a list
+#      parameters:
+#      - in: query
+#        name: list
+#        schema:
+#          type: integer
+#      responses:
+#        200:
+#          description: Successful read of lists's tasks
+#      security: []
+#
+#  /noauth/tasks/{id}:
+#    get:
+#      operationId: src.tasks.controller.get
+#      description: Read task
+#      parameters:
+#      - in: path
+#        name: id
+#        required: true
+#        schema:
+#          type: integer
+#        description: The tasks's id
+#      responses:
+#        200:
+#          description: Successful read of task
+#      security: []
+#
+#
+#    put:
+#      operationId: src.tasks.controller.put
+#      description: Update a task's name and/or order
+#      parameters:
+#      - name: id
+#        in: path
+#        required: true
+#        schema:
+#          type: integer
+#        description: the task id
+#      requestBody:
+#        description: New name and/or order for the task
+#        content:
+#          application/x-www-form-urlencoded:
+#            schema:
+#              type: object
+#              properties:
+#                order:
+#                  type: number
+#                name:
+#                  type: string
+#                list_id:
+#                  type: number
+#      responses:
+#        200:
+#          description: Successfully updated the task's name/order
+#      security: []
+#
+#    delete:
+#      operationId: src.tasks.controller.delete
+#      description: Delete a task by id
+#      parameters:
+#      - in: path
+#        name: id
+#        required: true
+#        schema:
+#          type: integer
+#        description: the task id
+#      responses:
+#        204:
+#          description: Task deleted
+#      security: []
 
 components:
   securitySchemes:
