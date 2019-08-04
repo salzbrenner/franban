@@ -1,5 +1,46 @@
+import jwtDecode from 'jwt-decode';
 import * as api from '../../services/api';
 import { ActionInterface } from 'redux/modules/action.type';
+
+const setTokens = (token: string, uid: string) => {
+  const { exp } = jwtDecode(token);
+  const tokenObj = {
+    token: token,
+    exp,
+  };
+
+  localStorage.setItem(
+    FRNBN_TOKN,
+    JSON.stringify(tokenObj)
+  );
+  localStorage.setItem(FRNBN_USR, uid);
+};
+
+const removeTokens = () => {
+  localStorage.removeItem(FRNBN_TOKN);
+  localStorage.removeItem(FRNBN_USR);
+};
+
+const getToken = () => {
+  const tokenObj: any = localStorage.getItem(FRNBN_TOKN);
+
+  if (!tokenObj) {
+    return;
+  }
+
+  const object = JSON.parse(tokenObj);
+  const { exp, token } = object;
+
+  if (exp < new Date().getTime() / 1000) {
+    removeTokens();
+    return;
+  }
+
+  return token;
+};
+
+const FRNBN_TOKN = 'FRNBN_TOKN';
+const FRNBN_USR = 'FRNBN_USR';
 
 export const AUTHENTICATED = 'auth/AUTHENTICATED';
 export const RESET_PASSWORD = 'auth/RESET_PASSWORD';
@@ -19,8 +60,8 @@ export interface AuthState {
 }
 
 export const initialState: AuthState = {
-  jwt: localStorage.getItem('prello-token'),
-  uid: localStorage.getItem('prello-uid'),
+  jwt: getToken(),
+  uid: localStorage.getItem(FRNBN_USR),
   errorMessage: '',
   resetPasswordMessage: null,
 };
@@ -76,12 +117,8 @@ export const register = (
       },
     });
 
-    // update api service
-    localStorage.setItem(
-      'prello-token',
-      res.data.access_token
-    );
-    localStorage.setItem('prello-uid', res.data.uid);
+    localStorage.setItem(FRNBN_TOKN, res.data.access_token);
+    localStorage.setItem(FRNBN_USR, res.data.uid);
     callback();
   } catch (e) {
     dispatch({
@@ -106,11 +143,7 @@ export const login = (
     });
 
     // update api service
-    localStorage.setItem(
-      'prello-token',
-      res.data.access_token
-    );
-    localStorage.setItem('prello-uid', res.data.uid);
+    setTokens(res.data.access_token, res.data.uid);
     callback();
   } catch (e) {
     console.log(e);
@@ -167,8 +200,8 @@ export const logout = () => async (dispatch: Function) => {
   // update api service
   const res = await api.logout();
 
-  localStorage.removeItem('prello-token');
-  localStorage.removeItem('prello-uid');
+  localStorage.removeItem(FRNBN_TOKN);
+  localStorage.removeItem(FRNBN_USR);
   dispatch({
     type: AUTHENTICATED,
     payload: '',
