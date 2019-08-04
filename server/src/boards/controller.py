@@ -85,7 +85,19 @@ def delete(id):
     board = Board.query.filter_by(id=id).first()
 
     if board:
+
+        board_members = get_board_members(id)
+
+        for bm in board_members:
+            bm.delete()
+
+        for l in board.lists:
+            for t in l.tasks:
+                t.delete()
+            l.delete()
+
         board.delete()
+
         return NoContent, 204
     else:
         return 'Board does not exist', 404

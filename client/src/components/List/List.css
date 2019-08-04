@@ -18,7 +18,7 @@
   transition: background-color 0.2s ease;
   min-height: 80px;
   background: var(--tertiary-color);
-  background: rgba(0, 0, 0, 0.02);
+  background: rgba(0, 0, 0, 0.03);
   margin-bottom: 20px;
 }
 

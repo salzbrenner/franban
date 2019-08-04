@@ -46,7 +46,7 @@ const FormAuth = ({
           disabled={pristine || submitting}
         />
       </div>
-      <div className="form-login__error">
+      <div className="form-auth__error">
         {errorRenderer()}
       </div>
     </form>

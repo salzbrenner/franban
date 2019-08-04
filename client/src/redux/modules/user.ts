@@ -3,12 +3,11 @@ import { ThunkDispatch } from 'redux-thunk';
 import { ActionInterface } from 'redux/modules/action.type';
 
 export const GET_BOARDS = 'user/GET_BOARDS';
-export const READ_ERROR = 'user/READ_ERROR';
 export const ADD_BOARD = 'user/ADD_BOARD';
-export const ADD_ERROR = 'user/ADD_BOARD';
+export const DELETE_BOARD = 'user/DELETE_BOARD';
 
 export interface UserState {
-  boards: {}[];
+  boards: { id: number; name: string }[];
   readError: string;
   addErrorMessage: string;
 }
@@ -36,27 +35,22 @@ export default function reducer(
     }
 
     case ADD_BOARD: {
-      console.log('Successfully added board');
-      return state;
       return {
         ...state,
         boards: [...state.boards, action.payload],
       };
     }
 
-    // case ADD_ERROR: {
-    //   return {
-    //     ...state,
-    //     addErrorMessage: action.payload,
-    //   };
-    // }
-    //
-    // case READ_ERROR: {
-    //   return {
-    //     ...state,
-    //     readError: action.payload,
-    //   };
-    // }
+    case DELETE_BOARD:
+      const idToDelete = action.payload;
+      const newBoards = state.boards.filter(
+        board => board.id !== idToDelete
+      );
+
+      return {
+        ...state,
+        boards: newBoards,
+      };
 
     default:
       return state;
@@ -107,4 +101,16 @@ export const addBoard = ({
   } catch (e) {
     console.log(e);
   }
+};
+
+export const deleteBoard = (id: number) => async (
+  dispatch: ThunkDispatch<{}, {}, any>,
+  getState: Function
+): Promise<void> => {
+  await api.deleteBoard(id);
+
+  dispatch({
+    type: DELETE_BOARD,
+    payload: id,
+  });
 };

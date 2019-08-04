@@ -16,6 +16,7 @@ eventlet = "*"
 flask-bcrypt = "*"
 pyjwt = "*"
 flask-cors = "*"
+flask-mail = "*"
 
 [dev-packages]
 

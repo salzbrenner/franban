@@ -15,7 +15,6 @@ class Board(db.Model):
                             order_by="List.board_order",
                             backref='board',
                             collection_class=ordering_list('order'))
-    is_demo = db.Column(db.Boolean)
 
     def __init__(self, name, uid):
         """Initialize with name"""

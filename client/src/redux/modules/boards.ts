@@ -5,7 +5,7 @@ import { getListsForBoard } from 'redux/modules/lists';
 
 export const GET_BOARD = 'boards/GET_BOARD';
 export const RESET_BOARD = 'boards/RESET_BOARD';
-export const ADD_BOARD = 'boards/ADD_BOARD';
+export const ADD_USER_TO_BOARD = 'boards/ADD_USER_TO_BOARD';
 
 export interface BoardState {
   users: any[];
@@ -42,7 +42,7 @@ export default function reducer(
       return initialState;
     }
 
-    case ADD_BOARD: {
+    case ADD_USER_TO_BOARD: {
       const { success, message, user } = action.payload;
 
       return {
@@ -96,7 +96,7 @@ export const addUserToBoard = (
     const res = await api.addUserToBoard(boardId, email);
 
     await dispatch({
-      type: ADD_BOARD,
+      type: ADD_USER_TO_BOARD,
       payload: {
         user: res.data,
         message: `${email} was added to the board!`,
@@ -106,7 +106,7 @@ export const addUserToBoard = (
   } catch (e) {
     console.log(e);
     await dispatch({
-      type: ADD_BOARD,
+      type: ADD_USER_TO_BOARD,
       payload: {
         user: null,
         message: `${email} is not a registered user. Please have them register.`,
@@ -118,7 +118,7 @@ export const addUserToBoard = (
 
 export const resetAddUserState = () => {
   return {
-    type: ADD_BOARD,
+    type: ADD_USER_TO_BOARD,
     payload: {
       message: '',
       success: false,

@@ -134,12 +134,18 @@ export const login = (
 ) => async (dispatch: Function) => {
   try {
     const res = await api.login(email, password);
+
     dispatch({
       type: AUTHENTICATED,
       payload: {
         jwt: res.data.access_token,
         uid: res.data.uid,
       },
+    });
+
+    dispatch({
+      type: AUTHENTICATION_ERROR,
+      payload: null,
     });
 
     // update api service
@@ -189,10 +195,11 @@ export const resetPasswordSubmitter = ({
     return res.status === 200;
   } catch (e) {
     console.log(e);
-    dispatch({
-      type: AUTHENTICATION_ERROR,
-      payload: 'Invalid email',
-    });
+    // TODO: update reset form error message
+    // dispatch({
+    //   type: AUTHENTICATION_ERROR,
+    //   payload: 'Invalid email',
+    // });
   }
 };
 

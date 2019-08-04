@@ -1,11 +1,35 @@
 import React from 'react';
 import './BoardCard.css';
-import CardPlain from '../CardPlain/CardPlain';
 
-const BoardCard = ({ name }: { name: string }) => (
-  <div className={'board-card'}>
-    <div className={`board-card__inner`}>{name}</div>
-  </div>
-);
+const BoardCard = ({
+  name,
+  deleteHandler,
+  id,
+}: {
+  name: string;
+  deleteHandler: (id: string) => {};
+  id: string;
+}) => {
+  const onDelete = (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+    id: string
+  ) => {
+    e.preventDefault();
+    deleteHandler(id);
+  };
+  return (
+    <div className={'board-card'}>
+      <div className={`board-card__name`}>{name}</div>
+      <div className="board-card__delete-wrap">
+        <button
+          onClick={e => onDelete(e, id)}
+          className="board-card__delete-button"
+        >
+          Delete board
+        </button>
+      </div>
+    </div>
+  );
+};
 
 export default BoardCard;

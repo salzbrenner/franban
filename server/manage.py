@@ -5,10 +5,14 @@
 import os
 from flask_script import Manager
 from flask_migrate import Migrate, MigrateCommand
+
+import instance
+from instance.config import DevelopmentConfig
 from src import db, create_app
 import pytest
 
-app = create_app(config_name=os.environ['APP_SETTINGS']).app
+# app = create_app(config_name=os.environ['APP_SETTINGS']).app
+app = create_app(DevelopmentConfig).app
 migrate = Migrate(app, db)
 # create instance of class to handle commands
 manager = Manager(app)

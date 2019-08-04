@@ -1,7 +1,4 @@
 .board-card {
-}
-
-.board-card__inner {
   font-size: 24px;
   font-weight: bold;
   background: var(--white);
@@ -12,6 +9,27 @@
   transition: transform 100ms ease;
 }
 
-.board-card:hover .board-card__inner {
+.board-card:hover {
   transform: translateY(-10px);
+}
+
+.board-card__name {
+  margin-bottom: 30px;
+}
+
+.board-card__delete-wrap {
+  text-align: right;
+}
+
+.board-card__delete-button {
+  border-radius: 3px;
+  font-size: 12px;
+  font-weight: bold;
+  color: var(--text-danger);
+  transition: color 0.1s ease, background 0.1s ease;
+}
+
+.board-card__delete-button:hover {
+  background: var(--text-danger);
+  color: var(--white);
 }

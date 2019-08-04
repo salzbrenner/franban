@@ -1,10 +1,11 @@
 import React from 'react';
 import BoardCard from '../BoardCard/BoardCard';
 import './BoardsList.css';
-import { Link, Route } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 type Props = {
   boards: BoardsInterface[];
+  deleteHandler: (id: string) => {};
 };
 
 export interface BoardsInterface {
@@ -12,7 +13,10 @@ export interface BoardsInterface {
   name: string;
 }
 
-const BoardsList: React.FC<Props> = ({ boards }) => (
+const BoardsList: React.FC<Props> = ({
+  boards,
+  deleteHandler,
+}) => (
   <div className={'container boards-list'}>
     <div className={'row'}>
       {boards.map(board => (
@@ -22,7 +26,11 @@ const BoardsList: React.FC<Props> = ({ boards }) => (
           className={`col col-3 boards-list__link`}
         >
           <div className={`boards-list__link-inner`}>
-            <BoardCard name={board.name} />
+            <BoardCard
+              name={board.name}
+              id={board.id}
+              deleteHandler={deleteHandler}
+            />
           </div>
         </Link>
       ))}

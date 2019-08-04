@@ -182,6 +182,21 @@ export const addList = (
 /**
  * Deletes a list, makes call to lists/<listId>
  */
+export const deleteBoard = (id: number): AxiosPromise => {
+  const headers = {
+    'Content-Type': 'application/json',
+  };
+  return makeApiCall(
+    'delete',
+    `boards/${id}`,
+    null,
+    headers
+  );
+};
+
+/**
+ * Deletes a list, makes call to lists/<listId>
+ */
 export const deleteList = (id: number): AxiosPromise => {
   const headers = {
     'Content-Type': 'application/json',

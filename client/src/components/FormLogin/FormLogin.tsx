@@ -15,6 +15,7 @@ import ButtonMain from 'components/ButtonMain/ButtonMain';
 import './FormLogin.css';
 import { Link } from 'react-router-dom';
 import FormAuth from 'components/FormAuth/FormAuth';
+import { AppState } from 'redux/modules/rootReducer';
 
 type Props = ReturnType<typeof mapStateToProps> &
   typeof mapDispatchToProps &
@@ -31,6 +32,7 @@ const FormLogin: FC<Props> = props => {
   const submit = (values: FormAuthValues) => {
     props.login(values);
   };
+  console.log(errorMessage);
 
   return (
     <div className={'form-login'}>
@@ -55,9 +57,9 @@ const FormLogin: FC<Props> = props => {
   );
 };
 
-function mapStateToProps(state: AuthState) {
+function mapStateToProps({ auth }: AppState) {
   return {
-    errorMessage: getErrorMessage(state),
+    errorMessage: getErrorMessage(auth),
   };
 }
 

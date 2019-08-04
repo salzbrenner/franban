@@ -1,5 +1,6 @@
 import React, { useEffect, FunctionComponent } from 'react';
 import {
+  deleteBoard,
   getUserBoards,
   userBoards,
 } from 'redux/modules/user';
@@ -8,7 +9,6 @@ import { connect } from 'react-redux';
 import { AppState } from 'redux/modules/rootReducer';
 import FormAddBoard from 'components/FormAddBoard/FormAddBoard';
 import './UserBoards.css';
-import { subscribeToBoards } from 'services/socket';
 
 type Props = ReturnType<typeof mapStateToProps> &
   typeof mapDispatchToProps;
@@ -18,15 +18,17 @@ type OwnProps = {
 };
 
 const UserBoards: FunctionComponent<Props> = props => {
-  const { uid, boards, getUserBoards } = props;
+  const { uid, boards, getUserBoards, deleteBoard } = props;
   useEffect(() => {
     getUserBoards(uid); // initial load
-    // subscribeToBoards(() => getUserBoards(uid)); // subscribes socket responses for same event
   }, [uid]);
 
   return (
     <>
-      <BoardsList boards={boards} />
+      <BoardsList
+        boards={boards}
+        deleteHandler={deleteBoard}
+      />
       <div className="container">
         <FormAddBoard />
       </div>
@@ -45,7 +47,8 @@ function mapStateToProps(
 }
 
 const mapDispatchToProps: any = {
-  getUserBoards: getUserBoards,
+  getUserBoards,
+  deleteBoard,
 };
 
 export default connect(
