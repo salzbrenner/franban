@@ -1,5 +1,6 @@
 .idea
 __pycache__
 .env
+.env.docker
 .DS_Store
 .pytest_cache
