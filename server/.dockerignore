@@ -2,3 +2,8 @@
 .env.docker
 .DS_Store
 .idea
+
+.elasticbeanstalk/*
+.git
+.gitignore
+.ebextensions/*

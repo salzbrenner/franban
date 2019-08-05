@@ -142,6 +142,10 @@ button:hover {
   color: var(--primary-color);
 }
 
+.font-weight-bold {
+  font-weight: bold;
+}
+
 /*.gu-mirror {*/
 /*position: fixed !important;*/
 /*margin: 0 !important;*/

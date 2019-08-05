@@ -11,7 +11,6 @@ class Config(object):
     SECRET_API_KEY = os.getenv('SECRET_API_KEY')
     MAIL_SERVER = 'smtp.zoho.com'
     MAIL_PORT = 465
-    MAIL_USE_SSL = True
     MAIL_USE_TLS = True
     MAIL_USERNAME = os.getenv('EMAIL_USER')
     MAIL_PASSWORD = os.getenv('EMAIL_PASS')
@@ -20,7 +19,7 @@ class Config(object):
 
 class ProductionConfig(Config):
     DEBUG = False
-
+    SQLALCHEMY_DATABASE_URI = os.getenv('PRODUCTION_DATABASE_URL')
 
 class StagingConfig(Config):
     DEVELOPMENT = True

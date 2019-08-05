@@ -30,9 +30,9 @@ const FormLogin: FC<Props> = props => {
   } = props;
 
   const submit = (values: FormAuthValues) => {
+    console.log(values);
     props.login(values);
   };
-  console.log(errorMessage);
 
   return (
     <div className={'form-login'}>
@@ -43,6 +43,20 @@ const FormLogin: FC<Props> = props => {
         submitting={submitting}
         errorMessage={errorMessage}
       />
+      <p className={'font-weight-bold'}> - or - </p>
+      <div className="form-login__demo">
+        <ButtonMain
+          text={'Check out the demo'}
+          type="submit"
+          secondary={false}
+          onClick={() =>
+            submit({
+              email: 'demo@franban.com',
+              password: 'root',
+            })
+          }
+        />
+      </div>
       <div className="form-login__register">
         <p>
           Forgot your password?{' '}

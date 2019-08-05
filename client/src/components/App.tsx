@@ -16,7 +16,10 @@ class App extends Component {
         <Switch>
           <Route path={'/login'} component={Login} />
           <Route path={'/register'} component={Register} />
-          <Route path={'/logout'} component={Logout} />
+          <Route
+            path={'/logout'}
+            render={props => <Logout {...props} />}
+          />
           <Route
             path={'/reset-password/:token'}
             render={props => <ResetPassword {...props} />}
