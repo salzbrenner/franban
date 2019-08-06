@@ -43,8 +43,9 @@ class Task extends React.Component<Props> {
     return (
       <>
         <Draggable
-          draggableId={this.props.stateId}
+          draggableId={`${this.props.stateId}-TASK`}
           index={this.props.index}
+          type={'TASK'}
         >
           {(provided, snapshot) => (
             <div

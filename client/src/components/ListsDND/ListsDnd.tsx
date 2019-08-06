@@ -38,6 +38,8 @@ const ListsDND: FunctionComponent<Props> = props => {
       return;
     }
 
+    const apiId = draggableId.split('-')[0];
+
     if (
       destination.droppableId === source.droppableId &&
       destination.index === source.index
@@ -48,16 +50,9 @@ const ListsDND: FunctionComponent<Props> = props => {
     if (type === `LIST`) {
       const newListOrder = Array.from(order);
       newListOrder.splice(source.index, 1);
-      newListOrder.splice(
-        destination.index,
-        0,
-        draggableId
-      );
+      newListOrder.splice(destination.index, 0, apiId);
 
-      updateListsOrderAndSendToServer(
-        draggableId,
-        newListOrder
-      );
+      updateListsOrderAndSendToServer(apiId, newListOrder);
       return;
     }
 
@@ -68,14 +63,14 @@ const ListsDND: FunctionComponent<Props> = props => {
     if (start === finish) {
       const newTaskIds = Array.from(start.taskIds);
       newTaskIds.splice(source.index, 1);
-      newTaskIds.splice(destination.index, 0, draggableId);
+      newTaskIds.splice(destination.index, 0, apiId);
       const newList = {
         ...start,
         taskIds: newTaskIds,
       };
 
       updateListTasks(newList.id, newList);
-      updateTask(newList.id, draggableId, newTaskIds);
+      updateTask(newList.id, apiId, newTaskIds);
       return;
     }
 
@@ -88,7 +83,7 @@ const ListsDND: FunctionComponent<Props> = props => {
     };
 
     const finishTaskIds = Array.from(finish.taskIds);
-    finishTaskIds.splice(destination.index, 0, draggableId);
+    finishTaskIds.splice(destination.index, 0, apiId);
     const newFinishList = {
       ...finish,
       taskIds: finishTaskIds,
@@ -97,11 +92,7 @@ const ListsDND: FunctionComponent<Props> = props => {
     updateListTasks(newStartList.id, newStartList);
     updateListTasks(newFinishList.id, newFinishList);
 
-    updateTask(
-      newFinishList.id,
-      draggableId,
-      finishTaskIds
-    );
+    updateTask(newFinishList.id, apiId, finishTaskIds);
   }
 
   return (

@@ -39,7 +39,7 @@ const List: React.FC<ListProps> = props => {
 
   return (
     <Draggable
-      draggableId={`${id}`}
+      draggableId={`${id}-LIST`}
       index={index}
       type={`LIST`}
     >
