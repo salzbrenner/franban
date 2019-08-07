@@ -31,7 +31,7 @@ def create_app(config_name):
 
     db.init_app(flask_app)
     mail.init_app(flask_app)
-    socketio.init_app(flask_app, cors_allowed_origins="*")
+    socketio.init_app(flask_app, cors_allowed_origins="*", template_directory=template_dir)
 
     # from .users.controller import user
     # from .boards.controller import boards

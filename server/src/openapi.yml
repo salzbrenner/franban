@@ -8,6 +8,7 @@ security:
 - jwt: []
 
 paths:
+
   /register:
     post:
       operationId: src.users.controller.register

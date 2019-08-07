@@ -207,12 +207,15 @@ export const logout = () => async (dispatch: Function) => {
   // update api service
   const res = await api.logout();
 
-  localStorage.removeItem(FRNBN_TOKN);
-  localStorage.removeItem(FRNBN_USR);
-  dispatch({
+  await dispatch({
     type: AUTHENTICATED,
     payload: '',
   });
+
+  localStorage.removeItem(FRNBN_TOKN);
+  localStorage.removeItem(FRNBN_USR);
+
+  return;
 };
 
 export const clearErrors = () => {

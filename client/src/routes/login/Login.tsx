@@ -1,6 +1,5 @@
 import React from 'react';
 import FormLogin from 'components/FormLogin/FormLogin';
-import FormPasswordReset from 'components/FormPasswordResetRequest/FormPasswordResetRequest';
 import requireAuth from 'components/requireAuth';
 import './Login.css';
 

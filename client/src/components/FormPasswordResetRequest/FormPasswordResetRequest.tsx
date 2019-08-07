@@ -70,8 +70,8 @@ const FormPasswordResetRequest: FC<Props> = props => {
         renderForm()
       ) : (
         <div>
-          Thank you, we will send an email to reset your
-          password
+          Thank you, if you are a registered user, we will
+          send an email to reset your password.
         </div>
       )}
     </>

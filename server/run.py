@@ -1,7 +1,7 @@
 import os
 import instance.config
 from src import create_app, socketio
-# TODO: eventlet + python 3.7 causes issue with email
+# TODO: eventlet + python 3.7 causes issue with email/socketio
 # import eventlet
 # eventlet.monkey_patch()
 

@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect } from 'react';
 import {
   Field,
   InjectedFormProps,
@@ -9,6 +9,7 @@ import {
   getErrorMessage,
   FormAuthValues,
   AuthState,
+  clearErrors,
 } from 'redux/modules/auth';
 import { connect } from 'react-redux';
 import ButtonMain from 'components/ButtonMain/ButtonMain';
@@ -27,12 +28,17 @@ const FormLogin: FC<Props> = props => {
     pristine,
     submitting,
     errorMessage,
+    clearErrors,
+    login,
   } = props;
 
   const submit = (values: FormAuthValues) => {
-    console.log(values);
-    props.login(values);
+    login(values);
   };
+
+  useEffect(() => {
+    clearErrors();
+  }, []);
 
   return (
     <div className={'form-login'}>
@@ -79,6 +85,7 @@ function mapStateToProps({ auth }: AppState) {
 
 const mapDispatchToProps: any = {
   login,
+  clearErrors,
 };
 
 const reduxFormLogin = reduxForm({
@@ -87,5 +94,5 @@ const reduxFormLogin = reduxForm({
 
 export default connect(
   mapStateToProps,
-  { login }
+  mapDispatchToProps
 )(reduxFormLogin);

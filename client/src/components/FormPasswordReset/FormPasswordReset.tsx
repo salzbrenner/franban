@@ -41,7 +41,7 @@ const FormPasswordReset: FC<Props> = props => {
       throw new SubmissionError({
         password: 'password could not be updated',
         _error:
-          'Password could not be update, please try again.',
+          'Password could not be updated, please try again.',
       });
     }
   };

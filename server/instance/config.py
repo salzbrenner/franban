@@ -10,7 +10,7 @@ class Config(object):
     SECRET_KEY = os.getenv('SECRET_KEY')
     SECRET_API_KEY = os.getenv('SECRET_API_KEY')
     MAIL_SERVER = 'smtp.zoho.com'
-    MAIL_PORT = 465
+    MAIL_PORT = 587
     MAIL_USE_TLS = True
     MAIL_USERNAME = os.getenv('EMAIL_USER')
     MAIL_PASSWORD = os.getenv('EMAIL_PASS')

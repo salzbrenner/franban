@@ -9,8 +9,8 @@ type Props = RouterProps & {
 };
 
 class Logout extends Component<Props> {
-  componentDidMount() {
-    this.props.logout();
+  async componentDidMount() {
+    await this.props.logout();
     this.props.history.push('/login');
   }
 
