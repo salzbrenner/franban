@@ -32,9 +32,6 @@ const List: React.FC<ListProps> = props => {
     socketTaskHandlers.subscribeAll(() =>
       tasksRequestHandler(id)
     );
-    return function cleanup() {
-      socketTaskHandlers.unsubscribeAll();
-    };
   }, [id]);
 
   return (

@@ -230,7 +230,6 @@ export const deleteTask = (id: number) => async (
       ...list,
       taskIds: taskIdsForCurrentList,
     };
-    console.log(newList);
 
     dispatch(updateListTasks(target.list_id, newList));
   } catch (e) {

@@ -10,10 +10,12 @@ import { Link } from 'react-router-dom';
 import {
   roomHandler,
   socketListHandlers,
+  socketTaskHandlers,
 } from 'services/socket';
 import UserList from 'components/UserList/UserList';
 import FormInviteUser from 'components/FormInviteUser/FormInviteUser';
 import Modal from 'react-modal';
+import { deleteListFromState } from 'redux/modules/lists';
 
 const modalStyles = {
   content: {
@@ -37,6 +39,7 @@ const BoardOverview: FC<Props> = props => {
     boardId,
     resetLists,
     users,
+    deleteListFromState,
   } = props;
 
   const [modalIsOpen, openModal] = useState(false);
@@ -44,14 +47,21 @@ const BoardOverview: FC<Props> = props => {
   useEffect(() => {
     getBoard(boardId);
     roomHandler.joinRoom(boardId);
-    socketListHandlers.subscribeAll(() =>
-      getBoard(boardId)
+    socketListHandlers.subscribeAll(() => {
+      getBoard(boardId);
+    });
+    socketListHandlers.listDeleted(
+      deleteListFromState,
+      () => {
+        getBoard(boardId);
+      }
     );
     return function cleanup() {
       roomHandler.leaveRoom(boardId);
       resetBoard();
       resetLists();
-      socketListHandlers.offAll();
+      socketListHandlers.unsubscribeAll();
+      socketTaskHandlers.unsubscribeAll();
     };
   }, [boardId]);
 

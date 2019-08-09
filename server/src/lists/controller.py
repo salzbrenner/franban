@@ -115,10 +115,11 @@ def delete(id):
         for t in list.tasks:
             task_delete(t.id)
         list.delete()
+        #             data={'uid': get_user_session_id(), 'list_id': id}
         socketio.emit(
             LIST_DELETED,
             room=list.board_id,
-            data=get_user_session_id(),
+            data={'uid': get_user_session_id(), 'list_id': id}
         )
         return NoContent, 204
     else:

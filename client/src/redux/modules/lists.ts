@@ -3,10 +3,14 @@ import { ListProps } from 'components/List/List';
 import { ActionInterface } from 'redux/modules/action.type';
 import { AxiosPromise, AxiosResponse } from 'axios';
 import { ThunkDispatch } from 'redux-thunk';
-import { deleteAllTasksFromDeletedList } from 'redux/modules/tasks';
+import {
+  deleteAllTasksFromDeletedList,
+  TaskInterface,
+} from 'redux/modules/tasks';
 
 export const GET_LISTS = 'lists/GET_LISTS';
 export const ADD_LIST = 'lists/ADD_LIST';
+export const DELETE_LIST = 'lists/DELETE_LIST';
 export const RESET_LISTS = 'lists/RESET_LISTS';
 export const UPDATE_LISTS_ORDER =
   'lists/UPDATE_LISTS_ORDER';
@@ -51,6 +55,7 @@ export default function reducer(
         lists: newLists,
       };
     }
+
     case UPDATE_LIST_TASKS: {
       const { newList, listId } = action.payload;
       return {
@@ -59,6 +64,19 @@ export default function reducer(
           ...state.lists,
           [listId]: newList,
         },
+      };
+    }
+
+    case DELETE_LIST: {
+      const listId = action.payload;
+      const {
+        [listId]: deleted,
+        ...listsToKeep
+      } = state.lists;
+
+      return {
+        ...state,
+        lists: listsToKeep,
       };
     }
 
@@ -152,7 +170,7 @@ export const updateListTasks = (
  * @param boardId
  */
 export const getListsForBoard = (
-  listIds: any,
+  listIds: number[],
   boardId: number
 ) => async (
   dispatch: Function,
@@ -317,8 +335,27 @@ export const deleteList = (listId: number) => async (
 ): Promise<void> => {
   try {
     const res = await api.deleteList(listId);
+    dispatch(deleteListFromState(listId));
+  } catch (e) {
+    console.log(e);
+  }
+};
+
+export const deleteListFromState = (
+  listId: number
+) => async (
+  dispatch: ThunkDispatch<{}, {}, any>,
+  getState: Function
+): Promise<void> => {
+  try {
     const listsState = getState().lists;
-    const listTasks = listsState.lists[listId].taskIds;
+
+    const allTasks = getState().tasks;
+    const listTasks = Object.keys(allTasks)
+      .filter(
+        (key: string) => allTasks[key].list_id === listId
+      )
+      .map(key => +key);
 
     const listsOrder = listsState.listOrder;
     const newOrder = listsOrder.filter(
@@ -329,9 +366,11 @@ export const deleteList = (listId: number) => async (
       deleteAllTasksFromDeletedList(listTasks)
     );
 
-    dispatch({
-      type: UPDATE_LISTS_ORDER,
-      payload: newOrder,
+    await dispatch(updateListsOrder(newOrder));
+
+    await dispatch({
+      type: DELETE_LIST,
+      payload: listId,
     });
   } catch (e) {
     console.log(e);

@@ -34,11 +34,9 @@ function subscribeToBoards(cb: Function) {
 
 const roomHandler = {
   joinRoom: (boardId: number) => {
-    console.log('Joined room ', boardId);
     socket.emit('join', boardId);
   },
   leaveRoom: (boardId: number) => {
-    console.log('Left room ', boardId);
     socket.emit('leave', boardId);
   },
 };
@@ -48,39 +46,24 @@ const emitIfNotOriginator = (
   cb: Function
 ) => {
   const uid = store.getState().auth.uid;
-  if (`${userSessionId}` !== uid) {
-    cb();
-  }
+  // if (`${userSessionId}` !== uid) {
+  cb();
+  // }
 };
 
 const listEvents = [
   socketEvents.LIST_ADDED,
-  socketEvents.LIST_DELETED,
   socketEvents.LIST_UPDATED,
 ];
 
 const socketListHandlers = {
-  listAdded: (cb: Function) => {
-    socket.on(
-      socketEvents.LIST_ADDED,
-      (userSessionId: number) => {
-        emitIfNotOriginator(userSessionId, cb);
-      }
-    );
-  },
-  listDeleted: (cb: Function) => {
+  listDeleted: (deleteCb: Function, cb: Function) => {
     socket.on(
       socketEvents.LIST_DELETED,
-      (userSessionId: number) => {
-        emitIfNotOriginator(userSessionId, cb);
-      }
-    );
-  },
-  listMoved: (cb: Function) => {
-    socket.on(
-      socketEvents.LIST_UPDATED,
-      (userSessionId: number) => {
-        emitIfNotOriginator(userSessionId, cb);
+      ({ uid, list_id }: any) => {
+        deleteCb(list_id);
+        cb();
+        // emitIfNotOriginator(uid, cb);
       }
     );
   },
@@ -91,7 +74,7 @@ const socketListHandlers = {
       });
     });
   },
-  offAll: () => {
+  unsubscribeAll: () => {
     listEvents.forEach(event => {
       socket.removeListener(event);
     });

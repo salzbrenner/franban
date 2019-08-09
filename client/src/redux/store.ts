@@ -16,15 +16,15 @@ const composeEnhancers =
   // @ts-ignore: allow devtools on window
   window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
+const enhancers: any[] = [axiosMiddleware, reduxThunk];
+
+if (process.env.NODE_ENV !== 'production') {
+  // enhancers.push(logger);
+}
+
 const store = createStore(
   reducer, // root reducer
-  composeEnhancers(
-    applyMiddleware(
-      axiosMiddleware,
-      reduxThunk,
-      logger // logger must be last in chain
-    )
-  )
+  composeEnhancers(applyMiddleware(...enhancers))
 );
 
 export default store;
