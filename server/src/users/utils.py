@@ -11,7 +11,6 @@ def send_reset_email(user):
                   recipients=[user.email])
     msg.html = render_template('reset.html', link=reset_url)
 
-    print("HELLO")
     mail.send(msg)
 
 
