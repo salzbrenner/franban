@@ -334,7 +334,8 @@ export const deleteList = (listId: number) => async (
   getState: Function
 ): Promise<void> => {
   try {
-    const res = await api.deleteList(listId);
+    const res: AxiosResponse = await api.deleteList(listId);
+
     dispatch(deleteListFromState(listId));
   } catch (e) {
     console.log(e);

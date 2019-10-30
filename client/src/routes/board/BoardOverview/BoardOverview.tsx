@@ -15,7 +15,6 @@ import {
 import UserList from 'components/UserList/UserList';
 import FormInviteUser from 'components/FormInviteUser/FormInviteUser';
 import Modal from 'react-modal';
-import { deleteListFromState } from 'redux/modules/lists';
 
 const modalStyles = {
   content: {
@@ -53,7 +52,8 @@ const BoardOverview: FC<Props> = props => {
     socketListHandlers.listDeleted(
       deleteListFromState,
       () => {
-        getBoard(boardId);
+        // console.log(boardId);
+        // getBoard(boardId);
       }
     );
     return function cleanup() {

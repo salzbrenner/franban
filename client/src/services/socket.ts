@@ -62,7 +62,7 @@ const socketListHandlers = {
       socketEvents.LIST_DELETED,
       ({ uid, list_id }: any) => {
         deleteCb(list_id);
-        cb();
+        // cb();
         // emitIfNotOriginator(uid, cb);
       }
     );
