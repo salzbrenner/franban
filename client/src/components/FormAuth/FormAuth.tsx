@@ -23,7 +23,11 @@ const FormAuth = ({
   };
 
   return (
-    <form className={`form-auth`} onSubmit={submitHandler}>
+    <form
+      className={`form-auth`}
+      onSubmit={submitHandler}
+      autoComplete={'off'}
+    >
       <div className={'form-auth__fields'}>
         <Field
           name="email"

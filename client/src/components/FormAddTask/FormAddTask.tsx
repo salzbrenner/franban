@@ -94,7 +94,10 @@ class FormAddTask extends Component<FormAddTaskProps> {
     } = this.props;
     return (
       <div className={'form-add-task'} ref={this.formRef}>
-        <form onSubmit={handleSubmit(this.submit)}>
+        <form
+          onSubmit={handleSubmit(this.submit)}
+          autoComplete={'off'}
+        >
           <div className={'form-add-task__fields'}>
             <Field
               name="name"

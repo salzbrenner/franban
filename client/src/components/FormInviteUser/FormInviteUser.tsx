@@ -49,7 +49,10 @@ const FormInviteUser: FC<Props> = props => {
 
   const renderForm = () => {
     return (
-      <form onSubmit={handleSubmit(submit)}>
+      <form
+        onSubmit={handleSubmit(submit)}
+        autoComplete={'off'}
+      >
         <p>
           Enter the email of the user who you would like to
           invite to this board.

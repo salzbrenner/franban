@@ -41,7 +41,10 @@ const FormAddBoard: FC<Props> = props => {
 
   return (
     <div className={'form-add-list'}>
-      <form onSubmit={handleSubmit(submit)}>
+      <form
+        onSubmit={handleSubmit(submit)}
+        autoComplete={'off'}
+      >
         <div className={'form-add-list__fields'}>
           <Field
             name="name"
