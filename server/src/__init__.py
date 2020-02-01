@@ -25,7 +25,7 @@ def create_app(config_name):
 
     CORS(
         flask_app,
-        resources={r"/api/*": {"origins": ["http://localhost:3000", "https://franban.aboutevan.com"]}},
+        resources={r"/api/*": {"origins": ["http://localhost:3000", "https://franban.aboutevan.com", "*"]}},
         supports_credentials=True
     )
 

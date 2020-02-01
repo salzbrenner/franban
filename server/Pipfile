@@ -9,7 +9,7 @@ connexion = {version = "*",extras = ["swagger-ui"]}
 flask-sqlalchemy = "*"
 flask-migrate = "*"
 flask-script = "*"
-"psycopg2" = "*"
+psycopg2-binary = "*"
 pytest = "*"
 flask-socketio = "*"
 eventlet = "*"
