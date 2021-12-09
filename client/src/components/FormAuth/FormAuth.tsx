@@ -8,6 +8,7 @@ type FormAuthProps = {
   pristine: boolean;
   submitting: boolean;
   errorMessage: string;
+  loading: boolean;
 };
 
 const FormAuth = ({
@@ -15,6 +16,7 @@ const FormAuth = ({
   pristine,
   submitting,
   errorMessage,
+  loading,
 }: FormAuthProps) => {
   const errorRenderer = () => {
     if (errorMessage) {

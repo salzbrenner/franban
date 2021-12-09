@@ -15,6 +15,9 @@ class Config(object):
     MAIL_USERNAME = os.getenv('EMAIL_USER')
     MAIL_PASSWORD = os.getenv('EMAIL_PASS')
     MAIL_DEBUG = True
+    SESSION_TYPE = 'filesystem'
+    SESSION_PERMANENT = True
+    SESSION_FILE_THRESHOLD = 20
 
 
 class ProductionConfig(Config):

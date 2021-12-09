@@ -1,4 +1,4 @@
-import React, { FC, useEffect } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import {
   Field,
   InjectedFormProps,
@@ -23,6 +23,8 @@ type Props = ReturnType<typeof mapStateToProps> &
   InjectedFormProps;
 
 const FormLogin: FC<Props> = props => {
+  const [loading, setLoading] = useState(false);
+
   const {
     handleSubmit,
     pristine,
@@ -32,13 +34,18 @@ const FormLogin: FC<Props> = props => {
     login,
   } = props;
 
-  const submit = (values: FormAuthValues) => {
-    login(values);
+  const submit = async (values: FormAuthValues) => {
+    setLoading(true);
+    await login(values);
   };
 
   useEffect(() => {
     clearErrors();
   }, []);
+
+  useEffect(() => {
+    if (errorMessage) setLoading(false);
+  }, [errorMessage]);
 
   return (
     <div className={'form-login'}>
@@ -48,6 +55,7 @@ const FormLogin: FC<Props> = props => {
         pristine={pristine}
         submitting={submitting}
         errorMessage={errorMessage}
+        loading={loading}
       />
       <p className={'font-weight-bold'}> - or - </p>
       <div className="form-login__demo">
@@ -63,6 +71,17 @@ const FormLogin: FC<Props> = props => {
           }
         />
       </div>
+      {loading && (
+        <>
+          <div className="lds-ring">
+            <div />
+            <div />
+            <div />
+            <div />
+          </div>
+          <span>Waiting for Heroku...</span>
+        </>
+      )}
       <div className="form-login__register">
         <p>
           Forgot your password?{' '}

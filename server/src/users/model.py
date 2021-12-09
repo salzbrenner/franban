@@ -4,7 +4,6 @@ from flask_bcrypt import Bcrypt
 import jwt
 from datetime import datetime, timedelta
 
-
 class User(db.Model):
     """
     This class defines the users table
@@ -65,7 +64,6 @@ class User(db.Model):
         """
         try:
             session['current_user'] = uid
-            session.permanent = True
         except Exception as e:
             return e
 
@@ -76,6 +74,7 @@ class User(db.Model):
         :return: id, string
         """
         try:
+            print(session['current_user'])
             return session['current_user']
         except Exception as e:
             return e

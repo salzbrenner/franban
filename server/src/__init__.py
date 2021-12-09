@@ -3,9 +3,11 @@ from flask_mail import Mail
 from flask_sqlalchemy import SQLAlchemy
 from flask_socketio import SocketIO, join_room, emit
 from flask_cors import CORS
-from .middleware.cors_header_middleware import CorsHeaderMiddleware
+from .middleware.cors_header_middleware import CookieHeaderMiddleware
 import os
+from flask_session import Session
 
+sess = Session()
 db = SQLAlchemy()
 socketio = SocketIO()
 mail = Mail()
@@ -19,8 +21,10 @@ def create_app(config_name):
     flask_app = connexion_app.app
     connexion_app.add_api('openapi.yml')
     # Middleware
-    # flask_app.wsgi_app = CorsHeaderMiddleware(flask_app.wsgi_app)
     flask_app.config.from_object(config_name)
+    # have to set this so that the session cookie is secure
+    # for user tracking
+    flask_app.wsgi_app = CookieHeaderMiddleware(flask_app.wsgi_app, flask_app)
     flask_app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
     CORS(
@@ -32,6 +36,7 @@ def create_app(config_name):
     db.init_app(flask_app)
     mail.init_app(flask_app)
     socketio.init_app(flask_app, cors_allowed_origins="*", template_directory=template_dir)
+    sess.init_app(flask_app)
 
     # from .users.controller import user
     # from .boards.controller import boards

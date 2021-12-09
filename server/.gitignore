@@ -9,3 +9,4 @@ __pycache__
 !.elasticbeanstalk/*.cfg.yml
 !.elasticbeanstalk/*.global.yml
 .ebextensions/*
+flask_session/

@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 import {
   Field,
   InjectedFormProps,
@@ -18,6 +18,8 @@ type Props = ReturnType<typeof mapStateToProps> &
   InjectedFormProps;
 
 const FormRegister: FC<Props> = props => {
+  const [loading, setLoading] = useState(false);
+
   const {
     handleSubmit,
     pristine,
@@ -28,7 +30,6 @@ const FormRegister: FC<Props> = props => {
   const submit = (values: {}) => {
     props.register(values);
   };
-
   return (
     <div className={`form-register`}>
       <h1>Sign up</h1>
@@ -37,6 +38,7 @@ const FormRegister: FC<Props> = props => {
         pristine={pristine}
         submitting={submitting}
         errorMessage={errorMessage}
+        loading={loading}
       />
     </div>
   );
